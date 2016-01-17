@@ -1,0 +1,20 @@
+﻿<div>
+    <h1 class="text-center">Entities</h1>
+    <div class="row">
+        <div class="col-md-4">
+            &nbsp;
+        </div>
+        <div class="col-md-8">
+            <div class="checkbox">
+                <label>
+                    <input [ngModel]="excludeInactive" #chkExcludeInactive type="checkbox" (change)="chkExcludeInactiveClicked(chkExcludeInactive)"> <big>Exclude Inactive</big>
+                </label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            &nbsp;
+        </div>
+    </div>
+    <!--<ag-grid-ng2 class="ag-fresh" style="height: 300px" [gridOptions]="gridOptions" ></ag-grid-ng2>-->
+    <ag-grid-ng2 class="ag-fresh" style="height: 300px" [columnDefs]="columnDefs" [rowData]="entities" (rowClicked)="onRowClicked($event)"(rowDoubleClicked)="onRowDoubleClicked($event)"></ag-grid-ng2>
+</div>

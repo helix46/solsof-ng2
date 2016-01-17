@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <base href="/">
+
+    <!--bootstrap-->
+    <link href="../node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+
+    <!--ag-grid styles-->
+    <link href="node_modules/ag-grid/dist/ag-grid.css" rel="stylesheet" />
+    <link href="node_modules/ag-grid/dist/theme-fresh.css" rel="stylesheet" />
+
+    
+    <link href="src/styles/styles.css" rel="stylesheet" />
+    <!--angular-->
+    <script src="node_modules/angular2/bundles/angular2-polyfills.js"></script>
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="node_modules/rxjs/bundles/Rx.js"></script>
+    <script src="node_modules/angular2/bundles/angular2.dev.js"></script>
+    <script src="node_modules/angular2/bundles/router.dev.js"></script>
+    <script src="node_modules/angular2/bundles/http.dev.js"></script>
+
+    <!--ag-grid-->
+    <script src="node_modules/ag-grid/dist/ag-grid.js"></script>
+
+    <script>
+        System.config({ packages: { src: { format: 'register', defaultExtension: 'js' } } });
+        System.import('src/boot')
+              .then(null, console.error.bind(console));
+    </script>
+</head>
+
+<body>
+    <my-app>Loading...</my-app>
+</body>
+
+</html>

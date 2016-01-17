@@ -1,0 +1,49 @@
+change password
+
+refactor entities and la's
+
+la's exclude inactive
+
+if token valid:
+	open application at entities with no menu available
+else
+	open application at login with no menu available
+
+after login go to entities with no menu available
+
+after entity chosen go to ledger accounts with all menus available
+
+style page: centre entities list, colours
+
+format standard ag-grid
+
+technicals needed: modal popup, menu
+
+then:
+	transactions
+	enter transaction
+	invoices
+	enter invoice
+	timesheets
+	enter timesheet
+	Bank accounts
+	import bank transactions
+	p and l
+	balance sheet
+
+
+
+An exception of type 'System.Exception' occurred in SolsofSpa.Api.dll but was not handled in user code
+Additional information: An exception has been raised that is likely due to a transient failure. If you are connecting to a SQL Azure database consider using SqlAzureExecutionStrategy. Inner exception Message: The underlying provider failed on Open.
+
+
+
+var _saveRegistration = function (registration) {
+ 
+        _logOut();
+ 
+        return $http.post(serviceBase + 'api/account/register', registration).then(function (response) {
+            return response;
+        });
+ 
+    };

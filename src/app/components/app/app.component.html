@@ -1,0 +1,6 @@
+﻿<h1>{{title}}</h1>
+<!--<div [routerLink]="['Login']" [hidden]="tokenValid">Login</div>-->
+<div [routerLink]="['Entities']" [hidden]="!tokenValid">Entities</div>
+<div [routerLink]="['LedgerAccounts']" [hidden]="!tokenValid">Ledger Accounts</div>
+<div [routerLink]="['ChangePassword']" >Change Password</div>
+<router-outlet></router-outlet>
