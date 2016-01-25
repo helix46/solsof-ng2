@@ -32,16 +32,15 @@ System.register(['angular2/src/core/di', 'angular2/http', '../helper/helper.serv
                 //use http get to retrieve an object of type T
                 //parameters: an array of name / value pairs
                 HttpHandlerService.prototype.getObject = function (parameters, url) {
-                    var options = this.getOptions(parameters);
+                    var options = this.getOptions(parameters, true);
                     return this.http.get(this.serviceBase + url, options).map(function (res) { return res.json(); });
                 };
                 //use http post to send an object 
-                //parameters: an array of name / value pairs
-                HttpHandlerService.prototype.postObject = function (parameterObj, url) {
-                    var options = this.postOptions();
+                HttpHandlerService.prototype.postObject = function (parameterObj, url, includeToken) {
+                    if (includeToken === void 0) { includeToken = true; }
+                    var options = this.postOptions(includeToken);
                     var s = JSON.stringify(parameterObj);
                     return this.http.post(this.serviceBase + url, s, options).map(function (res) { return res.json(); });
-                    //return this.http.post(this.serviceBase + url, JSON.stringify(parameters), options).map(res=> res.json());
                 };
                 HttpHandlerService.prototype.logError = function () {
                     console.log('get Entities failed');
@@ -50,14 +49,16 @@ System.register(['angular2/src/core/di', 'angular2/http', '../helper/helper.serv
                 HttpHandlerService.prototype.parseResponse = function (res) {
                     return res.json();
                 };
-                HttpHandlerService.prototype.getHeaders = function () {
+                HttpHandlerService.prototype.getHeaders = function (includeToken) {
                     var headers = new http_1.Headers();
                     //get login token from storage and add headers
-                    var token = helper_service_1.HelperService.getInstance().getToken();
+                    var token;
                     headers.append('Accept', 'application/json');
                     headers.append('Content-Type', 'application/json');
-                    //headers.append('Content-Type', 'application/x-www-form-urlencoded');
-                    headers.append('Authorization', 'Bearer ' + token);
+                    if (includeToken) {
+                        token = helper_service_1.HelperService.getInstance().getToken();
+                        headers.append('Authorization', 'Bearer ' + token);
+                    }
                     return headers;
                 };
                 HttpHandlerService.prototype.getParameters = function (parameters) {
@@ -68,17 +69,17 @@ System.register(['angular2/src/core/di', 'angular2/http', '../helper/helper.serv
                     params.append('preventCache', new Date().toString());
                     return params;
                 };
-                HttpHandlerService.prototype.getOptions = function (parameters) {
+                HttpHandlerService.prototype.getOptions = function (parameters, includeToken) {
                     var options = {};
-                    var headers = this.getHeaders();
+                    var headers = this.getHeaders(includeToken);
                     var params = this.getParameters(parameters);
                     options.search = params;
                     options.headers = headers;
                     return options;
                 };
-                HttpHandlerService.prototype.postOptions = function () {
+                HttpHandlerService.prototype.postOptions = function (includeToken) {
                     var options = {};
-                    var headers = this.getHeaders();
+                    var headers = this.getHeaders(includeToken);
                     options.headers = headers;
                     return options;
                 };

@@ -37,25 +37,18 @@ System.register(['angular2/router', 'angular2/src/core/di', 'angular2/http', '..
                 LedgerAccountsService.prototype.parseResponse = function (res) {
                     return res.json();
                 };
-                LedgerAccountsService.prototype.getLedgerAccounts = function (excludeInactive) {
+                LedgerAccountsService.prototype.getLedgerAccounts = function (excludeInactive, EntityId) {
                     var parameters = [];
-                    var EntityId = helper_service_1.HelperService.getInstance().getEntityId();
-                    if (EntityId === -1) {
-                        this.router.navigate(['Entities']);
-                        return null;
-                    }
-                    else {
-                        parameters[0] = {
-                            name: 'entityID',
-                            value: EntityId.toString()
-                        };
-                        parameters[1] = {
-                            name: 'excludeInactive',
-                            value: helper_service_1.HelperService.getInstance().booleanToString(excludeInactive)
-                        };
-                        var httpHandlerService = new http_handler_service_1.HttpHandlerService(this.http);
-                        return httpHandlerService.getObject(parameters, 'api/ledgerAccounts');
-                    }
+                    parameters[0] = {
+                        name: 'entityID',
+                        value: EntityId.toString()
+                    };
+                    parameters[1] = {
+                        name: 'excludeInactive',
+                        value: helper_service_1.HelperService.getInstance().booleanToString(excludeInactive)
+                    };
+                    var httpHandlerService = new http_handler_service_1.HttpHandlerService(this.http);
+                    return httpHandlerService.getObject(parameters, 'api/ledgerAccounts');
                 };
                 LedgerAccountsService = __decorate([
                     di_1.Injectable(), 

@@ -1,25 +1,13 @@
-change password
+make grid responsive
+menu for mobile
 
-refactor entities and la's
+login inputs narrower
+change password inputs narrower
 
-la's exclude inactive
-
-if token valid:
-	open application at entities with no menu available
-else
-	open application at login with no menu available
-
-after login go to entities with no menu available
-
-after entity chosen go to ledger accounts with all menus available
-
-style page: centre entities list, colours
-
-format standard ag-grid
-
-technicals needed: modal popup, menu
+technicals needed: modal popup
 
 then:
+	logout
 	transactions
 	enter transaction
 	invoices
@@ -38,12 +26,10 @@ Additional information: An exception has been raised that is likely due to a tra
 
 
 
-var _saveRegistration = function (registration) {
- 
-        _logOut();
- 
-        return $http.post(serviceBase + 'api/account/register', registration).then(function (response) {
-            return response;
-        });
- 
-    };
+Later when tools have matured and I know a lot more
+	when http returns to component, browser is updated by return values
+	look out for navbar
+	hide navbar options when not logged in or entity not chosen
+	change password inputs disappear after a wrong current password is submitted
+
+	

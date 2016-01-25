@@ -1,29 +1,13 @@
-h2 {
-    color: #444;
-    font-weight: lighter;
+.rightJustify {
+    text-align: right;
 }
 
-body {
-    margin: 2em;
+.clsGridLedgerAccounts {
+    height: 500px;
+    width: 100%;
 }
 
-body, input[text], button {
-    color: #888;
-    font-family: Cambria, Georgia;
-}
-
-button {
-    padding: 0.2em;
-    font-size: 14px;
-}
-
-* {
-    font-family: Arial;
-}
-
-
-
-.cellClass {
-    width: 20%;
-    background-color: green;
+.clsEntities {
+    height: 300px;
+    width: 250px;
 }

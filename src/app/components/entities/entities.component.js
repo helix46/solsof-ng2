@@ -1,4 +1,4 @@
-System.register(['angular2/core', '../../services/entities/entities.service', '../../services/helper/helper.service', 'angular2/router', 'rxjs/Rx'], function(exports_1) {
+System.register(['angular2/core', '../../services/entities/entities.service', '../../services/helper/helper.service', 'angular2/router'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -23,62 +23,65 @@ System.register(['angular2/core', '../../services/entities/entities.service', '.
             },
             function (router_1_1) {
                 router_1 = router_1_1;
-            },
-            function (_1) {}],
+            }],
         execute: function() {
             EntitiesComponent = (function () {
                 function EntitiesComponent(router, entitiesService) {
+                    var _this = this;
                     this.router = router;
                     this.entitiesService = entitiesService;
                     this.title = 'Entities';
                     this.entities = [];
                     this.excludeInactive = true;
+                    this.onGetEntitiesSuccess = function (data) {
+                        _this.entities = data;
+                        _this.gridOptions.api.setRowData(data);
+                        _this.gridOptions.api.sizeColumnsToFit();
+                    };
+                    //////////////////////////////////////////////
+                    //grid
                     this.columnDefs = [
                         { headerName: "Id", field: "entityID", hide: true },
                         { headerName: "Entity", field: "name" }
                     ];
+                    this.onRowDoubleClicked = function (params) {
+                        _this.onRowClicked(params);
+                        _this.router.navigate(['LedgerAccounts']);
+                    };
+                    this.gridOptions = helper_service_1.HelperService.getInstance().getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
                     console.log('constructor EntitiesComponent');
                 }
+                //load entities when page loaded
                 EntitiesComponent.prototype.ngOnInit = function () {
                     this.loadEntities();
                 };
-                EntitiesComponent.prototype.onRowClicked = function (params) {
-                    var entity = params.data;
-                    helper_service_1.HelperService.getInstance().setEntityId(entity.entityID);
-                    console.log('');
-                };
-                EntitiesComponent.prototype.onRowDoubleClicked = function (params) {
-                    this.onRowClicked(params);
-                    this.router.navigate(['LedgerAccounts']);
-                };
+                //reload grid when checkbox clicked
                 EntitiesComponent.prototype.chkExcludeInactiveClicked = function (chkExcludeInactive) {
                     this.excludeInactive = chkExcludeInactive.checked;
                     this.loadEntities();
                 };
-                //onGetEntitiesSuccess(entities: SolsofSpa.Api.DataContext.tblEntity[]) {
-                //    this.entities = entities;
-                //}
+                //////////////////////////////////////////////
+                //get data
                 EntitiesComponent.prototype.logError = function (e) {
                     console.log('getEntities Error');
                 };
                 EntitiesComponent.prototype.complete = function () {
                     console.log('getEntities complete');
                 };
-                EntitiesComponent.prototype.saveEntities = function (data) {
-                    //this.gridOptions.rowData = data;
-                    this.entities = data;
-                };
                 EntitiesComponent.prototype.loadEntities = function () {
-                    var _this = this;
                     if (helper_service_1.HelperService.getInstance().tokenIsValid()) {
-                        this.entitiesService.getEntities(this.excludeInactive).subscribe(function (data) { return _this.entities = data; }, this.logError, this.complete);
+                        this.entitiesService.getEntities(this.excludeInactive).subscribe(this.onGetEntitiesSuccess, this.logError, this.complete);
                     }
                     else {
                         this.router.navigate(['Login']);
                     }
                 };
+                EntitiesComponent.prototype.onRowClicked = function (params) {
+                    var entity = params.data;
+                    helper_service_1.HelperService.getInstance().setEntityId(entity.entityID);
+                    console.log('onRowClicked');
+                };
                 EntitiesComponent = __decorate([
-                    //for map
                     core_1.Component({
                         selector: 'entities',
                         templateUrl: 'src/app/components/entities/entities.component.html',

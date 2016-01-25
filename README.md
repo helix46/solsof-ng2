@@ -1,7 +1,15 @@
-# Getting Started
+# Book keeping
+# Solsof 
 
-1. Fork and clone this repo
+I'm porting this from Angular 1
 
-1. `npm i`
+1. Bank reconciliation
 
-1. Run the TypeScript compiler, watch for changes, start the server, and launch the browser `npm start`
+1. Invoicing
+
+1. Timesheets
+
+1. Profit and Loss
+
+1. Balance Sheet
+

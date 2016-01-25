@@ -37,7 +37,7 @@ System.register([], function(exports_1) {
                     return this.EntityId;
                 };
                 HelperService.prototype.getServiceBase = function () {
-                    //return  'https://solsofoz.azurewebsites.net/';
+                    //return 'https://solsofoz.azurewebsites.net/';
                     return 'http://localhost:10614/';
                 };
                 HelperService.prototype.getTokenName = function () {
@@ -93,6 +93,10 @@ System.register([], function(exports_1) {
                     return d;
                 };
                 ;
+                HelperService.prototype.deleteTokenFromStorage = function () {
+                    localStorage.clear();
+                    console.log('localStorage cleared');
+                };
                 HelperService.prototype.saveTokenToStorage = function (userName, t) {
                     localStorage.setItem(this.C_tokenName, t.access_token);
                     var expiryDate = new Date();
@@ -132,6 +136,43 @@ System.register([], function(exports_1) {
                         s += encodeURI(parameters[i].value);
                     }
                     return s;
+                };
+                HelperService.prototype.noNullString = function (inp) {
+                    if (!inp) {
+                        return '';
+                    }
+                    else {
+                        return inp;
+                    }
+                };
+                HelperService.prototype.noNullNumber = function (inp) {
+                    if (!inp) {
+                        return 0;
+                    }
+                    else {
+                        return inp;
+                    }
+                };
+                HelperService.prototype.autoSizeAll = function (columnDefs, gridOptions) {
+                    var allColumnIds = [];
+                    columnDefs.forEach(function (columnDef) {
+                        allColumnIds.push(columnDef.field);
+                    });
+                    gridOptions.columnApi.autoSizeColumns(allColumnIds);
+                };
+                ;
+                HelperService.prototype.getGridOptions = function (columnDefs, onRowClicked, onRowDoubleClicked) {
+                    var gridOptions = {
+                        columnDefs: columnDefs,
+                        rowData: null,
+                        enableSorting: true,
+                        enableFilter: true,
+                        enableColResize: true,
+                        rowSelection: "single",
+                        onRowClicked: onRowClicked,
+                        onRowDoubleClicked: onRowDoubleClicked
+                    };
+                    return gridOptions;
                 };
                 HelperService.isCreating = false;
                 return HelperService;

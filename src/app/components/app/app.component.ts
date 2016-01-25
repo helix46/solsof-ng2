@@ -4,6 +4,7 @@ import {LoginComponent} from '../login/login.component';
 import {EntitiesComponent} from '../../components/entities/entities.component';
 import {LedgerAccountsComponent} from '../../components/LedgerAccounts/ledgerAccounts.component';
 import {ChangePasswordComponent} from '../../components/changePassword/changePassword.component';
+import {LogoutComponent} from '../../components/logout/logout.component';
 import {HelperService} from '../../services/helper/helper.service';
 
 
@@ -18,11 +19,12 @@ import {HelperService} from '../../services/helper/helper.service';
     { path: '/login', name: 'Login', component: LoginComponent },
     { path: '/entities', name: 'Entities', component: EntitiesComponent, useAsDefault: true },
     { path: '/ledgerAccounts', name: 'LedgerAccounts', component: LedgerAccountsComponent },
-    { path: '/changePassword', name: 'ChangePassword', component: ChangePasswordComponent }
+    { path: '/changePassword', name: 'ChangePassword', component: ChangePasswordComponent },
+    { path: '/logout', name: 'Logout', component: LogoutComponent }
 ])
 export class AppComponent {
     public title = 'Solid Software';
-    tokenValid: boolean;
+    tokenValid: boolean = HelperService.getInstance().tokenIsValid();
 
     ngOnInit() {
         this.tokenValid = HelperService.getInstance().tokenIsValid();

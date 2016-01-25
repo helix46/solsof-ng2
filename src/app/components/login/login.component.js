@@ -42,7 +42,6 @@ System.register(['angular2/core', 'angular2/router', '../../services/login/login
                     this.router.navigate(['Entities', {}]);
                 };
                 LoginComponent.prototype.login = function () {
-                    event.preventDefault();
                     this.loginService.authenticate(this.username, this.password);
                 };
                 LoginComponent = __decorate([

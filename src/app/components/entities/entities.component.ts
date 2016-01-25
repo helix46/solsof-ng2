@@ -5,9 +5,6 @@ import {EntitiesService} from '../../services/entities/entities.service';
 import {HelperService} from '../../services/helper/helper.service';
 import { Router, RouterLink } from 'angular2/router';
 
-import 'rxjs/Rx'; //for map
-
-
 
 @Component({
     selector: 'entities',
@@ -21,39 +18,25 @@ export class EntitiesComponent {
     title: string = 'Entities';
     public entities: SolsofSpa.Api.DataContext.tblEntity[] = [];
     public excludeInactive: boolean = true;
+    selectedEntity: SolsofSpa.Api.DataContext.tblEntity;
 
     constructor(public router: Router, private entitiesService: EntitiesService) {
         console.log('constructor EntitiesComponent');
     }
+    
+    //load entities when page loaded
     ngOnInit() {
         this.loadEntities();
     }
 
-    columnDefs: ag.grid.ColDef[] = [
-        { headerName: "Id", field: "entityID", hide: true },
-        { headerName: "Entity", field: "name" }
-    ];
-
-    onRowClicked(params: any) {
-        var entity: SolsofSpa.Api.DataContext.tblEntity = <SolsofSpa.Api.DataContext.tblEntity>params.data;
-        HelperService.getInstance().setEntityId(entity.entityID);
-        console.log('');
-    }
-
-    onRowDoubleClicked(params: any) {
-        this.onRowClicked(params);
-        this.router.navigate(['LedgerAccounts']);
-    }
-
+    //reload grid when checkbox clicked
     chkExcludeInactiveClicked(chkExcludeInactive: HTMLInputElement) {
         this.excludeInactive = chkExcludeInactive.checked;
         this.loadEntities();
     }
 
-    //onGetEntitiesSuccess(entities: SolsofSpa.Api.DataContext.tblEntity[]) {
-    //    this.entities = entities;
-    //}
-
+    //////////////////////////////////////////////
+    //get data
     logError(e: any) {
         console.log('getEntities Error');
     }
@@ -61,16 +44,37 @@ export class EntitiesComponent {
         console.log('getEntities complete');
     }
 
-    saveEntities(data: SolsofSpa.Api.DataContext.tblEntity[]) {
-        //this.gridOptions.rowData = data;
+    onGetEntitiesSuccess = (data: any) => {
         this.entities = data;
+        this.gridOptions.api.setRowData(data);
+        this.gridOptions.api.sizeColumnsToFit();
     }
 
     loadEntities() {
         if (HelperService.getInstance().tokenIsValid()) {
-            this.entitiesService.getEntities(this.excludeInactive).subscribe(data => this.entities = data, this.logError, this.complete);
+            this.entitiesService.getEntities(this.excludeInactive).subscribe(this.onGetEntitiesSuccess, this.logError, this.complete);
         } else {
             this.router.navigate(['Login']);
         }
     }
+
+    //////////////////////////////////////////////
+    //grid
+    columnDefs: ag.grid.ColDef[] = [
+        { headerName: "Id", field: "entityID", hide: true },
+        { headerName: "Entity", field: "name" }
+    ];
+
+    onRowDoubleClicked = (params: any) => {
+        this.onRowClicked(params);
+        this.router.navigate(['LedgerAccounts']);
+    }
+
+    onRowClicked(params: any) {
+        var entity: SolsofSpa.Api.DataContext.tblEntity = <SolsofSpa.Api.DataContext.tblEntity>params.data;
+        HelperService.getInstance().setEntityId(entity.entityID);
+        console.log('onRowClicked');
+    }
+
+    gridOptions: ag.grid.GridOptions = HelperService.getInstance().getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
 }

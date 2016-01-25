@@ -1,14 +1,25 @@
-﻿<div class="login jumbotron center-block">
-    <h1>Login</h1>
-    <form role="form" (submit)="login($event, username.value, password.value)">
-        <div class="form-group">
+﻿<h1>Login</h1>
+<form (ngSubmit)="login()" #loginForm="ngForm">
+    <div class="form-group">
+        <label for="inpUsername">User name</label>
+        <input type="text" class="form-control" required [(ngModel)]="username" ngControl="ngcUsername" #inpUsername="ngForm">
+        <div [hidden]="inpUsername.valid || inpUsername.pristine" class="alert alert-danger">User name is required</div>
+    </div>
+    <!--<div class="form-group">
+        <div class="col-sm-5">
             <label for="username">Username</label>
             <input type="text" [(ngModel)]="username" class="form-control" id="username" placeholder="Username">
         </div>
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" [(ngModel)]="password" class="form-control" id="password" placeholder="Password">
-        </div>
-        <button (click)="login()" >Login</button>
-    </form>
-</div>
+    </div>-->
+
+    <div class="form-group">
+        <label for="inpPassword">Password</label>
+        <input type="password" class="form-control" required [(ngModel)]="password" ngControl="ngcPassword" #inpPassword="ngForm">
+        <div [hidden]="inpPassword.valid || inpPassword.pristine" class="alert alert-danger">Password is required</div>
+    </div>
+     <!--<button class="btn btn-primary" >Login</button>-->
+    <button type="submit" class="btn btn-primary" [disabled]="!loginForm.form.valid">
+        Login
+    </button>
+
+</form>

@@ -1,19 +1,7 @@
-﻿<div>
-    <h1 class="text-center">LedgerAccounts</h1>
-    <div class="row">
-        <div class="col-md-4">
-            &nbsp;
-        </div>
-        <div class="col-md-8">
-            <div class="checkbox">
-                <label>
-                    <input [ngModel]="excludeInactive" #chkExcludeInactive type="checkbox" (change)="chkExcludeInactiveClicked(chkExcludeInactive)"> <big>Exclude Inactive</big>
-                </label>
-            </div>
-        </div>
-        <div class="col-md-4">
-            &nbsp;
-        </div>
-    </div>
-    <ag-grid-ng2 class="ag-fresh" style="height: 500px; width: 100%" [columnDefs]="columnDefs" [rowData]="LedgerAccounts"></ag-grid-ng2>
+﻿<h1> Ledger Accounts</h1>
+<label>
+    <input [ngModel]="excludeInactive" #chkExcludeInactive type="checkbox" (change)="chkExcludeInactiveClicked(chkExcludeInactive)"> <big>Exclude Inactive</big>
+</label>
+<div>
+    <ag-grid-ng2 class="ag-fresh clsGridLedgerAccounts" [gridOptions]="gridOptions"></ag-grid-ng2>
 </div>

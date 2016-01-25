@@ -4,6 +4,7 @@ import {Injectable} from 'angular2/src/core/di';
 import {RequestOptionsArgs, Request, Response} from 'angular2/http';
 import {Http, Headers, HTTP_PROVIDERS} from 'angular2/http';
 import {HelperService} from '../helper/helper.service';
+import {HttpHandlerService} from  '../http-handler/http-handler.service';
 
 
 @Injectable()
@@ -23,12 +24,14 @@ export class LoginService {
 
     authenticate(username: string, password: string) {
         var usernamePlusPassword = "grant_type=password&username=" + username + "&password=" + password;
+
         var headers = new Headers();
-        //headers.append('Content-Type', 'application/x-www-form-urlencoded');
 
         var args: RequestOptionsArgs = {};
         args.headers = headers;
         var serviceBase = HelperService.getInstance().getServiceBase();
+
+
 
         this.http
             .post(serviceBase + 'token',

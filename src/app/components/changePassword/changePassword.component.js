@@ -32,32 +32,49 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                     this.router = router;
                     this.submitted = false;
                     this.success = false;
-                    this.error = false;
+                    this.changePasswordError = false;
                     this.userId = helper_service_1.HelperService.getInstance().getUsername();
                     console.log('constructor ChangePasswordComponent');
                     this.success = false;
-                    this.error = false;
+                    this.changePasswordError = false;
                 }
+                ChangePasswordComponent.prototype.ngOnInit = function () {
+                    if (helper_service_1.HelperService.getInstance().tokenIsValid() === false) {
+                        this.router.navigate(['Login', 'Entities']);
+                    }
+                };
+                ChangePasswordComponent.prototype.passwordsEqual = function () {
+                    return this.newPassword === this.repeatNewPassword;
+                };
                 ChangePasswordComponent.prototype.logError = function (resp) {
                     console.log(resp.text());
-                    this.error = true;
+                    //alert is temporary until browser is made aware that this.error has changed and error message is displayed
+                    alert(resp.text());
+                    this.changePasswordError = true;
                 };
                 ChangePasswordComponent.prototype.complete = function () {
                     console.log('changePassword complete');
+                    alert('changePassword success');
+                    //this.router.navigate(['Entities']);
                     this.success = true;
                 };
                 ChangePasswordComponent.prototype.onSubmit = function () {
-                    this.submitted = true;
-                    var changePasswordModel = {
-                        userName: helper_service_1.HelperService.getInstance().getUsername(),
-                        currentPassword: this.oldPassword,
-                        newPassword: this.newPassword
-                    };
-                    if (helper_service_1.HelperService.getInstance().tokenIsValid()) {
-                        this.changePasswordService.changePassword(changePasswordModel).subscribe(function (data) { return alert(data); }, this.logError, this.complete);
+                    if (this.newPassword === this.repeatNewPassword) {
+                        this.submitted = true;
+                        var changePasswordModel = {
+                            userName: helper_service_1.HelperService.getInstance().getUsername(),
+                            currentPassword: this.oldPassword,
+                            newPassword: this.newPassword
+                        };
+                        if (helper_service_1.HelperService.getInstance().tokenIsValid()) {
+                            this.changePasswordService.changePassword(changePasswordModel).subscribe(function (resp) { return alert('resp'); }, this.logError, this.complete);
+                        }
+                        else {
+                            this.router.navigate(['Login']);
+                        }
                     }
                     else {
-                        this.router.navigate(['Login']);
+                        alert('Passwords are not the same');
                     }
                 };
                 ChangePasswordComponent = __decorate([

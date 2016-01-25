@@ -17,17 +17,15 @@ export class HttpHandlerService {
     //use http get to retrieve an object of type T
     //parameters: an array of name / value pairs
     getObject<T>(parameters: modSharedTypes.IHttpParameter[], url: string): Observable<T> {
-        var options: RequestOptionsArgs = this.getOptions(parameters);
+        var options: RequestOptionsArgs = this.getOptions(parameters, true);
         return this.http.get(this.serviceBase + url, options).map(res=> res.json());
     }
 
     //use http post to send an object 
-    //parameters: an array of name / value pairs
-    postObject<T>(parameterObj: Object, url: string): Observable<T> {
-        var options: RequestOptionsArgs = this.postOptions();
+    postObject<T>(parameterObj: Object, url: string, includeToken: boolean = true): Observable<T> {
+        var options: RequestOptionsArgs = this.postOptions(includeToken);
         var s = JSON.stringify(parameterObj);
         return this.http.post(this.serviceBase + url, s, options).map(res=> res.json());
-        //return this.http.post(this.serviceBase + url, JSON.stringify(parameters), options).map(res=> res.json());
     }
 
 
@@ -40,16 +38,18 @@ export class HttpHandlerService {
         return res.json();
     }
 
-    getHeaders(): Headers {
+    getHeaders(includeToken: boolean): Headers {
         var headers = new Headers();
         //get login token from storage and add headers
-        var token: string = HelperService.getInstance().getToken(); 
+        var token: string;
 
         headers.append('Accept', 'application/json');
         headers.append('Content-Type', 'application/json');
 
-        //headers.append('Content-Type', 'application/x-www-form-urlencoded');
-        headers.append('Authorization', 'Bearer ' + token);
+        if (includeToken) {
+            token = HelperService.getInstance().getToken();
+            headers.append('Authorization', 'Bearer ' + token);
+        }
         return headers;
     }
 
@@ -63,18 +63,18 @@ export class HttpHandlerService {
         return params;
     }
 
-    getOptions(parameters: modSharedTypes.IHttpParameter[]) {
+    getOptions(parameters: modSharedTypes.IHttpParameter[], includeToken: boolean) {
         var options: RequestOptionsArgs = {};
-        var headers = this.getHeaders();
+        var headers = this.getHeaders(includeToken);
         var params: URLSearchParams = this.getParameters(parameters);
         options.search = params;
         options.headers = headers;
         return options;
     }
 
-    postOptions() {
+    postOptions(includeToken: boolean) {
         var options: RequestOptionsArgs = {};
-        var headers = this.getHeaders();
+        var headers = this.getHeaders(includeToken);
         options.headers = headers;
         return options;
     }

@@ -46,7 +46,6 @@ System.register(['angular2/router', 'angular2/src/core/di', 'angular2/http', '..
                     var _this = this;
                     var usernamePlusPassword = "grant_type=password&username=" + username + "&password=" + password;
                     var headers = new http_1.Headers();
-                    //headers.append('Content-Type', 'application/x-www-form-urlencoded');
                     var args = {};
                     args.headers = headers;
                     var serviceBase = helper_service_1.HelperService.getInstance().getServiceBase();

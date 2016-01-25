@@ -1,4 +1,6 @@
-﻿import {Response} from 'angular2/http';
+﻿import {Router} from 'angular2/router';
+import {HelperService} from '../../services/helper/helper.service';
+import {Response} from 'angular2/http';
 import {Component} from 'angular2/core';
 import {LedgerAccountsService} from '../../services/LedgerAccounts/LedgerAccounts.service';
 //import 'rxjs/Rx'; //for map
@@ -14,51 +16,86 @@ import {LedgerAccountsService} from '../../services/LedgerAccounts/LedgerAccount
 })
 
 export class LedgerAccountsComponent {
-    title: string = 'Ledger Accounts';
+
     public LedgerAccounts: SolsofSpa.Api.DataContext.tblLedgerAccount[] = [];
     public excludeInactive: boolean = true;
 
-    constructor(private ledgerAccountsService: LedgerAccountsService) {
+    constructor(private ledgerAccountsService: LedgerAccountsService, private router: Router) {
         console.log('constructor LedgerAccountsComponent');
+        window.onresize = () => {
+            this.gridOptions.api.sizeColumnsToFit();
+            //HelperService.getInstance().autoSizeAll(this.columnDefs, this.gridOptions);
+        };
     }
     ngOnInit() {
         this.loadLedgerAccounts();
     }
-
-    columnDefs: ag.grid.ColDef[] = [
-        { headerName: "Id", field: "LedgerAccountID", hide: true },
-        { headerName: "Name", field: "name", cellClass: "cellClass", minWidth: 100, maxWidth: 300 },
-        { headerName: "Balance", field: "balance" },
-        { headerName: "ledgerAccountType", field: "ledgerAccountType" },
-        { headerName: "active", field: "active" },
-    ];
-
-    onSelect(entity: SolsofSpa.Api.DataContext.tblEntity) {
-        alert(entity.name);
-    }
+    selectedLedgerAccount: SolsofSpa.Api.DataContext.tblLedgerAccount;
 
     chkExcludeInactiveClicked(chkExcludeInactive: HTMLInputElement) {
         this.excludeInactive = chkExcludeInactive.checked;
         this.loadLedgerAccounts();
     }
 
-    //onGetEntitiesSuccess(entities: SolsofSpa.Api.DataContext.tblEntity[]) {
-    //    this.entities = entities;
-    //}
-
+    //////////////////////////////////////////////////////////////
+    //get data
     logError(e: any) {
         console.log('getLedgerAccounts Error');
     }
+
     complete() {
         console.log('getLedgerAccounts complete');
     }
 
+    onGetLedgerAccountsSuccess = (data: SolsofSpa.Api.DataContext.tblLedgerAccount[]) => {
+        this.LedgerAccounts = data;
+        this.gridOptions.api.setRowData(data);
+        //HelperService.getInstance().autoSizeAll(this.columnDefs, this.gridOptions);
+        this.gridOptions.api.sizeColumnsToFit();
+    }
+
     loadLedgerAccounts() {
-        var obs = this.ledgerAccountsService.getLedgerAccounts(this.excludeInactive);
-        if (obs !== null) {
-            obs.subscribe(data => this.LedgerAccounts = data, this.logError, this.complete);
+        var LedgerAccountsComponentThis = this;
+
+        if (HelperService.getInstance().tokenIsValid()) {
+            var EntityId = HelperService.getInstance().getEntityId();
+            if (EntityId === -1) {
+                this.router.navigate(['Entities']);
+            } else {
+                this.ledgerAccountsService.getLedgerAccounts(this.excludeInactive, EntityId).subscribe(this.onGetLedgerAccountsSuccess, this.logError, this.complete);
+            }
+        } else {
+            this.router.navigate(['Login']);
         }
-
-
     };
+     
+    /////////////////////////////////////////////////////////////
+    //grid
+    columnDefs: ag.grid.ColDef[] = [
+        { headerName: "Id", field: "LedgerAccountID", hide: true },
+        { headerName: "Name", field: "name", cellClass: "cellClass", minWidth: 100 },
+        {
+            headerName: "Bal.",
+            field: "balance",
+            cellClass: 'rightJustify',
+            cellRenderer: function (params: any) {
+                return HelperService.getInstance().noNullNumber(params.value).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","); //thanks http://stackoverflow.com/users/28324/elias-zamaria
+            },
+            minWidth: 80
+        },
+        { headerName: "Type", field: "ledgerAccountType" },
+        { headerName: "Active", field: "active" },
+    ];
+
+    onRowClicked(params: any) {
+        this.selectedLedgerAccount = <SolsofSpa.Api.DataContext.tblLedgerAccount>params.data;
+        console.log('LedgerAccount onRowClicked');
+    }
+
+    onRowDoubleClicked(params: any) {
+        this.onRowClicked(params);
+        alert('this.router.navigate([]);')
+    }
+
+    gridOptions: ag.grid.GridOptions = HelperService.getInstance().getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
 }

@@ -29,7 +29,6 @@ export class LoginComponent {
     username: string;
     password: string;
     login() {
-        event.preventDefault();
         this.loginService.authenticate(this.username, this.password);
     }
 }

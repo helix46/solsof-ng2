@@ -39,7 +39,7 @@ export class HelperService {
     }
 
     getServiceBase(): string {
-        //return  'https://solsofoz.azurewebsites.net/';
+        //return 'https://solsofoz.azurewebsites.net/';
         return 'http://localhost:10614/';
     }
 
@@ -102,6 +102,11 @@ export class HelperService {
     C_userName: string = 'userName';
     C_tokenExpiryDate: string = 'tokenExpiryDate';
 
+    deleteTokenFromStorage() {
+        localStorage.clear();
+        console.log('localStorage cleared');
+    }
+
     saveTokenToStorage(userName: string, t: ITokenresponse) {
         localStorage.setItem(this.C_tokenName, t.access_token);
         var expiryDate: Date = new Date();
@@ -144,4 +149,38 @@ export class HelperService {
         }
         return s;
     }
+    noNullString(inp: any): string {
+        if (!inp) {
+            return '';
+        } else {
+            return inp;
+        }
+    }
+    noNullNumber(inp: any): number {
+        if (!inp) {
+            return 0;
+        } else {
+            return inp;
+        }
+    }
+    autoSizeAll(columnDefs: ag.grid.ColDef[], gridOptions: ag.grid.GridOptions) {
+        var allColumnIds: string[] = [];
+        columnDefs.forEach(function (columnDef) {
+            allColumnIds.push(columnDef.field);
+        });
+        gridOptions.columnApi.autoSizeColumns(allColumnIds);
+    };
+    getGridOptions(columnDefs: ag.grid.ColDef[], onRowClicked: (params: any) => void, onRowDoubleClicked: (params: any) => void): ag.grid.GridOptions {
+        var gridOptions: ag.grid.GridOptions = {
+            columnDefs: columnDefs,
+            rowData: null,
+            enableSorting: true,
+            enableFilter: true,
+            enableColResize: true,            rowSelection: "single",
+            onRowClicked: onRowClicked,
+            onRowDoubleClicked: onRowDoubleClicked
+        }
+        return gridOptions;
+    }
+
 }
