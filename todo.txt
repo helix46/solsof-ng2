@@ -1,13 +1,8 @@
-make grid responsive
-menu for mobile
-
-login inputs narrower
-change password inputs narrower
-
 technicals needed: modal popup
+http://shlomiassaf.github.io/angular2-modal/
+
 
 then:
-	logout
 	transactions
 	enter transaction
 	invoices
@@ -21,10 +16,6 @@ then:
 
 
 
-An exception of type 'System.Exception' occurred in SolsofSpa.Api.dll but was not handled in user code
-Additional information: An exception has been raised that is likely due to a transient failure. If you are connecting to a SQL Azure database consider using SqlAzureExecutionStrategy. Inner exception Message: The underlying provider failed on Open.
-
-
 
 Later when tools have matured and I know a lot more
 	when http returns to component, browser is updated by return values
@@ -32,4 +23,8 @@ Later when tools have matured and I know a lot more
 	hide navbar options when not logged in or entity not chosen
 	change password inputs disappear after a wrong current password is submitted
 
-	
+	bootstrap navbar mobile button won't collapse without jquery plugin
+	work around:
+	http://daniemon.com/blog/bootstrap-without-jquery/
+	https://github.com/tagawa/bootstrap-without-jquery
+

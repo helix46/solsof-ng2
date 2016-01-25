@@ -6,14 +6,16 @@
     <base href="/">
 
     <!--bootstrap-->
-    <link href="node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="node_modules/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet" />
 
     <!--ag-grid styles-->
     <link href="node_modules/ag-grid/dist/ag-grid.css" rel="stylesheet" />
     <link href="node_modules/ag-grid/dist/theme-fresh.css" rel="stylesheet" />
 
-    
+    <!--custom styles-->
     <link href="src/styles/styles.css" rel="stylesheet" />
+
     <!--angular-->
     <script src="node_modules/angular2/bundles/angular2-polyfills.js"></script>
     <script src="node_modules/systemjs/dist/system.src.js"></script>
@@ -34,6 +36,6 @@
 
 <body>
     <my-app>Loading...</my-app>
+    <script src="src/bootstrap-without-jquery.min.js"></script>
 </body>
-
 </html>
