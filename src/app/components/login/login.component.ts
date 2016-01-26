@@ -16,7 +16,7 @@ import {HelperService} from '../../services/helper/helper.service';
 export class LoginComponent {
     constructor(public router: Router, private http: Http) {
         console.log('constructor LoginComponent');
-        if (HelperService.getInstance().tokenIsValid()) {
+        if (HelperService.tokenIsValid()) {
             router.navigate(['Entities'])
         }
     }

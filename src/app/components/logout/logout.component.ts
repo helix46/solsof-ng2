@@ -10,7 +10,7 @@ export class LogoutComponent {
     constructor(public router: Router) {
     }
     ngOnInit() {
-        HelperService.getInstance().deleteTokenFromStorage();
+        HelperService.deleteTokenFromStorage();
         this.router.navigate(['Login']);
     }
 }

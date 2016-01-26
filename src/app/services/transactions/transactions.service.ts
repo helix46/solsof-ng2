@@ -30,7 +30,7 @@ export class TransactionsService {
         };
         parameters[2] = {
             name: 'listDateDescending',
-            value: HelperService.getInstance().booleanToString(listDateDescending)
+            value: HelperService.booleanToString(listDateDescending)
         };
 
         var httpHandlerService = new HttpHandlerService(this.http);

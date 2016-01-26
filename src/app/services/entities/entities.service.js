@@ -41,7 +41,7 @@ System.register(['angular2/router', 'angular2/src/core/di', 'angular2/http', '..
                     var parameters = [];
                     parameters[0] = {
                         name: 'excludeInactive',
-                        value: helper_service_1.HelperService.getInstance().booleanToString(excludeInactive)
+                        value: helper_service_1.HelperService.booleanToString(excludeInactive)
                     };
                     var httpHandlerService = new http_handler_service_1.HttpHandlerService(this.http);
                     return httpHandlerService.getObject(parameters, 'api/entities');

@@ -27,7 +27,7 @@ System.register(['angular2/src/core/di', 'angular2/http', '../helper/helper.serv
                 function HttpHandlerService(http) {
                     this.http = http;
                     console.log('constructor HttpHandlerService');
-                    this.serviceBase = helper_service_1.HelperService.getInstance().getServiceBase();
+                    this.serviceBase = helper_service_1.HelperService.getServiceBase();
                 }
                 //use http get to retrieve an object of type T
                 //parameters: an array of name / value pairs
@@ -56,7 +56,7 @@ System.register(['angular2/src/core/di', 'angular2/http', '../helper/helper.serv
                     headers.append('Accept', 'application/json');
                     headers.append('Content-Type', 'application/json');
                     if (includeToken) {
-                        token = helper_service_1.HelperService.getInstance().getToken();
+                        token = helper_service_1.HelperService.getToken();
                         headers.append('Authorization', 'Bearer ' + token);
                     }
                     return headers;

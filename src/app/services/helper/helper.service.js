@@ -5,24 +5,25 @@ System.register([], function(exports_1) {
         execute: function() {
             HelperService = (function () {
                 function HelperService() {
-                    this.C_tokenName = 'idToken';
-                    this.C_userName = 'userName';
-                    this.C_tokenExpiryDate = 'tokenExpiryDate';
-                    this.EntityId = -1;
-                    console.log('constructor HelperService');
-                    if (!HelperService.isCreating) {
-                        throw new Error("You can't call new in Singleton instances! Call HelperService.getInstance() instead.");
-                    }
                 }
-                HelperService.getInstance = function () {
-                    if (HelperService.instance == null) {
-                        HelperService.isCreating = true;
-                        HelperService.instance = new HelperService();
-                        HelperService.isCreating = false;
-                    }
-                    return HelperService.instance;
-                };
-                HelperService.prototype.booleanToString = function (inp) {
+                //static instance: HelperService;
+                //static isCreating: Boolean = false;
+                //constructor() {
+                //    this.EntityId = -1;
+                //    console.log('constructor HelperService');
+                //    if (!HelperService.isCreating) {
+                //        throw new Error("You can't call new in Singleton instances! Call HelperService.getInstance() instead.");
+                //    }
+                //}
+                //static getInstance() {
+                //    if (HelperService.instance == null) {
+                //        HelperService.isCreating = true;
+                //        HelperService.instance = new HelperService();
+                //        HelperService.isCreating = false;
+                //    }
+                //    return HelperService.instance;
+                //}
+                HelperService.booleanToString = function (inp) {
                     if (inp) {
                         return 'true';
                     }
@@ -30,20 +31,21 @@ System.register([], function(exports_1) {
                         return 'false';
                     }
                 };
-                HelperService.prototype.setEntityId = function (entityId) {
-                    this.EntityId = entityId;
-                };
-                HelperService.prototype.getEntityId = function () {
-                    return this.EntityId;
-                };
-                HelperService.prototype.getServiceBase = function () {
+                //EntityId: number;
+                //setEntityId(entityId: number) {
+                //    this.EntityId = entityId;
+                //}
+                //getEntityId() {
+                //    return this.EntityId;
+                //}
+                HelperService.getServiceBase = function () {
                     return 'https://solsofoz.azurewebsites.net/';
                     //return 'http://localhost:10614/';
                 };
-                HelperService.prototype.getTokenName = function () {
+                HelperService.getTokenName = function () {
                     return 'id_token';
                 };
-                HelperService.prototype.formatDateForJSon = function (d) {
+                HelperService.formatDateForJSon = function (d) {
                     var str;
                     if (d === undefined) {
                         return "";
@@ -55,7 +57,7 @@ System.register([], function(exports_1) {
                     return str;
                 };
                 ;
-                HelperService.prototype.formatDateAndTimeForJSon = function (d) {
+                HelperService.formatDateAndTimeForJSon = function (d) {
                     var str;
                     if (d === undefined) {
                         return '';
@@ -67,7 +69,7 @@ System.register([], function(exports_1) {
                     return str;
                 };
                 ;
-                HelperService.prototype.translateJavascriptDateAndTime = function (s) {
+                HelperService.translateJavascriptDateAndTime = function (s) {
                     var day, month, year, hour, minute, second, millisecond, ss, d;
                     if (s === undefined) {
                         return null;
@@ -93,25 +95,25 @@ System.register([], function(exports_1) {
                     return d;
                 };
                 ;
-                HelperService.prototype.deleteTokenFromStorage = function () {
+                HelperService.deleteTokenFromStorage = function () {
                     localStorage.clear();
                     console.log('localStorage cleared');
                 };
-                HelperService.prototype.saveTokenToStorage = function (userName, t) {
+                HelperService.saveTokenToStorage = function (userName, t) {
                     localStorage.setItem(this.C_tokenName, t.access_token);
                     var expiryDate = new Date();
                     expiryDate.setSeconds(expiryDate.getSeconds() + t.expires_in);
-                    localStorage.setItem(this.C_tokenExpiryDate, HelperService.getInstance().formatDateAndTimeForJSon(expiryDate));
+                    localStorage.setItem(this.C_tokenExpiryDate, HelperService.formatDateAndTimeForJSon(expiryDate));
                     localStorage.setItem(this.C_userName, userName);
                     console.log('token added to localStorage');
                 };
-                HelperService.prototype.getToken = function () {
+                HelperService.getToken = function () {
                     return localStorage.getItem(this.C_tokenName);
                 };
-                HelperService.prototype.getUsername = function () {
+                HelperService.getUsername = function () {
                     return localStorage.getItem(this.C_userName);
                 };
-                HelperService.prototype.tokenIsValid = function () {
+                HelperService.tokenIsValid = function () {
                     var expiryDate = this.translateJavascriptDateAndTime(localStorage.getItem(this.C_tokenExpiryDate));
                     if (expiryDate === null) {
                         return false;
@@ -123,7 +125,7 @@ System.register([], function(exports_1) {
                         return true;
                     }
                 };
-                HelperService.prototype.getUrlEncodedQueryString = function (parameters) {
+                HelperService.getUrlEncodedQueryString = function (parameters) {
                     var s = '', i = 0;
                     for (i = 0; i < parameters.length; i++) {
                         if (i === 0) {
@@ -137,7 +139,7 @@ System.register([], function(exports_1) {
                     }
                     return s;
                 };
-                HelperService.prototype.noNullString = function (inp) {
+                HelperService.noNullString = function (inp) {
                     if (!inp) {
                         return '';
                     }
@@ -145,7 +147,7 @@ System.register([], function(exports_1) {
                         return inp;
                     }
                 };
-                HelperService.prototype.noNullNumber = function (inp) {
+                HelperService.noNullNumber = function (inp) {
                     if (!inp) {
                         return 0;
                     }
@@ -153,7 +155,7 @@ System.register([], function(exports_1) {
                         return inp;
                     }
                 };
-                HelperService.prototype.autoSizeAll = function (columnDefs, gridOptions) {
+                HelperService.autoSizeAll = function (columnDefs, gridOptions) {
                     var allColumnIds = [];
                     columnDefs.forEach(function (columnDef) {
                         allColumnIds.push(columnDef.field);
@@ -161,7 +163,7 @@ System.register([], function(exports_1) {
                     gridOptions.columnApi.autoSizeColumns(allColumnIds);
                 };
                 ;
-                HelperService.prototype.getGridOptions = function (columnDefs, onRowClicked, onRowDoubleClicked) {
+                HelperService.getGridOptions = function (columnDefs, onRowClicked, onRowDoubleClicked) {
                     var gridOptions = {
                         columnDefs: columnDefs,
                         rowData: null,
@@ -174,7 +176,9 @@ System.register([], function(exports_1) {
                     };
                     return gridOptions;
                 };
-                HelperService.isCreating = false;
+                HelperService.C_tokenName = 'idToken';
+                HelperService.C_userName = 'userName';
+                HelperService.C_tokenExpiryDate = 'tokenExpiryDate';
                 return HelperService;
             })();
             exports_1("HelperService", HelperService);

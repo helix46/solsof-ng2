@@ -1,4 +1,5 @@
 ﻿/// <reference path="../../../../node_modules/ag-grid/dist/ag-grid.d.ts" />
+import {GetEntityService} from '../../services/GetEntity/GetEntity.service';
 import {Response} from 'angular2/http';
 import {Component} from 'angular2/core';
 import {EntitiesService} from '../../services/entities/entities.service';
@@ -51,7 +52,7 @@ export class EntitiesComponent {
     }
 
     loadEntities() {
-        if (HelperService.getInstance().tokenIsValid()) {
+        if (HelperService.tokenIsValid()) {
             this.entitiesService.getEntities(this.excludeInactive).subscribe(this.onGetEntitiesSuccess, this.logError, this.complete);
         } else {
             this.router.navigate(['Login']);
@@ -72,9 +73,9 @@ export class EntitiesComponent {
 
     onRowClicked(params: any) {
         var entity: SolsofSpa.Api.DataContext.tblEntity = <SolsofSpa.Api.DataContext.tblEntity>params.data;
-        HelperService.getInstance().setEntityId(entity.entityID);
+        GetEntityService.getInstance().setEntityId(entity.entityID);
         console.log('onRowClicked');
     }
 
-    gridOptions: ag.grid.GridOptions = HelperService.getInstance().getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
+    gridOptions: ag.grid.GridOptions = HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
 }

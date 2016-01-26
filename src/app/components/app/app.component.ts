@@ -26,12 +26,12 @@ import {HelperService} from '../../services/helper/helper.service';
 ])
 export class AppComponent {
     public title = 'Solid Software';
-    tokenValid: boolean = HelperService.getInstance().tokenIsValid();
+    tokenValid: boolean = HelperService.tokenIsValid();
 
     static deviceCutoffWidth: number = 768;
 
     ngOnInit() {
-        this.tokenValid = HelperService.getInstance().tokenIsValid();
+        this.tokenValid = HelperService.tokenIsValid();
 
         this.navbarWithoutJquery()
     }

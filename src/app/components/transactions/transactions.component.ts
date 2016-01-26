@@ -1,4 +1,5 @@
-﻿import {Router, RouteParams} from 'angular2/router';
+﻿import {GetEntityService} from '../../services/GetEntity/GetEntity.service';
+import {Router, RouteParams} from 'angular2/router';
 import {HelperService} from '../../services/helper/helper.service';
 import {Response} from 'angular2/http';
 import {Component} from 'angular2/core';
@@ -24,7 +25,7 @@ export class TransactionsComponent {
         this.listDateDescending = true;
         window.onresize = () => {
             this.gridOptions.api.sizeColumnsToFit();
-            //HelperService.getInstance().autoSizeAll(this.columnDefs, this.gridOptions);
+            //HelperService.autoSizeAll(this.columnDefs, this.gridOptions);
         };
     }
     ledgerAccountID: number;
@@ -53,15 +54,15 @@ export class TransactionsComponent {
     onGetTransactionsSuccess = (data: SolsofSpa.Api.DataContext.tblTransaction[]) => {
         this.Transactions = data;
         this.gridOptions.api.setRowData(data);
-        //HelperService.getInstance().autoSizeAll(this.columnDefs, this.gridOptions);
+        //HelperService.autoSizeAll(this.columnDefs, this.gridOptions);
         this.gridOptions.api.sizeColumnsToFit();
     }
 
     loadTransactions() {
         //var TransactionsComponentThis = this;
 
-        if (HelperService.getInstance().tokenIsValid()) {
-            var entityID = HelperService.getInstance().getEntityId();
+        if (HelperService.tokenIsValid()) {
+            var entityID = GetEntityService.getInstance().getEntityId();
             if (entityID === -1) {
                 this.router.navigate(['Entities']);
             } else {
@@ -84,7 +85,7 @@ export class TransactionsComponent {
             field: "amount",
             cellClass: 'rightJustify',
             cellRenderer: function (params: any) {
-                return HelperService.getInstance().noNullNumber(params.value).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","); //thanks http://stackoverflow.com/users/28324/elias-zamaria
+                return HelperService.noNullNumber(params.value).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","); //thanks http://stackoverflow.com/users/28324/elias-zamaria
             },
             minWidth: 80
         },
@@ -93,7 +94,7 @@ export class TransactionsComponent {
             field: "total",
             cellClass: 'rightJustify',
             cellRenderer: function (params: any) {
-                return HelperService.getInstance().noNullNumber(params.value).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","); //thanks http://stackoverflow.com/users/28324/elias-zamaria
+                return HelperService.noNullNumber(params.value).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","); //thanks http://stackoverflow.com/users/28324/elias-zamaria
             },
             minWidth: 80
         }
@@ -109,5 +110,5 @@ export class TransactionsComponent {
         alert('this.router.navigate([]);')
     }
 
-    gridOptions: ag.grid.GridOptions = HelperService.getInstance().getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
+    gridOptions: ag.grid.GridOptions = HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
 }

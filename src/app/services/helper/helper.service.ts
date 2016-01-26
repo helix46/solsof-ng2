@@ -1,28 +1,28 @@
 ﻿
 
 export class HelperService {
-    static instance: HelperService;
-    static isCreating: Boolean = false;
+    //static instance: HelperService;
+    //static isCreating: Boolean = false;
 
-    constructor() {
-        this.EntityId = -1;
-        console.log('constructor HelperService');
-        if (!HelperService.isCreating) {
-            throw new Error("You can't call new in Singleton instances! Call HelperService.getInstance() instead.");
-        }
-    }
+    //constructor() {
+    //    this.EntityId = -1;
+    //    console.log('constructor HelperService');
+    //    if (!HelperService.isCreating) {
+    //        throw new Error("You can't call new in Singleton instances! Call HelperService.getInstance() instead.");
+    //    }
+    //}
 
-    static getInstance() {
-        if (HelperService.instance == null) {
-            HelperService.isCreating = true;
-            HelperService.instance = new HelperService();
-            HelperService.isCreating = false;
-        }
+    //static getInstance() {
+    //    if (HelperService.instance == null) {
+    //        HelperService.isCreating = true;
+    //        HelperService.instance = new HelperService();
+    //        HelperService.isCreating = false;
+    //    }
 
-        return HelperService.instance;
-    }
+    //    return HelperService.instance;
+    //}
 
-    booleanToString(inp: boolean) {
+    static booleanToString(inp: boolean) {
         if (inp) {
             return 'true';
         } else {
@@ -30,24 +30,24 @@ export class HelperService {
         }
     }
 
-    EntityId: number;
-    setEntityId(entityId: number) {
-        this.EntityId = entityId;
-    }
-    getEntityId() {
-        return this.EntityId;
-    }
+    //EntityId: number;
+    //setEntityId(entityId: number) {
+    //    this.EntityId = entityId;
+    //}
+    //getEntityId() {
+    //    return this.EntityId;
+    //}
 
-    getServiceBase(): string {
+    static getServiceBase(): string {
         return 'https://solsofoz.azurewebsites.net/';
         //return 'http://localhost:10614/';
     }
 
-    getTokenName(): string {
+    static     getTokenName(): string {
         return 'id_token';
     }
 
-    formatDateForJSon(d: Date) {
+    static formatDateForJSon(d: Date) {
         var str: string;
         if (d === undefined) {
             return "";
@@ -59,7 +59,7 @@ export class HelperService {
         return str;
     };
 
-    formatDateAndTimeForJSon(d: Date): string {
+    static formatDateAndTimeForJSon(d: Date): string {
         var str: string;
         if (d === undefined) {
             return '';
@@ -71,7 +71,7 @@ export class HelperService {
         return str;
     };
 
-    translateJavascriptDateAndTime(s: string): Date {
+    static translateJavascriptDateAndTime(s: string): Date {
         var day: number, month: number, year: number, hour: number, minute: number, second: number, millisecond: number, ss: string[], d: Date;
         if (s === undefined) {
             return null;
@@ -98,33 +98,33 @@ export class HelperService {
         return d;
     };
 
-    C_tokenName: string = 'idToken';
-    C_userName: string = 'userName';
-    C_tokenExpiryDate: string = 'tokenExpiryDate';
+    static C_tokenName: string = 'idToken';
+    static C_userName: string = 'userName';
+    static C_tokenExpiryDate: string = 'tokenExpiryDate';
 
-    deleteTokenFromStorage() {
+    static deleteTokenFromStorage() {
         localStorage.clear();
         console.log('localStorage cleared');
     }
 
-    saveTokenToStorage(userName: string, t: ITokenresponse) {
+    static saveTokenToStorage(userName: string, t: ITokenresponse) {
         localStorage.setItem(this.C_tokenName, t.access_token);
         var expiryDate: Date = new Date();
         expiryDate.setSeconds(expiryDate.getSeconds() + t.expires_in);
-        localStorage.setItem(this.C_tokenExpiryDate, HelperService.getInstance().formatDateAndTimeForJSon(expiryDate));
+        localStorage.setItem(this.C_tokenExpiryDate, HelperService.formatDateAndTimeForJSon(expiryDate));
         localStorage.setItem(this.C_userName, userName);
         console.log('token added to localStorage');
     }
 
-    getToken(): string {
+    static getToken(): string {
         return localStorage.getItem(this.C_tokenName);
     }
 
-    getUsername(): string {
+    static getUsername(): string {
         return localStorage.getItem(this.C_userName);
     }
 
-    tokenIsValid(): boolean {
+    static tokenIsValid(): boolean {
         var expiryDate = this.translateJavascriptDateAndTime(localStorage.getItem(this.C_tokenExpiryDate));
         if (expiryDate === null) {
             return false;
@@ -136,7 +136,7 @@ export class HelperService {
         }
     }
 
-    getUrlEncodedQueryString(parameters: modSharedTypes.IHttpParameter[]): string {
+    static getUrlEncodedQueryString(parameters: modSharedTypes.IHttpParameter[]): string {
         var s = '', i = 0;
         for (i = 0; i < parameters.length; i++) {
             if (i === 0) {
@@ -149,28 +149,28 @@ export class HelperService {
         }
         return s;
     }
-    noNullString(inp: any): string {
+    static noNullString(inp: any): string {
         if (!inp) {
             return '';
         } else {
             return inp;
         }
     }
-    noNullNumber(inp: any): number {
+    static noNullNumber(inp: any): number {
         if (!inp) {
             return 0;
         } else {
             return inp;
         }
     }
-    autoSizeAll(columnDefs: ag.grid.ColDef[], gridOptions: ag.grid.GridOptions) {
+    static autoSizeAll(columnDefs: ag.grid.ColDef[], gridOptions: ag.grid.GridOptions) {
         var allColumnIds: string[] = [];
         columnDefs.forEach(function (columnDef) {
             allColumnIds.push(columnDef.field);
         });
         gridOptions.columnApi.autoSizeColumns(allColumnIds);
     };
-    getGridOptions(columnDefs: ag.grid.ColDef[], onRowClicked: (params: any) => void, onRowDoubleClicked: (params: any) => void): ag.grid.GridOptions {
+    static getGridOptions(columnDefs: ag.grid.ColDef[], onRowClicked: (params: any) => void, onRowDoubleClicked: (params: any) => void): ag.grid.GridOptions {
         var gridOptions: ag.grid.GridOptions = {
             columnDefs: columnDefs,
             rowData: null,

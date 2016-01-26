@@ -27,7 +27,7 @@ System.register(['angular2/core', 'angular2/router', '../../services/helper/help
                     this.router = router;
                 }
                 LogoutComponent.prototype.ngOnInit = function () {
-                    helper_service_1.HelperService.getInstance().deleteTokenFromStorage();
+                    helper_service_1.HelperService.deleteTokenFromStorage();
                     this.router.navigate(['Login']);
                 };
                 LogoutComponent = __decorate([

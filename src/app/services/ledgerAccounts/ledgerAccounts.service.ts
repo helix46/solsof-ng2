@@ -26,7 +26,7 @@ export class LedgerAccountsService {
         };
         parameters[1] = {
             name: 'excludeInactive',
-            value: HelperService.getInstance().booleanToString(excludeInactive)
+            value: HelperService.booleanToString(excludeInactive)
         };
 
         var httpHandlerService = new HttpHandlerService(this.http);

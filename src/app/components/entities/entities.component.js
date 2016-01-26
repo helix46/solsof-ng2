@@ -1,4 +1,4 @@
-System.register(['angular2/core', '../../services/entities/entities.service', '../../services/helper/helper.service', 'angular2/router'], function(exports_1) {
+System.register(['../../services/GetEntity/GetEntity.service', 'angular2/core', '../../services/entities/entities.service', '../../services/helper/helper.service', 'angular2/router'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,10 +8,13 @@ System.register(['angular2/core', '../../services/entities/entities.service', '.
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, entities_service_1, helper_service_1, router_1;
+    var GetEntity_service_1, core_1, entities_service_1, helper_service_1, router_1;
     var EntitiesComponent;
     return {
         setters:[
+            function (GetEntity_service_1_1) {
+                GetEntity_service_1 = GetEntity_service_1_1;
+            },
             function (core_1_1) {
                 core_1 = core_1_1;
             },
@@ -48,7 +51,7 @@ System.register(['angular2/core', '../../services/entities/entities.service', '.
                         _this.onRowClicked(params);
                         _this.router.navigate(['LedgerAccounts']);
                     };
-                    this.gridOptions = helper_service_1.HelperService.getInstance().getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
+                    this.gridOptions = helper_service_1.HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
                     console.log('constructor EntitiesComponent');
                 }
                 //load entities when page loaded
@@ -69,7 +72,7 @@ System.register(['angular2/core', '../../services/entities/entities.service', '.
                     console.log('getEntities complete');
                 };
                 EntitiesComponent.prototype.loadEntities = function () {
-                    if (helper_service_1.HelperService.getInstance().tokenIsValid()) {
+                    if (helper_service_1.HelperService.tokenIsValid()) {
                         this.entitiesService.getEntities(this.excludeInactive).subscribe(this.onGetEntitiesSuccess, this.logError, this.complete);
                     }
                     else {
@@ -78,7 +81,7 @@ System.register(['angular2/core', '../../services/entities/entities.service', '.
                 };
                 EntitiesComponent.prototype.onRowClicked = function (params) {
                     var entity = params.data;
-                    helper_service_1.HelperService.getInstance().setEntityId(entity.entityID);
+                    GetEntity_service_1.GetEntityService.getInstance().setEntityId(entity.entityID);
                     console.log('onRowClicked');
                 };
                 EntitiesComponent = __decorate([

@@ -15,7 +15,7 @@ export class LoginService {
 
     storeToken(response: Response, userName: string) {
         var t: ITokenresponse = <ITokenresponse>response.json()
-        HelperService.getInstance().saveTokenToStorage(userName,t);
+        HelperService.saveTokenToStorage(userName,t);
         this.callback();
     };
     logError() {
@@ -29,7 +29,7 @@ export class LoginService {
 
         var args: RequestOptionsArgs = {};
         args.headers = headers;
-        var serviceBase = HelperService.getInstance().getServiceBase();
+        var serviceBase = HelperService.getServiceBase();
 
 
 

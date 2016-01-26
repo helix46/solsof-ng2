@@ -20,14 +20,14 @@ export class ChangePasswordComponent {
     public userId: string;
 
     constructor(private changePasswordService: ChangePasswordService, private router: Router) {
-        this.userId = HelperService.getInstance().getUsername();
+        this.userId = HelperService.getUsername();
         console.log('constructor ChangePasswordComponent');
         this.success = false;
         this.changePasswordError = false;
     }
 
     ngOnInit() {
-        if (HelperService.getInstance().tokenIsValid() === false) {
+        if (HelperService.tokenIsValid() === false) {
             this.router.navigate(['Login', 'Entities']);
         }
     }
@@ -52,11 +52,11 @@ export class ChangePasswordComponent {
         if (this.newPassword === this.repeatNewPassword) {
             this.submitted = true;
             var changePasswordModel: IChangePasswordModel = {
-                userName: HelperService.getInstance().getUsername(),
+                userName: HelperService.getUsername(),
                 currentPassword: this.oldPassword,
                 newPassword: this.newPassword
             }
-            if (HelperService.getInstance().tokenIsValid()) {
+            if (HelperService.tokenIsValid()) {
                 this.changePasswordService.changePassword(changePasswordModel).subscribe(resp=> alert('resp'), this.logError, this.complete);
             } else {
                 this.router.navigate(['Login']);

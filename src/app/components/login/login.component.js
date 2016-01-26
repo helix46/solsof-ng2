@@ -34,7 +34,7 @@ System.register(['angular2/core', 'angular2/router', '../../services/login/login
                     this.http = http;
                     this.loginService = new login_service_1.LoginService(this.http, this.router, this.loginfinished);
                     console.log('constructor LoginComponent');
-                    if (helper_service_1.HelperService.getInstance().tokenIsValid()) {
+                    if (helper_service_1.HelperService.tokenIsValid()) {
                         router.navigate(['Entities']);
                     }
                 }

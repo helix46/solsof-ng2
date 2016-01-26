@@ -34,7 +34,7 @@ System.register(['angular2/router', 'angular2/src/core/di', 'angular2/http', '..
                 }
                 LoginService.prototype.storeToken = function (response, userName) {
                     var t = response.json();
-                    helper_service_1.HelperService.getInstance().saveTokenToStorage(userName, t);
+                    helper_service_1.HelperService.saveTokenToStorage(userName, t);
                     this.callback();
                 };
                 ;
@@ -48,7 +48,7 @@ System.register(['angular2/router', 'angular2/src/core/di', 'angular2/http', '..
                     var headers = new http_1.Headers();
                     var args = {};
                     args.headers = headers;
-                    var serviceBase = helper_service_1.HelperService.getInstance().getServiceBase();
+                    var serviceBase = helper_service_1.HelperService.getServiceBase();
                     this.http
                         .post(serviceBase + 'token', usernamePlusPassword, args)
                         .subscribe(function (response) { return _this.storeToken(response, username); }, this.logError, function () { return console.log('Authentication Complete'); });

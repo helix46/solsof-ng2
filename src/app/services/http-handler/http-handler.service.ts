@@ -9,7 +9,7 @@ import 'rxjs/Rx'; //for map
 export class HttpHandlerService {
     constructor(private http: Http) {
         console.log('constructor HttpHandlerService');
-        this.serviceBase = HelperService.getInstance().getServiceBase()
+        this.serviceBase = HelperService.getServiceBase()
     }
 
     serviceBase: string;
@@ -47,7 +47,7 @@ export class HttpHandlerService {
         headers.append('Content-Type', 'application/json');
 
         if (includeToken) {
-            token = HelperService.getInstance().getToken();
+            token = HelperService.getToken();
             headers.append('Authorization', 'Bearer ' + token);
         }
         return headers;

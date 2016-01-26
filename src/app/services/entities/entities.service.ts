@@ -22,7 +22,7 @@ export class EntitiesService {
         var parameters: modSharedTypes.IHttpParameter[] = [];
         parameters[0] = {
             name: 'excludeInactive',
-            value: HelperService.getInstance().booleanToString(excludeInactive)
+            value: HelperService.booleanToString(excludeInactive)
         };
 
         var httpHandlerService = new HttpHandlerService(this.http);

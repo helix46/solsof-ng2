@@ -43,10 +43,10 @@ System.register(['angular2/core', 'angular2/router', '../login/login.component',
             AppComponent = (function () {
                 function AppComponent() {
                     this.title = 'Solid Software';
-                    this.tokenValid = helper_service_1.HelperService.getInstance().tokenIsValid();
+                    this.tokenValid = helper_service_1.HelperService.tokenIsValid();
                 }
                 AppComponent.prototype.ngOnInit = function () {
-                    this.tokenValid = helper_service_1.HelperService.getInstance().tokenIsValid();
+                    this.tokenValid = helper_service_1.HelperService.tokenIsValid();
                     this.navbarWithoutJquery();
                 };
                 AppComponent.prototype.navbarWithoutJquery = function () {

@@ -1,4 +1,4 @@
-System.register(['angular2/router', '../../services/helper/helper.service', 'angular2/core', '../../services/Transactions/Transactions.service'], function(exports_1) {
+System.register(['../../services/GetEntity/GetEntity.service', 'angular2/router', '../../services/helper/helper.service', 'angular2/core', '../../services/Transactions/Transactions.service'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,10 +8,13 @@ System.register(['angular2/router', '../../services/helper/helper.service', 'ang
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var router_1, helper_service_1, core_1, Transactions_service_1;
+    var GetEntity_service_1, router_1, helper_service_1, core_1, Transactions_service_1;
     var TransactionsComponent;
     return {
         setters:[
+            function (GetEntity_service_1_1) {
+                GetEntity_service_1 = GetEntity_service_1_1;
+            },
             function (router_1_1) {
                 router_1 = router_1_1;
             },
@@ -36,7 +39,7 @@ System.register(['angular2/router', '../../services/helper/helper.service', 'ang
                     this.onGetTransactionsSuccess = function (data) {
                         _this.Transactions = data;
                         _this.gridOptions.api.setRowData(data);
-                        //HelperService.getInstance().autoSizeAll(this.columnDefs, this.gridOptions);
+                        //HelperService.autoSizeAll(this.columnDefs, this.gridOptions);
                         _this.gridOptions.api.sizeColumnsToFit();
                     };
                     /////////////////////////////////////////////////////////////
@@ -51,7 +54,7 @@ System.register(['angular2/router', '../../services/helper/helper.service', 'ang
                             field: "amount",
                             cellClass: 'rightJustify',
                             cellRenderer: function (params) {
-                                return helper_service_1.HelperService.getInstance().noNullNumber(params.value).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","); //thanks http://stackoverflow.com/users/28324/elias-zamaria
+                                return helper_service_1.HelperService.noNullNumber(params.value).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","); //thanks http://stackoverflow.com/users/28324/elias-zamaria
                             },
                             minWidth: 80
                         },
@@ -60,17 +63,17 @@ System.register(['angular2/router', '../../services/helper/helper.service', 'ang
                             field: "total",
                             cellClass: 'rightJustify',
                             cellRenderer: function (params) {
-                                return helper_service_1.HelperService.getInstance().noNullNumber(params.value).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","); //thanks http://stackoverflow.com/users/28324/elias-zamaria
+                                return helper_service_1.HelperService.noNullNumber(params.value).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","); //thanks http://stackoverflow.com/users/28324/elias-zamaria
                             },
                             minWidth: 80
                         }
                     ];
-                    this.gridOptions = helper_service_1.HelperService.getInstance().getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
+                    this.gridOptions = helper_service_1.HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
                     console.log('constructor TransactionsComponent');
                     this.listDateDescending = true;
                     window.onresize = function () {
                         _this.gridOptions.api.sizeColumnsToFit();
-                        //HelperService.getInstance().autoSizeAll(this.columnDefs, this.gridOptions);
+                        //HelperService.autoSizeAll(this.columnDefs, this.gridOptions);
                     };
                 }
                 TransactionsComponent.prototype.ngOnInit = function () {
@@ -91,8 +94,8 @@ System.register(['angular2/router', '../../services/helper/helper.service', 'ang
                 };
                 TransactionsComponent.prototype.loadTransactions = function () {
                     //var TransactionsComponentThis = this;
-                    if (helper_service_1.HelperService.getInstance().tokenIsValid()) {
-                        var entityID = helper_service_1.HelperService.getInstance().getEntityId();
+                    if (helper_service_1.HelperService.tokenIsValid()) {
+                        var entityID = GetEntity_service_1.GetEntityService.getInstance().getEntityId();
                         if (entityID === -1) {
                             this.router.navigate(['Entities']);
                         }

@@ -33,13 +33,13 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                     this.submitted = false;
                     this.success = false;
                     this.changePasswordError = false;
-                    this.userId = helper_service_1.HelperService.getInstance().getUsername();
+                    this.userId = helper_service_1.HelperService.getUsername();
                     console.log('constructor ChangePasswordComponent');
                     this.success = false;
                     this.changePasswordError = false;
                 }
                 ChangePasswordComponent.prototype.ngOnInit = function () {
-                    if (helper_service_1.HelperService.getInstance().tokenIsValid() === false) {
+                    if (helper_service_1.HelperService.tokenIsValid() === false) {
                         this.router.navigate(['Login', 'Entities']);
                     }
                 };
@@ -62,11 +62,11 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                     if (this.newPassword === this.repeatNewPassword) {
                         this.submitted = true;
                         var changePasswordModel = {
-                            userName: helper_service_1.HelperService.getInstance().getUsername(),
+                            userName: helper_service_1.HelperService.getUsername(),
                             currentPassword: this.oldPassword,
                             newPassword: this.newPassword
                         };
-                        if (helper_service_1.HelperService.getInstance().tokenIsValid()) {
+                        if (helper_service_1.HelperService.tokenIsValid()) {
                             this.changePasswordService.changePassword(changePasswordModel).subscribe(function (resp) { return alert('resp'); }, this.logError, this.complete);
                         }
                         else {
