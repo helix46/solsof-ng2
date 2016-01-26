@@ -1,0 +1,7 @@
+﻿<h1>Transactions</h1>
+<label>
+    <input [ngModel]="listDateDescending" #chkListDateDescending type="checkbox" (change)="chkListDateDescendingClicked(chkListDateDescending)"> <big>List Date Descending</big>
+</label>
+<div>
+    <ag-grid-ng2 class="ag-fresh clsGridTransactions" [gridOptions]="gridOptions"></ag-grid-ng2>
+</div>

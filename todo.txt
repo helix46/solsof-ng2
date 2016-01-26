@@ -19,12 +19,5 @@ then:
 
 Later when tools have matured and I know a lot more
 	when http returns to component, browser is updated by return values
-	look out for navbar
 	hide navbar options when not logged in or entity not chosen
 	change password inputs disappear after a wrong current password is submitted
-
-	bootstrap navbar mobile button won't collapse without jquery plugin
-	work around:
-	http://daniemon.com/blog/bootstrap-without-jquery/
-	https://github.com/tagawa/bootstrap-without-jquery
-

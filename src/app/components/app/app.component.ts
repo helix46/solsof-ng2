@@ -3,6 +3,7 @@ import {RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
 import {LoginComponent} from '../login/login.component';
 import {EntitiesComponent} from '../../components/entities/entities.component';
 import {LedgerAccountsComponent} from '../../components/LedgerAccounts/ledgerAccounts.component';
+import {TransactionsComponent} from '../../components/transactions/transactions.component';
 import {ChangePasswordComponent} from '../../components/changePassword/changePassword.component';
 import {LogoutComponent} from '../../components/logout/logout.component';
 import {HelperService} from '../../services/helper/helper.service';
@@ -20,11 +21,14 @@ import {HelperService} from '../../services/helper/helper.service';
     { path: '/entities', name: 'Entities', component: EntitiesComponent, useAsDefault: true },
     { path: '/ledgerAccounts', name: 'LedgerAccounts', component: LedgerAccountsComponent },
     { path: '/changePassword', name: 'ChangePassword', component: ChangePasswordComponent },
+    { path: '/transactions', name: 'Transactions', component: TransactionsComponent },
     { path: '/logout', name: 'Logout', component: LogoutComponent }
 ])
 export class AppComponent {
     public title = 'Solid Software';
     tokenValid: boolean = HelperService.getInstance().tokenIsValid();
+
+    static deviceCutoffWidth: number = 768;
 
     ngOnInit() {
         this.tokenValid = HelperService.getInstance().tokenIsValid();
@@ -55,7 +59,7 @@ export class AppComponent {
         // Add click handling to dropdowns
         for (var i = 0; i < dropdowns.length; i++) {
             dropdowns[i].addEventListener('click', function () {
-                if (document.body.clientWidth < 768) {
+                if (document.body.clientWidth < this.deviceCutoffWidth) {
                     var open = this.classList.contains('open');
                     closeMenus();
                     if (!open) {
@@ -68,7 +72,7 @@ export class AppComponent {
 
         // Close dropdowns when screen becomes big enough to switch to open by hover
         function closeMenusOnResize() {
-            if (document.body.clientWidth >= 768) {
+            if (document.body.clientWidth >= this.deviceCutoffWidth) {
                 closeMenus();
                 collapse.classList.add('collapse');
                 collapse.classList.remove('in');

@@ -20,7 +20,7 @@ export class LedgerAccountsComponent {
     public LedgerAccounts: SolsofSpa.Api.DataContext.tblLedgerAccount[] = [];
     public excludeInactive: boolean = true;
 
-    constructor(private ledgerAccountsService: LedgerAccountsService, private router: Router) {
+    constructor(private ledgerAccountsService: LedgerAccountsService, public router: Router) {
         console.log('constructor LedgerAccountsComponent');
         window.onresize = () => {
             this.gridOptions.api.sizeColumnsToFit();
@@ -55,7 +55,7 @@ export class LedgerAccountsComponent {
     }
 
     loadLedgerAccounts() {
-        var LedgerAccountsComponentThis = this;
+        //var LedgerAccountsComponentThis = this;
 
         if (HelperService.getInstance().tokenIsValid()) {
             var EntityId = HelperService.getInstance().getEntityId();
@@ -73,7 +73,7 @@ export class LedgerAccountsComponent {
     //grid
     columnDefs: ag.grid.ColDef[] = [
         { headerName: "Id", field: "LedgerAccountID", hide: true },
-        { headerName: "Name", field: "name", cellClass: "cellClass", minWidth: 100 },
+        { headerName: "Name", field: "name", minWidth: 100 },
         {
             headerName: "Bal.",
             field: "balance",
@@ -92,9 +92,9 @@ export class LedgerAccountsComponent {
         console.log('LedgerAccount onRowClicked');
     }
 
-    onRowDoubleClicked(params: any) {
+    onRowDoubleClicked = (params: any) => {
         this.onRowClicked(params);
-        alert('this.router.navigate([]);')
+        this.router.navigate(['Transactions', { ledgerAccountID: this.selectedLedgerAccount.ledgerAccountID }]);
     }
 
     gridOptions: ag.grid.GridOptions = HelperService.getInstance().getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);

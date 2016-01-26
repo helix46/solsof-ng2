@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/router', '../login/login.component', '../../components/entities/entities.component', '../../components/LedgerAccounts/ledgerAccounts.component', '../../components/changePassword/changePassword.component', '../../components/logout/logout.component', '../../services/helper/helper.service'], function(exports_1) {
+System.register(['angular2/core', 'angular2/router', '../login/login.component', '../../components/entities/entities.component', '../../components/LedgerAccounts/ledgerAccounts.component', '../../components/transactions/transactions.component', '../../components/changePassword/changePassword.component', '../../components/logout/logout.component', '../../services/helper/helper.service'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['angular2/core', 'angular2/router', '../login/login.component',
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, login_component_1, entities_component_1, ledgerAccounts_component_1, changePassword_component_1, logout_component_1, helper_service_1;
+    var core_1, router_1, login_component_1, entities_component_1, ledgerAccounts_component_1, transactions_component_1, changePassword_component_1, logout_component_1, helper_service_1;
     var AppComponent;
     return {
         setters:[
@@ -26,6 +26,9 @@ System.register(['angular2/core', 'angular2/router', '../login/login.component',
             },
             function (ledgerAccounts_component_1_1) {
                 ledgerAccounts_component_1 = ledgerAccounts_component_1_1;
+            },
+            function (transactions_component_1_1) {
+                transactions_component_1 = transactions_component_1_1;
             },
             function (changePassword_component_1_1) {
                 changePassword_component_1 = changePassword_component_1_1;
@@ -65,7 +68,7 @@ System.register(['angular2/core', 'angular2/router', '../login/login.component',
                     // Add click handling to dropdowns
                     for (var i = 0; i < dropdowns.length; i++) {
                         dropdowns[i].addEventListener('click', function () {
-                            if (document.body.clientWidth < 768) {
+                            if (document.body.clientWidth < this.deviceCutoffWidth) {
                                 var open = this.classList.contains('open');
                                 closeMenus();
                                 if (!open) {
@@ -77,7 +80,7 @@ System.register(['angular2/core', 'angular2/router', '../login/login.component',
                     }
                     // Close dropdowns when screen becomes big enough to switch to open by hover
                     function closeMenusOnResize() {
-                        if (document.body.clientWidth >= 768) {
+                        if (document.body.clientWidth >= this.deviceCutoffWidth) {
                             closeMenus();
                             collapse.classList.add('collapse');
                             collapse.classList.remove('in');
@@ -87,6 +90,7 @@ System.register(['angular2/core', 'angular2/router', '../login/login.component',
                     window.addEventListener('resize', closeMenusOnResize, false);
                     toggle.addEventListener('click', toggleMenu, false);
                 };
+                AppComponent.deviceCutoffWidth = 768;
                 AppComponent = __decorate([
                     core_1.Component({
                         selector: 'my-app',
@@ -100,6 +104,7 @@ System.register(['angular2/core', 'angular2/router', '../login/login.component',
                         { path: '/entities', name: 'Entities', component: entities_component_1.EntitiesComponent, useAsDefault: true },
                         { path: '/ledgerAccounts', name: 'LedgerAccounts', component: ledgerAccounts_component_1.LedgerAccountsComponent },
                         { path: '/changePassword', name: 'ChangePassword', component: changePassword_component_1.ChangePasswordComponent },
+                        { path: '/transactions', name: 'Transactions', component: transactions_component_1.TransactionsComponent },
                         { path: '/logout', name: 'Logout', component: logout_component_1.LogoutComponent }
                     ]), 
                     __metadata('design:paramtypes', [])

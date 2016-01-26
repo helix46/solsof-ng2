@@ -37,8 +37,8 @@ System.register([], function(exports_1) {
                     return this.EntityId;
                 };
                 HelperService.prototype.getServiceBase = function () {
-                    //return 'https://solsofoz.azurewebsites.net/';
-                    return 'http://localhost:10614/';
+                    return 'https://solsofoz.azurewebsites.net/';
+                    //return 'http://localhost:10614/';
                 };
                 HelperService.prototype.getTokenName = function () {
                     return 'id_token';

@@ -43,7 +43,7 @@ System.register(['angular2/router', '../../services/helper/helper.service', 'ang
                     //grid
                     this.columnDefs = [
                         { headerName: "Id", field: "LedgerAccountID", hide: true },
-                        { headerName: "Name", field: "name", cellClass: "cellClass", minWidth: 100 },
+                        { headerName: "Name", field: "name", minWidth: 100 },
                         {
                             headerName: "Bal.",
                             field: "balance",
@@ -56,6 +56,10 @@ System.register(['angular2/router', '../../services/helper/helper.service', 'ang
                         { headerName: "Type", field: "ledgerAccountType" },
                         { headerName: "Active", field: "active" },
                     ];
+                    this.onRowDoubleClicked = function (params) {
+                        _this.onRowClicked(params);
+                        _this.router.navigate(['Transactions', { ledgerAccountID: _this.selectedLedgerAccount.ledgerAccountID }]);
+                    };
                     this.gridOptions = helper_service_1.HelperService.getInstance().getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
                     console.log('constructor LedgerAccountsComponent');
                     window.onresize = function () {
@@ -79,7 +83,7 @@ System.register(['angular2/router', '../../services/helper/helper.service', 'ang
                     console.log('getLedgerAccounts complete');
                 };
                 LedgerAccountsComponent.prototype.loadLedgerAccounts = function () {
-                    var LedgerAccountsComponentThis = this;
+                    //var LedgerAccountsComponentThis = this;
                     if (helper_service_1.HelperService.getInstance().tokenIsValid()) {
                         var EntityId = helper_service_1.HelperService.getInstance().getEntityId();
                         if (EntityId === -1) {
@@ -97,10 +101,6 @@ System.register(['angular2/router', '../../services/helper/helper.service', 'ang
                 LedgerAccountsComponent.prototype.onRowClicked = function (params) {
                     this.selectedLedgerAccount = params.data;
                     console.log('LedgerAccount onRowClicked');
-                };
-                LedgerAccountsComponent.prototype.onRowDoubleClicked = function (params) {
-                    this.onRowClicked(params);
-                    alert('this.router.navigate([]);');
                 };
                 LedgerAccountsComponent = __decorate([
                     core_1.Component({

@@ -39,8 +39,8 @@ export class HelperService {
     }
 
     getServiceBase(): string {
-        //return 'https://solsofoz.azurewebsites.net/';
-        return 'http://localhost:10614/';
+        return 'https://solsofoz.azurewebsites.net/';
+        //return 'http://localhost:10614/';
     }
 
     getTokenName(): string {
