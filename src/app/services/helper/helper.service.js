@@ -15,8 +15,8 @@ System.register([], function(exports_1) {
                     }
                 };
                 HelperService.getServiceBase = function () {
-                    //return 'https://solsofoz.azurewebsites.net/';
-                    return 'http://localhost:10614/';
+                    return 'https://solsofoz.azurewebsites.net/';
+                    //return 'http://localhost:10614/';
                 };
                 HelperService.getTokenName = function () {
                     return 'id_token';
