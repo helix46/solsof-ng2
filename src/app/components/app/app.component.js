@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/router', '../login/login.component', '../../components/entities/entities.component', '../../components/LedgerAccounts/ledgerAccounts.component', '../../components/transactions/transactions.component', '../../components/changePassword/changePassword.component', '../../components/logout/logout.component', '../../services/helper/helper.service'], function(exports_1) {
+System.register(['angular2/core', 'angular2/router', '../login/login.component', '../../components/entities/entities.component', '../../components/LedgerAccounts/ledgerAccounts.component', '../../components/timesheets/timesheets.component', '../../components/invoices/invoices.component', '../../components/transactions/transactions.component', '../../components/changePassword/changePassword.component', '../../components/logout/logout.component', '../../services/helper/helper.service'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['angular2/core', 'angular2/router', '../login/login.component',
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, login_component_1, entities_component_1, ledgerAccounts_component_1, transactions_component_1, changePassword_component_1, logout_component_1, helper_service_1;
+    var core_1, router_1, login_component_1, entities_component_1, ledgerAccounts_component_1, timesheets_component_1, invoices_component_1, transactions_component_1, changePassword_component_1, logout_component_1, helper_service_1;
     var AppComponent;
     return {
         setters:[
@@ -26,6 +26,12 @@ System.register(['angular2/core', 'angular2/router', '../login/login.component',
             },
             function (ledgerAccounts_component_1_1) {
                 ledgerAccounts_component_1 = ledgerAccounts_component_1_1;
+            },
+            function (timesheets_component_1_1) {
+                timesheets_component_1 = timesheets_component_1_1;
+            },
+            function (invoices_component_1_1) {
+                invoices_component_1 = invoices_component_1_1;
             },
             function (transactions_component_1_1) {
                 transactions_component_1 = transactions_component_1_1;
@@ -105,6 +111,8 @@ System.register(['angular2/core', 'angular2/router', '../login/login.component',
                         { path: '/ledgerAccounts', name: 'LedgerAccounts', component: ledgerAccounts_component_1.LedgerAccountsComponent },
                         { path: '/changePassword', name: 'ChangePassword', component: changePassword_component_1.ChangePasswordComponent },
                         { path: '/transactions', name: 'Transactions', component: transactions_component_1.TransactionsComponent },
+                        { path: '/timesheets', name: 'Timesheets', component: timesheets_component_1.TimesheetsComponent },
+                        { path: '/invoices', name: 'Invoices', component: invoices_component_1.InvoicesComponent },
                         { path: '/logout', name: 'Logout', component: logout_component_1.LogoutComponent }
                     ]), 
                     __metadata('design:paramtypes', [])

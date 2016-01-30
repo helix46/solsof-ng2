@@ -17,6 +17,16 @@
     width: 100%;
 }
 
+.clsTimesheets {
+    height: 500px;
+    width: 100%;
+}
+
+.clsInvoices {
+   height: 500px;
+    width: 100%;
+}
+
 /*body {
   padding-top: 70px;
   padding-bottom: 30px;

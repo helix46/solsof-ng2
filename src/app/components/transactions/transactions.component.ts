@@ -77,7 +77,14 @@ export class TransactionsComponent {
     //grid
     columnDefs: ag.grid.ColDef[] = [
         { headerName: "transactionID", field: "transactionID", hide: true },
-        { headerName: "Date", field: "transactionDate" },
+        {
+            headerName: "Date",
+            field: "transactionDate",
+            cellRenderer: function (params: any) {
+                return HelperService.formatDateForDisplay(new Date(params.value), false, false, false);
+            },
+            cellClass: 'rightJustify',
+        },
         { headerName: "Comment", field: "comment" },
         { headerName: "Type", field: "transactionType" },
         {
@@ -85,7 +92,7 @@ export class TransactionsComponent {
             field: "amount",
             cellClass: 'rightJustify',
             cellRenderer: function (params: any) {
-                return HelperService.noNullNumber(params.value).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","); //thanks http://stackoverflow.com/users/28324/elias-zamaria
+                return HelperService.noNullNumber(params.value).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             },
             minWidth: 80
         },
@@ -94,7 +101,7 @@ export class TransactionsComponent {
             field: "total",
             cellClass: 'rightJustify',
             cellRenderer: function (params: any) {
-                return HelperService.noNullNumber(params.value).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","); //thanks http://stackoverflow.com/users/28324/elias-zamaria
+                return HelperService.noNullNumber(params.value).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             },
             minWidth: 80
         }

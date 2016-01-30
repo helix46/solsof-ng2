@@ -3,6 +3,8 @@ import {RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
 import {LoginComponent} from '../login/login.component';
 import {EntitiesComponent} from '../../components/entities/entities.component';
 import {LedgerAccountsComponent} from '../../components/LedgerAccounts/ledgerAccounts.component';
+import {TimesheetsComponent} from '../../components/timesheets/timesheets.component';
+import {InvoicesComponent} from '../../components/invoices/invoices.component';
 import {TransactionsComponent} from '../../components/transactions/transactions.component';
 import {ChangePasswordComponent} from '../../components/changePassword/changePassword.component';
 import {LogoutComponent} from '../../components/logout/logout.component';
@@ -22,6 +24,8 @@ import {HelperService} from '../../services/helper/helper.service';
     { path: '/ledgerAccounts', name: 'LedgerAccounts', component: LedgerAccountsComponent },
     { path: '/changePassword', name: 'ChangePassword', component: ChangePasswordComponent },
     { path: '/transactions', name: 'Transactions', component: TransactionsComponent },
+    { path: '/timesheets', name: 'Timesheets', component: TimesheetsComponent },
+    { path: '/invoices', name: 'Invoices', component: InvoicesComponent },
     { path: '/logout', name: 'Logout', component: LogoutComponent }
 ])
 export class AppComponent {

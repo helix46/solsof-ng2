@@ -6,23 +6,6 @@ System.register([], function(exports_1) {
             HelperService = (function () {
                 function HelperService() {
                 }
-                //static instance: HelperService;
-                //static isCreating: Boolean = false;
-                //constructor() {
-                //    this.EntityId = -1;
-                //    console.log('constructor HelperService');
-                //    if (!HelperService.isCreating) {
-                //        throw new Error("You can't call new in Singleton instances! Call HelperService.getInstance() instead.");
-                //    }
-                //}
-                //static getInstance() {
-                //    if (HelperService.instance == null) {
-                //        HelperService.isCreating = true;
-                //        HelperService.instance = new HelperService();
-                //        HelperService.isCreating = false;
-                //    }
-                //    return HelperService.instance;
-                //}
                 HelperService.booleanToString = function (inp) {
                     if (inp) {
                         return 'true';
@@ -31,16 +14,9 @@ System.register([], function(exports_1) {
                         return 'false';
                     }
                 };
-                //EntityId: number;
-                //setEntityId(entityId: number) {
-                //    this.EntityId = entityId;
-                //}
-                //getEntityId() {
-                //    return this.EntityId;
-                //}
                 HelperService.getServiceBase = function () {
-                    return 'https://solsofoz.azurewebsites.net/';
-                    //return 'http://localhost:10614/';
+                    //return 'https://solsofoz.azurewebsites.net/';
+                    return 'http://localhost:10614/';
                 };
                 HelperService.getTokenName = function () {
                     return 'id_token';
@@ -176,9 +152,113 @@ System.register([], function(exports_1) {
                     };
                     return gridOptions;
                 };
+                HelperService.formatDate = function (d) {
+                    return d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
+                };
+                HelperService.formatDateForDisplay = function (d, includeTime, MonthAndYear, includeDayOfWeek) {
+                    'use strict';
+                    var sup, day, dayOfWeek, sDayOfWeek, month, year, hour, minute, AmPm;
+                    if (d === null) {
+                        return '';
+                    }
+                    if (MonthAndYear) {
+                        month = d.getMonth();
+                        year = d.getFullYear();
+                        if (includeTime) {
+                            //hour, minute
+                            hour = d.getHours();
+                            if (hour >= 12) {
+                                AmPm = 'PM';
+                            }
+                            else {
+                                AmPm = 'AM';
+                            }
+                            if (hour >= 12) {
+                                hour -= 12;
+                            }
+                            minute = d.getMinutes();
+                            return sDayOfWeek + ", " + this.Month_Names[month] + " " + day + sup + " " + year + " " + hour + ":" + this.pad(minute, 2) + ' ' + AmPm;
+                        }
+                        return this.Month_Names[month] + ". " + year;
+                    }
+                    day = d.getDate();
+                    sup = "";
+                    //if (day === 1 || day === 21 || day === 31) {
+                    //    sup = "st";
+                    //} else if (day === 2 || day === 22) {
+                    //    sup = "nd";
+                    //} else if (day === 3 || day === 23) {
+                    //    sup = "rd";
+                    //} else {
+                    //    sup = "th";
+                    //}
+                    dayOfWeek = d.getDay();
+                    switch (dayOfWeek) {
+                        case 0:
+                            sDayOfWeek = 'Sun';
+                            break;
+                        case 1:
+                            sDayOfWeek = 'Mon';
+                            break;
+                        case 2:
+                            sDayOfWeek = 'Tue';
+                            break;
+                        case 3:
+                            sDayOfWeek = 'Wed';
+                            break;
+                        case 4:
+                            sDayOfWeek = 'Thu';
+                            break;
+                        case 5:
+                            sDayOfWeek = 'Fri';
+                            break;
+                        case 6:
+                            sDayOfWeek = 'Sat';
+                            break;
+                    }
+                    month = d.getMonth();
+                    year = d.getFullYear();
+                    if (includeTime) {
+                        //hour, minute
+                        hour = d.getHours();
+                        if (hour >= 12) {
+                            AmPm = 'PM';
+                        }
+                        else {
+                            AmPm = 'AM';
+                        }
+                        if (hour >= 12) {
+                            hour -= 12;
+                        }
+                        minute = d.getMinutes();
+                        if (includeDayOfWeek) {
+                            return sDayOfWeek + ", " + this.Month_Names[month] + " " + day + sup + " " + year + " " + hour + ":" + this.pad(minute, 2) + ' ' + AmPm;
+                        }
+                        else {
+                            return this.Month_Names[month] + " " + day + sup + " " + year + " " + hour + ":" + this.pad(minute, 2) + ' ' + AmPm;
+                        }
+                    }
+                    if (includeDayOfWeek) {
+                        return sDayOfWeek + ", " + this.Month_Names[month] + " " + day + sup + " " + year;
+                    }
+                    else {
+                        return this.Month_Names[month] + " " + day + sup + " " + year;
+                    }
+                };
+                ;
+                HelperService.pad = function (num, size) {
+                    'use strict';
+                    var s = String(num);
+                    while (s.length < size) {
+                        s = "0" + s;
+                    }
+                    return s;
+                };
+                ;
                 HelperService.C_tokenName = 'idToken';
                 HelperService.C_userName = 'userName';
                 HelperService.C_tokenExpiryDate = 'tokenExpiryDate';
+                HelperService.Month_Names = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
                 return HelperService;
             })();
             exports_1("HelperService", HelperService);
