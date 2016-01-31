@@ -36,13 +36,13 @@ System.register(['angular2/router', '../../services/helper/helper.service', '../
                     this.router = router;
                     this.Timesheets = [];
                     this.excludeInactive = true;
-                    this.onGetTimesheetsSuccess = function (data) {
-                        _this.Timesheets = data;
-                        _this.gridOptions.api.setRowData(data);
+                    this.onGetTimesheetsSuccess = function (timesheets) {
+                        _this.Timesheets = timesheets;
+                        _this.gridOptions.api.setRowData(timesheets);
                         //HelperService.autoSizeAll(this.columnDefs, this.gridOptions);
                         _this.gridOptions.api.sizeColumnsToFit();
                     };
-                    /////////////////////////////////////////////////////////////
+                    ////////////////////////////////////////////////
                     //grid
                     this.columnDefs = [
                         { headerName: "Id", field: "timesheetID", hide: true },
@@ -81,11 +81,16 @@ System.register(['angular2/router', '../../services/helper/helper.service', '../
                 TimesheetsComponent.prototype.ngOnInit = function () {
                     this.loadTimesheets();
                 };
+                //////////////////////////////////////////////////////////
+                //events
+                TimesheetsComponent.prototype.addTimesheet = function () {
+                    this.router.navigate(['Timesheet', { edit: "false" }]);
+                };
                 TimesheetsComponent.prototype.chkExcludeInactiveClicked = function (chkExcludeInactive) {
                     this.excludeInactive = chkExcludeInactive.checked;
                     this.loadTimesheets();
                 };
-                //////////////////////////////////////////////////////////////
+                /////////////////////////////////////////////////////////
                 //get data
                 TimesheetsComponent.prototype.logError = function (e) {
                     console.log('getTimesheets Error');
@@ -94,7 +99,6 @@ System.register(['angular2/router', '../../services/helper/helper.service', '../
                     console.log('getTimesheets complete');
                 };
                 TimesheetsComponent.prototype.loadTimesheets = function () {
-                    //var TimesheetsComponentThis = this;
                     if (helper_service_1.HelperService.tokenIsValid()) {
                         var EntityId = GetEntity_service_1.GetEntityService.getInstance().getEntityId();
                         if (EntityId === -1) {

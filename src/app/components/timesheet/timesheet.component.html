@@ -1,0 +1,81 @@
+﻿
+<form novalidate name="formTimesheet" class="form-horizontal">
+    <h1>{{title}}</h1>
+
+    <!--master inputs-->
+    <div class="form-group">
+        <label class="col-md-2 control-label">Debtor</label>
+        <div class="col-md-4">
+            <select class="input-group form-control" #cmbDebtors (change)="onChange(cmbDebtors.value)" [(ngModel)]="timesheeet.debtorID">
+                <option *ngFor="#debtor of debtors" [value]="debtor.debtorID">
+                    {{ debtor.debtorName }}
+                </option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="inputWeekEnding" class="col-md-2 control-label">Week Ending</label>
+        <div class="col-md-4">
+            <!--<p class="input-group">-->
+            <!--<input class="form-control" [(ngModel)]="weekEnding" required (change)="dateChange()" />-->
+            <input type="date" class="form-control" [(ngModel)]="weekEnding" required (change)="dateChange()" />
+            <!--</p>-->
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="inputComment" class="col-md-2 control-label">Comment</label>
+        <div class="col-md-6">
+            <input [(ngModel)]="timesheeet.comment" class="form-control" id="inputComment" placeholder="Comment">
+        </div>
+    </div>
+    <!--detail grid-->
+    <div class="form-group">
+        <div class="col-md-2">
+            &nbsp;
+        </div>
+        <div class="col-md-2" ng-dblclick="editTimesheetLine()">
+            <div id="gridTimesheetLine" ui-grid="gridOptions" class="timesheetLineGrid" ui-grid-selection></div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 control-label">Total</label>
+        <div class="col-md-2">
+            <input ng-model="timesheetTotal" class="form-control" ng-disabled="true">
+        </div>
+    </div>
+
+    <!--buttons-->
+    <div class="form-group">
+        <div class="col-md-2">
+            &nbsp;
+        </div>
+        <div class="col-md-4">
+            <div class="clearfix">
+                <button style="font-family: inherit;" type="button" class="glyphicon glyphicon-plus btn btn-primary" ng-click="newTimesheetLine()">
+                    New Line
+                </button>
+                <button type="button" class="btn btn-primary pull-right" ng-click="deleteTimesheetLine()">
+                    Delete Line
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-2">
+            &nbsp;
+        </div>
+        <div class="col-md-4">
+            <div class="clearfix">
+                <button type="button" class="btn btn-primary" ng-click="saveTimesheet()">
+                    <!--<button type="button" class="btn btn-primary" ng-click="saveTimesheet()" ng-disabled="formTimesheet.$invalid">-->
+                    OK
+                </button>
+                <button type="button" class="btn btn-primary pull-right" ng-click="cancelTimesheet()">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</form>

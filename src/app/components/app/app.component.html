@@ -8,12 +8,11 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="pull-left"><img src="/images/SolidSoftware.png"></a>
-                <!--<a class="navbar-brand" style="background-image:url('images/SolidSoftware.PNG')" ></a>-->
+                <a class="pull-left" [routerLink]="['Entities']"><img src="/images/SolidSoftware.png"></a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a [routerLink]="['Entities']" [hidden]="!tokenValid">Entities <span class="sr-only">(current)</span></a></li>
+                    <li class="active"><a [routerLink]="['Entities']" [hidden]="!tokenValid">Entities <span class="sr-only solsof-btn">(current)</span></a></li>
                     <li class="active"><a [routerLink]="['LedgerAccounts']" [hidden]="!tokenValid">Ledger Accounts<span class="sr-only">(current)</span></a></li>
                     <li class="active"><a [routerLink]="['Timesheets']" [hidden]="!tokenValid">Timesheets<span class="sr-only">(current)</span></a></li>
                     <li class="active"><a [routerLink]="['Invoices']" [hidden]="!tokenValid">Invoices<span class="sr-only">(current)</span></a></li>

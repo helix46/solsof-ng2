@@ -1,4 +1,11 @@
 ﻿<h1>Timesheets</h1>
-<div>
+<div class="col-md-2">
+    <div class="btn-group-vertical">
+        <button class="btn btn-primary" (click)="addTimesheet()">Add</button>
+        <button class="btn btn-primary">Create Invoice</button>
+        <button class="btn btn-primary">Delete</button>
+    </div>
+</div>
+<div class="col-md-10">
     <ag-grid-ng2 class="ag-fresh clsTimesheets" [gridOptions]="gridOptions"></ag-grid-ng2>
 </div>

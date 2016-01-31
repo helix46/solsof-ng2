@@ -3,6 +3,7 @@ import {RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
 import {LoginComponent} from '../login/login.component';
 import {EntitiesComponent} from '../../components/entities/entities.component';
 import {LedgerAccountsComponent} from '../../components/LedgerAccounts/ledgerAccounts.component';
+import {TimesheetComponent} from '../../components/timesheet/timesheet.component';
 import {TimesheetsComponent} from '../../components/timesheets/timesheets.component';
 import {InvoicesComponent} from '../../components/invoices/invoices.component';
 import {TransactionsComponent} from '../../components/transactions/transactions.component';
@@ -19,14 +20,15 @@ import {HelperService} from '../../services/helper/helper.service';
 })
 @RouteConfig([
     { path: '/', redirectTo: ['Entities'] },
-    { path: '/login', name: 'Login', component: LoginComponent },
-    { path: '/entities', name: 'Entities', component: EntitiesComponent, useAsDefault: true },
-    { path: '/ledgerAccounts', name: 'LedgerAccounts', component: LedgerAccountsComponent },
     { path: '/changePassword', name: 'ChangePassword', component: ChangePasswordComponent },
-    { path: '/transactions', name: 'Transactions', component: TransactionsComponent },
-    { path: '/timesheets', name: 'Timesheets', component: TimesheetsComponent },
+    { path: '/entities', name: 'Entities', component: EntitiesComponent, useAsDefault: true },
     { path: '/invoices', name: 'Invoices', component: InvoicesComponent },
-    { path: '/logout', name: 'Logout', component: LogoutComponent }
+    { path: '/ledgerAccounts', name: 'LedgerAccounts', component: LedgerAccountsComponent },
+    { path: '/login', name: 'Login', component: LoginComponent },
+    { path: '/logout', name: 'Logout', component: LogoutComponent },
+    { path: '/timesheet', name: 'Timesheet', component: TimesheetComponent },
+    { path: '/timesheets', name: 'Timesheets', component: TimesheetsComponent },
+    { path: '/transactions', name: 'Transactions', component: TransactionsComponent }
 ])
 export class AppComponent {
     public title = 'Solid Software';

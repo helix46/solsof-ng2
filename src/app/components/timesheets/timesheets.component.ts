@@ -31,14 +31,22 @@ export class TimesheetsComponent {
     ngOnInit() {
         this.loadTimesheets();
     }
+    //////////////////////////////////////////////////////////
+    //properties
     selectedTimesheet: SolsofSpa.Api.DataContext.tblTimesheet;
+
+    //////////////////////////////////////////////////////////
+    //events
+    addTimesheet() {
+        this.router.navigate(['Timesheet', { edit: "false" }]);
+    }
 
     chkExcludeInactiveClicked(chkExcludeInactive: HTMLInputElement) {
         this.excludeInactive = chkExcludeInactive.checked;
         this.loadTimesheets();
     }
 
-    //////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////
     //get data
     logError(e: any) {
         console.log('getTimesheets Error');
@@ -48,15 +56,14 @@ export class TimesheetsComponent {
         console.log('getTimesheets complete');
     }
 
-    onGetTimesheetsSuccess = (data: SolsofSpa.Api.DataContext.tblTimesheet[]) => {
-        this.Timesheets = data;
-        this.gridOptions.api.setRowData(data);
+    onGetTimesheetsSuccess = (timesheets: SolsofSpa.Api.DataContext.tblTimesheet[]) => {
+        this.Timesheets = timesheets;
+        this.gridOptions.api.setRowData(timesheets);
         //HelperService.autoSizeAll(this.columnDefs, this.gridOptions);
         this.gridOptions.api.sizeColumnsToFit();
     }
 
     loadTimesheets() {
-        //var TimesheetsComponentThis = this;
 
         if (HelperService.tokenIsValid()) {
             var EntityId = GetEntityService.getInstance().getEntityId();
@@ -69,8 +76,7 @@ export class TimesheetsComponent {
             this.router.navigate(['Login']);
         }
     };
-     
-    /////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////
     //grid
     columnDefs: ag.grid.ColDef[] = [
         { headerName: "Id", field: "timesheetID", hide: true },

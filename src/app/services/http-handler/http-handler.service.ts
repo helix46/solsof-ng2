@@ -29,16 +29,16 @@ export class HttpHandlerService {
     }
 
 
-    logError() {
+    private logError() {
         console.log('get Entities failed');
 
     };
 
-    parseResponse(res: Response) {
+    private parseResponse(res: Response) {
         return res.json();
     }
 
-    getHeaders(includeToken: boolean): Headers {
+    private getHeaders(includeToken: boolean): Headers {
         var headers = new Headers();
         //get login token from storage and add headers
         var token: string;
@@ -54,7 +54,7 @@ export class HttpHandlerService {
     }
 
 
-    getParameters(parameters: modSharedTypes.IHttpParameter[]) {
+    private getParameters(parameters: modSharedTypes.IHttpParameter[]) {
         var params: URLSearchParams = new URLSearchParams(), i: number;
         for (i = 0; i < parameters.length; i++) {
             params.append(parameters[i].name, parameters[i].value);
@@ -63,7 +63,7 @@ export class HttpHandlerService {
         return params;
     }
 
-    getOptions(parameters: modSharedTypes.IHttpParameter[], includeToken: boolean) {
+    private getOptions(parameters: modSharedTypes.IHttpParameter[], includeToken: boolean) {
         var options: RequestOptionsArgs = {};
         var headers = this.getHeaders(includeToken);
         var params: URLSearchParams = this.getParameters(parameters);
@@ -72,7 +72,7 @@ export class HttpHandlerService {
         return options;
     }
 
-    postOptions(includeToken: boolean) {
+    private postOptions(includeToken: boolean) {
         var options: RequestOptionsArgs = {};
         var headers = this.getHeaders(includeToken);
         options.headers = headers;

@@ -1,18 +1,35 @@
 ﻿
 
 export class HelperService {
+
+    private static sTrue = 'true';
+    private static sFalse = 'false';
+
     static booleanToString(inp: boolean) {
         if (inp) {
-            return 'true';
+            return this.sTrue;
         } else {
-            return 'false';
+            return this.sFalse;
         }
     }
 
-    static getServiceBase(): string {
-        return 'https://solsofoz.azurewebsites.net/';
+    static stringToBoolean(inp: string): boolean {
+        if (inp === undefined) {
+            return undefined;
+        }
+        if (inp === null) {
+            return null;
+        }
+        if (inp.toLowerCase() === this.sTrue) {
+            return true;
+        }
+        return false;
+    }
 
-        //return 'http://localhost:10614/';
+    static getServiceBase(): string {
+        //return 'https://solsofoz.azurewebsites.net/';
+
+        return 'http://localhost:10614/';
     }
 
     static getTokenName(): string {
@@ -67,6 +84,29 @@ export class HelperService {
             return null;
         }
         d = new Date(year, month - 1, day, hour, minute, second, millisecond);
+        return d;
+    };
+
+    static translateJavascriptDate(s: string): Date {
+        var day: number, month: number, year: number, ss: string[], d: Date;
+        if (s === undefined) {
+            return null;
+        }
+        if (s === null) {
+            return null;
+        }
+        if (s === '') {
+            return null;
+        }
+
+        ss = s.split('.');
+        year = Number(ss[0]);
+        month = Number(ss[1]);
+        day = Number(ss[2]);
+        if ((year === 1) && (month === 1) && (day === 1)) {
+            return null;
+        }
+        d = new Date(year, month - 1, day);
         return d;
     };
 
@@ -262,6 +302,32 @@ export class HelperService {
         return s;
     };
 
-
-
+    static getInputFormatDateString(s: string, daysToAdd: number): string {
+        var d: Date = this.translateJavascriptDate(s);
+        d.setDate(d.getDate() + 7);
+        var year: number = d.getFullYear();
+        var month: number = d.getMonth() + 1;
+        var day: number = d.getDate();
+        return this.pad(year, 4) + '-' + this.pad(month, 2) + '-' + this.pad(day, 2);
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

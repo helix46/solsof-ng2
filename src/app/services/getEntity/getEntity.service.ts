@@ -21,7 +21,7 @@
         return GetEntityService.instance;
     }
 
-    EntityId: number;
+    private EntityId: number;
     setEntityId(entityId: number) {
         this.EntityId = entityId;
     }

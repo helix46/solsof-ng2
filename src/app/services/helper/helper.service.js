@@ -8,15 +8,27 @@ System.register([], function(exports_1) {
                 }
                 HelperService.booleanToString = function (inp) {
                     if (inp) {
-                        return 'true';
+                        return this.sTrue;
                     }
                     else {
-                        return 'false';
+                        return this.sFalse;
                     }
                 };
+                HelperService.stringToBoolean = function (inp) {
+                    if (inp === undefined) {
+                        return undefined;
+                    }
+                    if (inp === null) {
+                        return null;
+                    }
+                    if (inp.toLowerCase() === this.sTrue) {
+                        return true;
+                    }
+                    return false;
+                };
                 HelperService.getServiceBase = function () {
-                    return 'https://solsofoz.azurewebsites.net/';
-                    //return 'http://localhost:10614/';
+                    //return 'https://solsofoz.azurewebsites.net/';
+                    return 'http://localhost:10614/';
                 };
                 HelperService.getTokenName = function () {
                     return 'id_token';
@@ -68,6 +80,28 @@ System.register([], function(exports_1) {
                         return null;
                     }
                     d = new Date(year, month - 1, day, hour, minute, second, millisecond);
+                    return d;
+                };
+                ;
+                HelperService.translateJavascriptDate = function (s) {
+                    var day, month, year, ss, d;
+                    if (s === undefined) {
+                        return null;
+                    }
+                    if (s === null) {
+                        return null;
+                    }
+                    if (s === '') {
+                        return null;
+                    }
+                    ss = s.split('.');
+                    year = Number(ss[0]);
+                    month = Number(ss[1]);
+                    day = Number(ss[2]);
+                    if ((year === 1) && (month === 1) && (day === 1)) {
+                        return null;
+                    }
+                    d = new Date(year, month - 1, day);
                     return d;
                 };
                 ;
@@ -255,6 +289,16 @@ System.register([], function(exports_1) {
                     return s;
                 };
                 ;
+                HelperService.getInputFormatDateString = function (s, daysToAdd) {
+                    var d = this.translateJavascriptDate(s);
+                    d.setDate(d.getDate() + 7);
+                    var year = d.getFullYear();
+                    var month = d.getMonth() + 1;
+                    var day = d.getDate();
+                    return this.pad(year, 4) + '-' + this.pad(month, 2) + '-' + this.pad(day, 2);
+                };
+                HelperService.sTrue = 'true';
+                HelperService.sFalse = 'false';
                 HelperService.C_tokenName = 'idToken';
                 HelperService.C_userName = 'userName';
                 HelperService.C_tokenExpiryDate = 'tokenExpiryDate';

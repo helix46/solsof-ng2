@@ -3,11 +3,8 @@ http://shlomiassaf.github.io/angular2-modal/
 
 
 then:
-	transactions
 	enter transaction
-	invoices
 	enter invoice
-	timesheets
 	enter timesheet
 	Bank accounts
 	import bank transactions
