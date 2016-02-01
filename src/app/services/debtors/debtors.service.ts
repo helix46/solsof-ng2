@@ -17,7 +17,7 @@ export class DebtorsService {
         return res.json();
     }
 
-    getDebtors(EntityId: number): Observable<SolsofSpa.Api.DataContext.tblDebtor[]> {
+    getDebtors(EntityId: number) {
 
         var parameters: modSharedTypes.IHttpParameter[] = [];
         parameters[0] = {

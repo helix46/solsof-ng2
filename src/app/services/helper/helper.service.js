@@ -27,8 +27,8 @@ System.register([], function(exports_1) {
                     return false;
                 };
                 HelperService.getServiceBase = function () {
-                    return 'https://solsofoz.azurewebsites.net/';
-                    //return 'http://localhost:10614/';
+                    //return 'https://solsofoz.azurewebsites.net/';
+                    return 'http://localhost:10614/';
                 };
                 HelperService.getTokenName = function () {
                     return 'id_token';
@@ -290,12 +290,17 @@ System.register([], function(exports_1) {
                 };
                 ;
                 HelperService.getInputFormatDateString = function (s, daysToAdd) {
-                    var d = this.translateJavascriptDate(s);
-                    d.setDate(d.getDate() + 7);
-                    var year = d.getFullYear();
-                    var month = d.getMonth() + 1;
-                    var day = d.getDate();
-                    return this.pad(year, 4) + '-' + this.pad(month, 2) + '-' + this.pad(day, 2);
+                    if (s === '') {
+                        return '';
+                    }
+                    else {
+                        var d = this.translateJavascriptDate(s);
+                        d.setDate(d.getDate() + 7);
+                        var year = d.getFullYear();
+                        var month = d.getMonth() + 1;
+                        var day = d.getDate();
+                        return this.pad(year, 4) + '-' + this.pad(month, 2) + '-' + this.pad(day, 2);
+                    }
                 };
                 HelperService.sTrue = 'true';
                 HelperService.sFalse = 'false';

@@ -60,9 +60,15 @@ export class TimesheetComponent {
         if (EntityId === -1) {
             this.router.navigate(['Entities']);
         } else {
-            this.debtorsService.getDebtors(EntityId).subscribe(this.ongetDebtors, this.logError);
+            this.debtorsService.getDebtors(EntityId).subscribe(this.ongetDebtors, this.logGetDebtorsError);
             this.timesheetService.getMostRecentTimesheet(EntityId).subscribe(this.onGetMostRecentTimesheet, this.logError);
         }
+    }
+
+    logGetDebtorsError(obj: any) {
+        var s = JSON.stringify(obj);
+        console.log(s);
+        alert(s);
     }
 
     onGetMostRecentTimesheet = (mostRecentTimesheet: SolsofSpa.Helper.structTimesheet) => {
@@ -86,10 +92,9 @@ export class TimesheetComponent {
     selectedDebtor: SolsofSpa.Api.DataContext.tblDebtor;
 
     timesheetError: boolean;
-    logError(resp: any) {
-        console.log(resp.text());
-        //alert is temporary until browser is made aware that this.error has changed and error message is displayed
-        alert(resp.text());
+    logError(obj: any) {
+        console.log(JSON.stringify(obj));
+        alert(JSON.stringify(obj));
         this.timesheetError = true;
     }
     complete() {

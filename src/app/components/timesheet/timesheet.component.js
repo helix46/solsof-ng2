@@ -82,9 +82,14 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                         this.router.navigate(['Entities']);
                     }
                     else {
-                        this.debtorsService.getDebtors(EntityId).subscribe(this.ongetDebtors, this.logError);
+                        this.debtorsService.getDebtors(EntityId).subscribe(this.ongetDebtors, this.logGetDebtorsError);
                         this.timesheetService.getMostRecentTimesheet(EntityId).subscribe(this.onGetMostRecentTimesheet, this.logError);
                     }
+                };
+                TimesheetComponent.prototype.logGetDebtorsError = function (obj) {
+                    var s = JSON.stringify(obj);
+                    console.log(s);
+                    alert(s);
                 };
                 TimesheetComponent.prototype.onChange = function (value) {
                     var currentTarget = event.currentTarget;
@@ -92,10 +97,9 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                 };
                 TimesheetComponent.prototype.onSelect = function (debtor) {
                 };
-                TimesheetComponent.prototype.logError = function (resp) {
-                    console.log(resp.text());
-                    //alert is temporary until browser is made aware that this.error has changed and error message is displayed
-                    alert(resp.text());
+                TimesheetComponent.prototype.logError = function (obj) {
+                    console.log(JSON.stringify(obj));
+                    alert(JSON.stringify(obj));
                     this.timesheetError = true;
                 };
                 TimesheetComponent.prototype.complete = function () {

@@ -27,9 +27,9 @@ export class HelperService {
     }
 
     static getServiceBase(): string {
-        return 'https://solsofoz.azurewebsites.net/';
+        //return 'https://solsofoz.azurewebsites.net/';
 
-        //return 'http://localhost:10614/';
+        return 'http://localhost:10614/';
     }
 
     static getTokenName(): string {
@@ -303,12 +303,16 @@ export class HelperService {
     };
 
     static getInputFormatDateString(s: string, daysToAdd: number): string {
-        var d: Date = this.translateJavascriptDate(s);
-        d.setDate(d.getDate() + 7);
-        var year: number = d.getFullYear();
-        var month: number = d.getMonth() + 1;
-        var day: number = d.getDate();
-        return this.pad(year, 4) + '-' + this.pad(month, 2) + '-' + this.pad(day, 2);
+        if (s === '') {
+            return '';
+        } else {
+            var d: Date = this.translateJavascriptDate(s);
+            d.setDate(d.getDate() + 7);
+            var year: number = d.getFullYear();
+            var month: number = d.getMonth() + 1;
+            var day: number = d.getDate();
+            return this.pad(year, 4) + '-' + this.pad(month, 2) + '-' + this.pad(day, 2);
+        }
     }
 }
 
