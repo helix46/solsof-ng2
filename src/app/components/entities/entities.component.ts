@@ -20,9 +20,11 @@ export class EntitiesComponent {
     public entities: SolsofSpa.Api.DataContext.tblEntity[] = [];
     public excludeInactive: boolean = true;
     selectedEntity: SolsofSpa.Api.DataContext.tblEntity;
+    getEntitiesSuccess: boolean;
 
     constructor(public router: Router, private entitiesService: EntitiesService) {
         console.log('constructor EntitiesComponent');
+        this.getEntitiesSuccess = false;
     }
     
     //load entities when page loaded
@@ -31,17 +33,18 @@ export class EntitiesComponent {
     }
 
     //reload grid when checkbox clicked
-    chkExcludeInactiveClicked(chkExcludeInactive: HTMLInputElement) {
+    chkExcludeInactiveClicked = (chkExcludeInactive: HTMLInputElement) => {
         this.excludeInactive = chkExcludeInactive.checked;
         this.loadEntities();
     }
 
     //////////////////////////////////////////////
     //get data
-    logError(e: any) {
+    logError = (e: any) => {
         console.log('getEntities Error');
+        this.getEntitiesSuccess = false;
     }
-    complete() {
+    complete = () => {
         console.log('getEntities complete');
     }
 
@@ -49,9 +52,10 @@ export class EntitiesComponent {
         this.entities = data;
         this.gridOptions.api.setRowData(data);
         this.gridOptions.api.sizeColumnsToFit();
+        this.getEntitiesSuccess = true;
     }
 
-    loadEntities() {
+    loadEntities = () => {
         if (HelperService.tokenIsValid()) {
             this.entitiesService.getEntities(this.excludeInactive).subscribe(this.onGetEntitiesSuccess, this.logError, this.complete);
         } else {
@@ -71,7 +75,7 @@ export class EntitiesComponent {
         this.router.navigate(['LedgerAccounts']);
     }
 
-    onRowClicked(params: any) {
+    onRowClicked = (params: any) => {
         var entity: SolsofSpa.Api.DataContext.tblEntity = <SolsofSpa.Api.DataContext.tblEntity>params.data;
         GetEntityService.getInstance().setEntityId(entity.entityID);
         console.log('onRowClicked');

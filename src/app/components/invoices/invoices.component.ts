@@ -20,6 +20,7 @@ export class InvoicesComponent {
 
     public Invoices: SolsofSpa.Api.DataContext.spGetInvoices_Result[] = [];
     public excludeInactive: boolean = true;
+    getInvoicesSuccess: boolean = true;
 
     constructor(private InvoicesService: InvoicesService, public router: Router) {
         console.log('constructor InvoicesComponent');
@@ -40,11 +41,12 @@ export class InvoicesComponent {
 
     //////////////////////////////////////////////////////////////
     //get data
-    logError(e: any) {
+    logError = (e: any) => {
         console.log('getInvoices Error');
+        this.getInvoicesSuccess = false;
     }
 
-    complete() {
+    complete = () =>{
         console.log('getInvoices complete');
     }
 
@@ -53,9 +55,10 @@ export class InvoicesComponent {
         this.gridOptions.api.setRowData(data);
         //HelperService.autoSizeAll(this.columnDefs, this.gridOptions);
         this.gridOptions.api.sizeColumnsToFit();
+        this.getInvoicesSuccess = true;
     }
 
-    loadInvoices() {
+    loadInvoices = () => {
         //var InvoicesComponentThis = this;
 
         if (HelperService.tokenIsValid()) {
@@ -110,14 +113,14 @@ export class InvoicesComponent {
         },
     ];
 
-    onRowClicked(params: any) {
+    onRowClicked = (params: any) =>{
         this.selectedInvoice = <SolsofSpa.Api.DataContext.spGetInvoices_Result>params.data;
         console.log('Invoice onRowClicked');
     }
 
     onRowDoubleClicked = (params: any) => {
         this.onRowClicked(params);
-        this.router.navigate(['Transactions', { transactionID : this.selectedInvoice.transactionID }]);
+        this.router.navigate(['Transactions', { transactionID: this.selectedInvoice.transactionID }]);
     }
 
     gridOptions: ag.grid.GridOptions = HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);

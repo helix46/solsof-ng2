@@ -28,7 +28,6 @@ System.register(['angular2/router', '../../services/helper/helper.service', '../
                 Timesheets_service_1 = Timesheets_service_1_1;
             }],
         execute: function() {
-            //import 'rxjs/Rx'; //for map
             TimesheetsComponent = (function () {
                 function TimesheetsComponent(TimesheetsService, router) {
                     var _this = this;
@@ -36,11 +35,43 @@ System.register(['angular2/router', '../../services/helper/helper.service', '../
                     this.router = router;
                     this.Timesheets = [];
                     this.excludeInactive = true;
+                    //////////////////////////////////////////////////////////
+                    //events
+                    this.addTimesheet = function () {
+                        _this.router.navigate(['Timesheet', { edit: "false" }]);
+                    };
+                    this.chkExcludeInactiveClicked = function (chkExcludeInactive) {
+                        _this.excludeInactive = chkExcludeInactive.checked;
+                        _this.loadTimesheets();
+                    };
+                    /////////////////////////////////////////////////////////
+                    //get data
+                    this.logError = function () {
+                        console.log('getTimesheets Error');
+                        _this.getTimesheetsSuccess = false;
+                    };
+                    this.complete = function () {
+                        console.log('getTimesheets complete');
+                    };
                     this.onGetTimesheetsSuccess = function (timesheets) {
                         _this.Timesheets = timesheets;
                         _this.gridOptions.api.setRowData(timesheets);
-                        //HelperService.autoSizeAll(this.columnDefs, this.gridOptions);
                         _this.gridOptions.api.sizeColumnsToFit();
+                        _this.getTimesheetsSuccess = true;
+                    };
+                    this.loadTimesheets = function () {
+                        if (helper_service_1.HelperService.tokenIsValid()) {
+                            var EntityId = GetEntity_service_1.GetEntityService.getInstance().getEntityId();
+                            if (EntityId === -1) {
+                                _this.router.navigate(['Entities']);
+                            }
+                            else {
+                                _this.TimesheetsService.getTimesheets(EntityId).subscribe(_this.onGetTimesheetsSuccess, _this.logError, _this.complete);
+                            }
+                        }
+                        else {
+                            _this.router.navigate(['Login']);
+                        }
                     };
                     ////////////////////////////////////////////////
                     //grid
@@ -69,50 +100,18 @@ System.register(['angular2/router', '../../services/helper/helper.service', '../
                     ];
                     this.onRowDoubleClicked = function (params) {
                         _this.onRowClicked(params);
-                        _this.router.navigate(['Transactions', { TimesheetID: _this.selectedTimesheet.timesheetID }]);
+                        _this.router.navigate(['Timesheet', { timesheetID: _this.selectedTimesheet.timesheetID, edit: true }]);
                     };
                     this.gridOptions = helper_service_1.HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
                     console.log('constructor TimesheetsComponent');
+                    this.getTimesheetsSuccess = true;
                     window.onresize = function () {
                         _this.gridOptions.api.sizeColumnsToFit();
-                        //HelperService.autoSizeAll(this.columnDefs, this.gridOptions);
                     };
                 }
                 TimesheetsComponent.prototype.ngOnInit = function () {
                     this.loadTimesheets();
                 };
-                //////////////////////////////////////////////////////////
-                //events
-                TimesheetsComponent.prototype.addTimesheet = function () {
-                    this.router.navigate(['Timesheet', { edit: "false" }]);
-                };
-                TimesheetsComponent.prototype.chkExcludeInactiveClicked = function (chkExcludeInactive) {
-                    this.excludeInactive = chkExcludeInactive.checked;
-                    this.loadTimesheets();
-                };
-                /////////////////////////////////////////////////////////
-                //get data
-                TimesheetsComponent.prototype.logError = function (e) {
-                    console.log('getTimesheets Error');
-                };
-                TimesheetsComponent.prototype.complete = function () {
-                    console.log('getTimesheets complete');
-                };
-                TimesheetsComponent.prototype.loadTimesheets = function () {
-                    if (helper_service_1.HelperService.tokenIsValid()) {
-                        var EntityId = GetEntity_service_1.GetEntityService.getInstance().getEntityId();
-                        if (EntityId === -1) {
-                            this.router.navigate(['Entities']);
-                        }
-                        else {
-                            this.TimesheetsService.getTimesheets(EntityId).subscribe(this.onGetTimesheetsSuccess, this.logError, this.complete);
-                        }
-                    }
-                    else {
-                        this.router.navigate(['Login']);
-                    }
-                };
-                ;
                 TimesheetsComponent.prototype.onRowClicked = function (params) {
                     this.selectedTimesheet = params.data;
                     console.log('Timesheet onRowClicked');

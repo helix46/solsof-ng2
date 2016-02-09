@@ -23,6 +23,7 @@ export class LedgerAccountsComponent {
 
     constructor(private ledgerAccountsService: LedgerAccountsService, public router: Router) {
         console.log('constructor LedgerAccountsComponent');
+        this.getLedgerAccountsSuccess = true;
         window.onresize = () => {
             this.gridOptions.api.sizeColumnsToFit();
             //HelperService.autoSizeAll(this.columnDefs, this.gridOptions);
@@ -33,31 +34,33 @@ export class LedgerAccountsComponent {
     }
     selectedLedgerAccount: SolsofSpa.Api.DataContext.tblLedgerAccount;
 
-    chkExcludeInactiveClicked(chkExcludeInactive: HTMLInputElement) {
+    chkExcludeInactiveClicked = (chkExcludeInactive: HTMLInputElement) => {
         this.excludeInactive = chkExcludeInactive.checked;
         this.loadLedgerAccounts();
     }
 
     //////////////////////////////////////////////////////////////
     //get data
-    logError(e: any) {
+    logError = (e: any) => {
         console.log('getLedgerAccounts Error');
+        this.getLedgerAccountsSuccess = false;
     }
 
-    complete() {
+    getLedgerAccountsSuccess: boolean;
+
+    complete = () => {
         console.log('getLedgerAccounts complete');
     }
 
     onGetLedgerAccountsSuccess = (data: SolsofSpa.Api.DataContext.tblLedgerAccount[]) => {
+        this.getLedgerAccountsSuccess = true;
         this.LedgerAccounts = data;
         this.gridOptions.api.setRowData(data);
         //HelperService.autoSizeAll(this.columnDefs, this.gridOptions);
         this.gridOptions.api.sizeColumnsToFit();
     }
 
-    loadLedgerAccounts() {
-        //var LedgerAccountsComponentThis = this;
-
+    loadLedgerAccounts = () => {
         if (HelperService.tokenIsValid()) {
             var EntityId = GetEntityService.getInstance().getEntityId();
             if (EntityId === -1) {
@@ -88,7 +91,7 @@ export class LedgerAccountsComponent {
         { headerName: "Active", field: "active" },
     ];
 
-    onRowClicked(params: any) {
+    onRowClicked = (params: any) => {
         this.selectedLedgerAccount = <SolsofSpa.Api.DataContext.tblLedgerAccount>params.data;
         console.log('LedgerAccount onRowClicked');
     }

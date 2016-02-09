@@ -36,11 +36,37 @@ System.register(['angular2/router', '../../services/helper/helper.service', '../
                     this.router = router;
                     this.Invoices = [];
                     this.excludeInactive = true;
+                    this.getInvoicesSuccess = true;
+                    //////////////////////////////////////////////////////////////
+                    //get data
+                    this.logError = function (e) {
+                        console.log('getInvoices Error');
+                        _this.getInvoicesSuccess = false;
+                    };
+                    this.complete = function () {
+                        console.log('getInvoices complete');
+                    };
                     this.onGetInvoicesSuccess = function (data) {
                         _this.Invoices = data;
                         _this.gridOptions.api.setRowData(data);
                         //HelperService.autoSizeAll(this.columnDefs, this.gridOptions);
                         _this.gridOptions.api.sizeColumnsToFit();
+                        _this.getInvoicesSuccess = true;
+                    };
+                    this.loadInvoices = function () {
+                        //var InvoicesComponentThis = this;
+                        if (helper_service_1.HelperService.tokenIsValid()) {
+                            var EntityId = GetEntity_service_1.GetEntityService.getInstance().getEntityId();
+                            if (EntityId === -1) {
+                                _this.router.navigate(['Entities']);
+                            }
+                            else {
+                                _this.InvoicesService.getInvoices(EntityId).subscribe(_this.onGetInvoicesSuccess, _this.logError, _this.complete);
+                            }
+                        }
+                        else {
+                            _this.router.navigate(['Login']);
+                        }
                     };
                     /////////////////////////////////////////////////////////////
                     //grid
@@ -81,6 +107,10 @@ System.register(['angular2/router', '../../services/helper/helper.service', '../
                             cellClass: 'rightJustify',
                         },
                     ];
+                    this.onRowClicked = function (params) {
+                        _this.selectedInvoice = params.data;
+                        console.log('Invoice onRowClicked');
+                    };
                     this.onRowDoubleClicked = function (params) {
                         _this.onRowClicked(params);
                         _this.router.navigate(['Transactions', { transactionID: _this.selectedInvoice.transactionID }]);
@@ -98,34 +128,6 @@ System.register(['angular2/router', '../../services/helper/helper.service', '../
                 InvoicesComponent.prototype.chkExcludeInactiveClicked = function (chkExcludeInactive) {
                     this.excludeInactive = chkExcludeInactive.checked;
                     this.loadInvoices();
-                };
-                //////////////////////////////////////////////////////////////
-                //get data
-                InvoicesComponent.prototype.logError = function (e) {
-                    console.log('getInvoices Error');
-                };
-                InvoicesComponent.prototype.complete = function () {
-                    console.log('getInvoices complete');
-                };
-                InvoicesComponent.prototype.loadInvoices = function () {
-                    //var InvoicesComponentThis = this;
-                    if (helper_service_1.HelperService.tokenIsValid()) {
-                        var EntityId = GetEntity_service_1.GetEntityService.getInstance().getEntityId();
-                        if (EntityId === -1) {
-                            this.router.navigate(['Entities']);
-                        }
-                        else {
-                            this.InvoicesService.getInvoices(EntityId).subscribe(this.onGetInvoicesSuccess, this.logError, this.complete);
-                        }
-                    }
-                    else {
-                        this.router.navigate(['Login']);
-                    }
-                };
-                ;
-                InvoicesComponent.prototype.onRowClicked = function (params) {
-                    this.selectedInvoice = params.data;
-                    console.log('Invoice onRowClicked');
                 };
                 InvoicesComponent = __decorate([
                     core_1.Component({

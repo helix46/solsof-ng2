@@ -295,7 +295,7 @@ System.register([], function(exports_1) {
                     }
                     else {
                         var d = this.translateJavascriptDate(s);
-                        d.setDate(d.getDate() + 7);
+                        d.setDate(d.getDate() + daysToAdd);
                         var year = d.getFullYear();
                         var month = d.getMonth() + 1;
                         var day = d.getDate();
@@ -308,6 +308,16 @@ System.register([], function(exports_1) {
                 HelperService.C_userName = 'userName';
                 HelperService.C_tokenExpiryDate = 'tokenExpiryDate';
                 HelperService.Month_Names = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                HelperService.convertMinutesToTimeString = function (pMinutes) {
+                    var hour = Math.floor(pMinutes / 60);
+                    var minute = pMinutes % 60;
+                    if (minute < 10) {
+                        return hour.toString() + ":0" + minute.toString();
+                    }
+                    else {
+                        return hour.toString() + ":" + minute.toString();
+                    }
+                };
                 return HelperService;
             })();
             exports_1("HelperService", HelperService);

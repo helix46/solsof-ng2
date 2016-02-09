@@ -40,9 +40,22 @@ System.register(['angular2/router', 'angular2/src/core/di', 'angular2/http', '..
                     };
                     return httpHandlerService.getObject(parameters, 'api/timesheet/getMostRecentTimesheet');
                 };
-                TimesheetService.prototype.timesheet = function (structTimesheet) {
+                TimesheetService.prototype.saveNewTimesheet = function (structTimesheet) {
                     var httpHandlerService = new http_handler_service_1.HttpHandlerService(this.http);
                     return httpHandlerService.postObject(structTimesheet, 'api/timesheet');
+                };
+                TimesheetService.prototype.getTimesheet = function (timesheetID, entityID) {
+                    var parameters = [];
+                    parameters[0] = {
+                        name: 'timesheetID',
+                        value: timesheetID.toString()
+                    };
+                    parameters[1] = {
+                        name: 'entityID',
+                        value: entityID.toString()
+                    };
+                    var httpHandlerService = new http_handler_service_1.HttpHandlerService(this.http);
+                    return httpHandlerService.getObject(parameters, 'api/timesheet');
                 };
                 TimesheetService = __decorate([
                     di_1.Injectable(), 

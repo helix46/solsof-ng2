@@ -18,12 +18,12 @@ export class ChangePasswordComponent {
     public newPassword: string;
     public repeatNewPassword: string;
     public userId: string;
+    getChangePasswordSuccess: boolean;
 
     constructor(private changePasswordService: ChangePasswordService, private router: Router) {
         this.userId = HelperService.getUsername();
         console.log('constructor ChangePasswordComponent');
-        this.success = false;
-        this.changePasswordError = false;
+        this.getChangePasswordSuccess = true;
     }
 
     ngOnInit() {
@@ -31,33 +31,35 @@ export class ChangePasswordComponent {
             this.router.navigate(['Login', 'Entities']);
         }
     }
-    passwordsEqual() {
+    passwordsEqual = () => {
         return this.newPassword === this.repeatNewPassword
     }
 
-    logError(resp: any) {
-        console.log(resp.text());
-        //alert is temporary until browser is made aware that this.error has changed and error message is displayed
-        alert(resp.text());
-        this.changePasswordError = true;
+    logError = (resp: any) => {
+        alert('Password may be changed even though an error has been thrown');
+        console.log('changePassword error');
+        this.getChangePasswordSuccess = false;
     }
-    complete() {
+    complete = () => {
         console.log('changePassword complete');
-        alert('changePassword success');
-        //this.router.navigate(['Entities']);
-        this.success = true;
+        //alert('changePassword success');
+        setTimeout(() => this.router.navigate(['Entities']), 2000)
     }
 
-    onSubmit() {
+    onSuccess = () => {
+        console.log('changePassword success');
+        this.getChangePasswordSuccess = true;
+    }
+
+    onSubmit = () => {
         if (this.newPassword === this.repeatNewPassword) {
-            this.submitted = true;
             var changePasswordModel: IChangePasswordModel = {
                 userName: HelperService.getUsername(),
                 currentPassword: this.oldPassword,
                 newPassword: this.newPassword
             }
             if (HelperService.tokenIsValid()) {
-                this.changePasswordService.changePassword(changePasswordModel).subscribe(resp=> alert('resp'), this.logError, this.complete);
+                this.changePasswordService.changePassword(changePasswordModel).subscribe(this.onSuccess, this.logError, this.complete);
             } else {
                 this.router.navigate(['Login']);
             }
@@ -65,8 +67,4 @@ export class ChangePasswordComponent {
             alert('Passwords are not the same');
         }
     }
-
-    submitted = false;
-    success = false;
-    changePasswordError = false;
 }

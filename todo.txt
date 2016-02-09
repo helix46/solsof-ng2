@@ -1,6 +1,11 @@
-technicals needed: modal popup
-http://shlomiassaf.github.io/angular2-modal/
+timesheet:
+	1 double click on timesheet lists takes you to timesheet page
+	2 timesheet object is retrieved from DB
+	3 timesheet object without grid is displayed
+	4 grid is displayed
+	5 double click on grid displays edit timesheet line modal 
 
+	use structures from database with pipes to format the dates
 
 then:
 	enter transaction
@@ -12,6 +17,7 @@ then:
 	balance sheet
 
 
+	escape key to close modal
 
 
 Later when tools have matured and I know a lot more

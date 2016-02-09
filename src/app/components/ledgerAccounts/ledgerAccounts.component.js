@@ -36,11 +36,39 @@ System.register(['angular2/router', '../../services/helper/helper.service', '../
                     this.router = router;
                     this.LedgerAccounts = [];
                     this.excludeInactive = true;
+                    this.chkExcludeInactiveClicked = function (chkExcludeInactive) {
+                        _this.excludeInactive = chkExcludeInactive.checked;
+                        _this.loadLedgerAccounts();
+                    };
+                    //////////////////////////////////////////////////////////////
+                    //get data
+                    this.logError = function (e) {
+                        console.log('getLedgerAccounts Error');
+                        _this.getLedgerAccountsSuccess = false;
+                    };
+                    this.complete = function () {
+                        console.log('getLedgerAccounts complete');
+                    };
                     this.onGetLedgerAccountsSuccess = function (data) {
+                        _this.getLedgerAccountsSuccess = true;
                         _this.LedgerAccounts = data;
                         _this.gridOptions.api.setRowData(data);
                         //HelperService.autoSizeAll(this.columnDefs, this.gridOptions);
                         _this.gridOptions.api.sizeColumnsToFit();
+                    };
+                    this.loadLedgerAccounts = function () {
+                        if (helper_service_1.HelperService.tokenIsValid()) {
+                            var EntityId = GetEntity_service_1.GetEntityService.getInstance().getEntityId();
+                            if (EntityId === -1) {
+                                _this.router.navigate(['Entities']);
+                            }
+                            else {
+                                _this.ledgerAccountsService.getLedgerAccounts(_this.excludeInactive, EntityId).subscribe(_this.onGetLedgerAccountsSuccess, _this.logError, _this.complete);
+                            }
+                        }
+                        else {
+                            _this.router.navigate(['Login']);
+                        }
                     };
                     /////////////////////////////////////////////////////////////
                     //grid
@@ -59,12 +87,17 @@ System.register(['angular2/router', '../../services/helper/helper.service', '../
                         { headerName: "Type", field: "ledgerAccountType" },
                         { headerName: "Active", field: "active" },
                     ];
+                    this.onRowClicked = function (params) {
+                        _this.selectedLedgerAccount = params.data;
+                        console.log('LedgerAccount onRowClicked');
+                    };
                     this.onRowDoubleClicked = function (params) {
                         _this.onRowClicked(params);
                         _this.router.navigate(['Transactions', { ledgerAccountID: _this.selectedLedgerAccount.ledgerAccountID }]);
                     };
                     this.gridOptions = helper_service_1.HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
                     console.log('constructor LedgerAccountsComponent');
+                    this.getLedgerAccountsSuccess = true;
                     window.onresize = function () {
                         _this.gridOptions.api.sizeColumnsToFit();
                         //HelperService.autoSizeAll(this.columnDefs, this.gridOptions);
@@ -72,38 +105,6 @@ System.register(['angular2/router', '../../services/helper/helper.service', '../
                 }
                 LedgerAccountsComponent.prototype.ngOnInit = function () {
                     this.loadLedgerAccounts();
-                };
-                LedgerAccountsComponent.prototype.chkExcludeInactiveClicked = function (chkExcludeInactive) {
-                    this.excludeInactive = chkExcludeInactive.checked;
-                    this.loadLedgerAccounts();
-                };
-                //////////////////////////////////////////////////////////////
-                //get data
-                LedgerAccountsComponent.prototype.logError = function (e) {
-                    console.log('getLedgerAccounts Error');
-                };
-                LedgerAccountsComponent.prototype.complete = function () {
-                    console.log('getLedgerAccounts complete');
-                };
-                LedgerAccountsComponent.prototype.loadLedgerAccounts = function () {
-                    //var LedgerAccountsComponentThis = this;
-                    if (helper_service_1.HelperService.tokenIsValid()) {
-                        var EntityId = GetEntity_service_1.GetEntityService.getInstance().getEntityId();
-                        if (EntityId === -1) {
-                            this.router.navigate(['Entities']);
-                        }
-                        else {
-                            this.ledgerAccountsService.getLedgerAccounts(this.excludeInactive, EntityId).subscribe(this.onGetLedgerAccountsSuccess, this.logError, this.complete);
-                        }
-                    }
-                    else {
-                        this.router.navigate(['Login']);
-                    }
-                };
-                ;
-                LedgerAccountsComponent.prototype.onRowClicked = function (params) {
-                    this.selectedLedgerAccount = params.data;
-                    console.log('LedgerAccount onRowClicked');
                 };
                 LedgerAccountsComponent = __decorate([
                     core_1.Component({

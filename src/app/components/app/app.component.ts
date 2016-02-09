@@ -42,7 +42,7 @@ export class AppComponent {
         this.navbarWithoutJquery()
     }
 
-    navbarWithoutJquery() {
+    navbarWithoutJquery = () => {
         // Navbar and dropdowns
         var toggle = document.getElementsByClassName('navbar-toggle')[0],
             collapse = document.getElementsByClassName('navbar-collapse')[0],

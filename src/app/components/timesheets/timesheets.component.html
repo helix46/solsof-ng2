@@ -9,3 +9,5 @@
 <div class="col-md-10">
     <ag-grid-ng2 class="ag-fresh clsTimesheets" [gridOptions]="gridOptions"></ag-grid-ng2>
 </div>
+
+<div [hidden]="getTimesheetsSuccess" class="alert alert-danger">Error getting Timesheets</div>

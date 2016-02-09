@@ -2,3 +2,4 @@
 <div>
     <ag-grid-ng2 class="ag-fresh clsInvoices" [gridOptions]="gridOptions"></ag-grid-ng2>
 </div>
+<div [hidden]="getInvoicesSuccess" class="alert alert-danger">Error getting Invoices</div>

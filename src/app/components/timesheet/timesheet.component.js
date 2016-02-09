@@ -38,17 +38,109 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                     this.router = router;
                     this.debtorsService = debtorsService;
                     this.routeParams = routeParams;
+                    this.newTimesheetLine = function () {
+                        var newTimesheetLineThis = _this;
+                        _this.timesheetLineVisible = true;
+                    };
+                    this.modalOnKeyup = function (ev) {
+                        _this.timesheetLineVisible = false;
+                    };
+                    this.cancelTimeSheetLine = function () {
+                        _this.timesheetLineVisible = false;
+                    };
+                    //saveTimeSheetLine = () => {
+                    //    if (this.bEditTimesheetLine) {
+                    //        this.copyTimesheetLine(this.tempTimesheetLine, this.selectedTimesheetLine);
+                    //    } else {
+                    //        this.timesheet.timesheetLineArray.push(this.tempTimesheetLine);
+                    //    }
+                    //    this.calculateTimesheetTotal();
+                    //    this.modalSolsofVisible = false;
+                    //}
+                    //copyTimesheetLine = function (sourceTimesheetLine: StructTimesheetLineJs, destinationTimesheetLine: StructTimesheetLineJs) {
+                    //    destinationTimesheetLine.timesheetLineDate = sourceTimesheetLine.timesheetLineDate;
+                    //    destinationTimesheetLine.startTimeMinutes = sourceTimesheetLine.startTimeMinutes;
+                    //    destinationTimesheetLine.finishTimeMinutes = sourceTimesheetLine.finishTimeMinutes;
+                    //    destinationTimesheetLine.timeoutMinutes = sourceTimesheetLine.timeoutMinutes;
+                    //    destinationTimesheetLine.sStartTime = sourceTimesheetLine.sStartTime;
+                    //    destinationTimesheetLine.sFinishTime = sourceTimesheetLine.sFinishTime;
+                    //    destinationTimesheetLine.sTimeout = sourceTimesheetLine.sTimeout;
+                    //};
+                    //closeModal = () => {
+                    //    this.modalSolsofVisible = false;
+                    //    window.onkeyup = null;
+                    //}
+                    this.logGetDebtorsError = function (obj) {
+                        //this.getTimesheetSuccess = false;
+                        var s = JSON.stringify(obj);
+                        console.log(s);
+                        alert(s);
+                    };
                     this.onGetMostRecentTimesheet = function (mostRecentTimesheet) {
-                        var __this = _this;
-                        __this.timesheeet.debtorID = mostRecentTimesheet.debtorID;
-                        //var d: Date = HelperService.translateJavascriptDate(mostRecentTimesheet.sWeekEnding)
-                        __this.weekEnding = helper_service_1.HelperService.getInputFormatDateString(mostRecentTimesheet.sWeekEnding, 7);
+                        _this.timesheeet.debtorID = mostRecentTimesheet.debtorID;
+                        _this.weekEnding = helper_service_1.HelperService.getInputFormatDateString(mostRecentTimesheet.sWeekEnding, 7);
+                    };
+                    this.onGetTimesheet = function (timesheet) {
+                        _this.timesheeet = timesheet;
+                        _this.weekEnding = helper_service_1.HelperService.getInputFormatDateString(timesheet.sWeekEnding, 0);
                     };
                     this.ongetDebtors = function (debtors) {
                         _this.debtors = debtors;
                     };
+                    this.onChange = function (value) {
+                        var currentTarget = event.currentTarget;
+                        _this.currentDebtorID = Number(currentTarget.value);
+                    };
+                    this.onSelect = function (debtor) {
+                    };
+                    this.logError = function (obj) {
+                        console.log(JSON.stringify(obj));
+                        alert(JSON.stringify(obj));
+                    };
+                    this.complete = function () {
+                        console.log('timesheet complete');
+                        _this.router.navigate(['TimeSheets']);
+                    };
+                    this.logSuccess = function () {
+                        console.log('get success');
+                    };
+                    this.okClick = function () {
+                        var structTimesheet = {
+                            comment: '',
+                            debtorID: _this.selectedDebtor.debtorID,
+                            entityID: GetEntity_service_1.GetEntityService.getInstance().getEntityId(),
+                            timesheetID: -1,
+                            sWeekEnding: '',
+                            timesheetLineArray: []
+                        };
+                        if (helper_service_1.HelperService.tokenIsValid()) {
+                            _this.timesheetService.saveNewTimesheet(_this.timesheet);
+                        }
+                        else {
+                            _this.router.navigate(['Login']);
+                        }
+                    };
+                    ////////////////////////////////////
+                    //grid
+                    ////////////////////////////////////
+                    this.columnDefs = [
+                        {
+                            headerName: "Date", field: "timesheetLineDate", cellRenderer: function (params) {
+                                return helper_service_1.HelperService.formatDateForDisplay(new Date(params.value), false, false, false);
+                            }
+                        },
+                        { headerName: "Start Time", field: "sStartTime", minWidth: 100 },
+                        { headerName: "Finish Time", field: "sFinishTime", minWidth: 100 },
+                        { headerName: "Time out", field: "sTimeout", minWidth: 100 }
+                    ];
+                    this.onRowClicked = function () {
+                    };
+                    this.onRowDoubleClicked = function () {
+                        _this.bEditTimesheetLine = true;
+                        //this.showTimesheetLinePopup();
+                    };
+                    this.gridOptions = helper_service_1.HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
                     console.log('constructor timesheetComponent');
-                    this.timesheetError = false;
                     this.currentDebtorID = -1;
                     this.timesheeet = {
                         comment: '',
@@ -58,22 +150,10 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                         timesheetID: -1,
                         timesheetLineArray: []
                     };
-                    this.weekEnding;
                 }
-                TimesheetComponent.prototype.dateChange = function () {
-                    //alert(this.weekEnding);
-                    var d = new Date(this.weekEnding);
-                    alert(d);
-                };
                 TimesheetComponent.prototype.ngOnInit = function () {
-                    var edit = this.routeParams.params['edit'];
-                    this.edit = helper_service_1.HelperService.stringToBoolean(edit);
-                    if (this.edit) {
-                        this.title = 'Edit Timesheet';
-                    }
-                    else {
-                        this.title = 'New Timesheet';
-                    }
+                    this.bEditTimesheet = Boolean(this.routeParams.params['edit']);
+                    //this.bEditTimesheet = <any>this.routeParams.params['edit'];
                     if (helper_service_1.HelperService.tokenIsValid() === false) {
                         this.router.navigate(['Login']);
                     }
@@ -83,44 +163,18 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                     }
                     else {
                         this.debtorsService.getDebtors(EntityId).subscribe(this.ongetDebtors, this.logGetDebtorsError);
-                        this.timesheetService.getMostRecentTimesheet(EntityId).subscribe(this.onGetMostRecentTimesheet, this.logError);
+                        if (this.bEditTimesheet) {
+                            this.title = 'Edit Timesheet';
+                            this.timesheetID = Number(this.routeParams.params['timesheetID']);
+                            this.timesheetService.getTimesheet(this.timesheetID, EntityId).subscribe(this.onGetTimesheet, this.logError);
+                        }
+                        else {
+                            this.title = 'New Timesheet';
+                            this.timesheetService.getMostRecentTimesheet(EntityId).subscribe(this.onGetMostRecentTimesheet, this.logError);
+                        }
                     }
                 };
-                TimesheetComponent.prototype.logGetDebtorsError = function (obj) {
-                    var s = JSON.stringify(obj);
-                    console.log(s);
-                    alert(s);
-                };
-                TimesheetComponent.prototype.onChange = function (value) {
-                    var currentTarget = event.currentTarget;
-                    this.currentDebtorID = Number(currentTarget.value);
-                };
-                TimesheetComponent.prototype.onSelect = function (debtor) {
-                };
-                TimesheetComponent.prototype.logError = function (obj) {
-                    console.log(JSON.stringify(obj));
-                    alert(JSON.stringify(obj));
-                    this.timesheetError = true;
-                };
-                TimesheetComponent.prototype.complete = function () {
-                    console.log('timesheet complete');
-                    this.router.navigate(['TimeSheets']);
-                };
-                TimesheetComponent.prototype.okClick = function () {
-                    var structTimesheet = {
-                        comment: '',
-                        debtorID: this.selectedDebtor.debtorID,
-                        entityID: GetEntity_service_1.GetEntityService.getInstance().getEntityId(),
-                        timesheetID: -1,
-                        sWeekEnding: '',
-                        timesheetLineArray: []
-                    };
-                    if (helper_service_1.HelperService.tokenIsValid()) {
-                        this.timesheetService.timesheet(structTimesheet).subscribe(function (resp) { return alert('resp'); }, this.logError, this.complete);
-                    }
-                    else {
-                        this.router.navigate(['Login']);
-                    }
+                TimesheetComponent.prototype.dateChange = function () {
                 };
                 TimesheetComponent = __decorate([
                     core_1.Component({

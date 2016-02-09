@@ -1,0 +1,59 @@
+﻿<div id="modalTimeSheetLine" class="modalSolsof" [class.modalSolsofVisible]="timesheetLineVisible" (keyup.esc)="modalOnKeyup()">
+    see comment in class TimesheetComponent
+    <!-- Modal content -->
+    <div class="modal-contentSolsof" (keyup.esc)="modalOnKeyup()">
+        <!--contents-->
+        <h1 class="text-center">{{titleTimesheetLine}}</h1>
+        <div class="form-group">
+            <label class="col-md-4 control-label">Date</label>
+            <div class="col-md-4">
+                <input type="date" class="form-control" [(ngModel)]="timesheetLine.timesheetLineDate" required autofocus />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-4 control-label">Start</label>
+            <div class="col-md-1">
+                <input type="time" />
+                <input id="inpStartHours" type="number" [(ngModel)]="timesheetLine.startHours" placeholder="Hours" ng-change="startHoursChange()" />
+            </div>
+            <div class="col-md-1">
+                <input id="inpStartMinutes" type="number" [(ngModel)]="timesheetLine.startMinutes" placeholder="Minutes" ng-change="startMinutesChange()" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-4 control-label">Finish</label>
+            <div class="col-md-1">
+                <input id="inpFinishHours" type="number" [(ngModel)]="timesheetLine.finishHours" placeholder="Hours" ng-change="finishHoursChange()" />
+            </div>
+            <div class="col-md-1">
+                <input id="inpFinishMinutes" type="number" [(ngModel)]="timesheetLine.finishMinutes" placeholder="Minutes" ng-change="finishMinutesChange()" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-4 control-label">Time out</label>
+            <div class="col-md-1">
+                <input id="inpTimeoutHours" type="number" [(ngModel)]="timesheetLine.timeoutHours" placeholder="Hours" ng-change="timeoutHoursChange()" />
+            </div>
+            <div class="col-md-1">
+                <input id="inpTimeoutMinutes" type="number" [(ngModel)]="timesheetLine.timeoutMinutes" placeholder="Minutes" ng-change="timeoutMinutesChange()" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-4">
+                &nbsp;
+            </div>
+            <div class="col-md-4">
+                <div class="clearfix">
+                    <button id="btnOK" type="button" class="btn btn-primary" (click)="saveTimeSheetLine()" ng-disabled="formTimesheetLine.$invalid">
+                        OK
+                    </button>
+                    <button type="button" class="btn btn-primary pull-right" (click)="cancelTimeSheetLine()">
+                        Cancel
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

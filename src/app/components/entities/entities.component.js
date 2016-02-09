@@ -36,10 +36,33 @@ System.register(['../../services/GetEntity/GetEntity.service', 'angular2/core', 
                     this.title = 'Entities';
                     this.entities = [];
                     this.excludeInactive = true;
+                    //reload grid when checkbox clicked
+                    this.chkExcludeInactiveClicked = function (chkExcludeInactive) {
+                        _this.excludeInactive = chkExcludeInactive.checked;
+                        _this.loadEntities();
+                    };
+                    //////////////////////////////////////////////
+                    //get data
+                    this.logError = function (e) {
+                        console.log('getEntities Error');
+                        _this.getEntitiesSuccess = false;
+                    };
+                    this.complete = function () {
+                        console.log('getEntities complete');
+                    };
                     this.onGetEntitiesSuccess = function (data) {
                         _this.entities = data;
                         _this.gridOptions.api.setRowData(data);
                         _this.gridOptions.api.sizeColumnsToFit();
+                        _this.getEntitiesSuccess = true;
+                    };
+                    this.loadEntities = function () {
+                        if (helper_service_1.HelperService.tokenIsValid()) {
+                            _this.entitiesService.getEntities(_this.excludeInactive).subscribe(_this.onGetEntitiesSuccess, _this.logError, _this.complete);
+                        }
+                        else {
+                            _this.router.navigate(['Login']);
+                        }
                     };
                     //////////////////////////////////////////////
                     //grid
@@ -51,38 +74,18 @@ System.register(['../../services/GetEntity/GetEntity.service', 'angular2/core', 
                         _this.onRowClicked(params);
                         _this.router.navigate(['LedgerAccounts']);
                     };
+                    this.onRowClicked = function (params) {
+                        var entity = params.data;
+                        GetEntity_service_1.GetEntityService.getInstance().setEntityId(entity.entityID);
+                        console.log('onRowClicked');
+                    };
                     this.gridOptions = helper_service_1.HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
                     console.log('constructor EntitiesComponent');
+                    this.getEntitiesSuccess = false;
                 }
                 //load entities when page loaded
                 EntitiesComponent.prototype.ngOnInit = function () {
                     this.loadEntities();
-                };
-                //reload grid when checkbox clicked
-                EntitiesComponent.prototype.chkExcludeInactiveClicked = function (chkExcludeInactive) {
-                    this.excludeInactive = chkExcludeInactive.checked;
-                    this.loadEntities();
-                };
-                //////////////////////////////////////////////
-                //get data
-                EntitiesComponent.prototype.logError = function (e) {
-                    console.log('getEntities Error');
-                };
-                EntitiesComponent.prototype.complete = function () {
-                    console.log('getEntities complete');
-                };
-                EntitiesComponent.prototype.loadEntities = function () {
-                    if (helper_service_1.HelperService.tokenIsValid()) {
-                        this.entitiesService.getEntities(this.excludeInactive).subscribe(this.onGetEntitiesSuccess, this.logError, this.complete);
-                    }
-                    else {
-                        this.router.navigate(['Login']);
-                    }
-                };
-                EntitiesComponent.prototype.onRowClicked = function (params) {
-                    var entity = params.data;
-                    GetEntity_service_1.GetEntityService.getInstance().setEntityId(entity.entityID);
-                    console.log('onRowClicked');
                 };
                 EntitiesComponent = __decorate([
                     core_1.Component({

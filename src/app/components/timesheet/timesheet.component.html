@@ -1,7 +1,8 @@
 ﻿
-<form novalidate name="formTimesheet" class="form-horizontal">
+<form novalidate name="formTimesheet" class="form-horizontal" (keyup.esc)="modalOnKeyup()">
     <h1>{{title}}</h1>
-
+    <br />
+    {{modalSolsofVisible}}
     <!--master inputs-->
     <div class="form-group">
         <label class="col-md-2 control-label">Debtor</label>
@@ -52,10 +53,10 @@
         </div>
         <div class="col-md-4">
             <div class="clearfix">
-                <button style="font-family: inherit;" type="button" class="glyphicon glyphicon-plus btn btn-primary" ng-click="newTimesheetLine()">
+                <button style="font-family: inherit;" type="button" class="glyphicon glyphicon-plus btn btn-primary" (click)="newTimesheetLine()">
                     New Line
                 </button>
-                <button type="button" class="btn btn-primary pull-right" ng-click="deleteTimesheetLine()">
+                <button type="button" class="btn btn-primary pull-right" (click)="deleteTimesheetLine()">
                     Delete Line
                 </button>
             </div>
@@ -68,14 +69,24 @@
         </div>
         <div class="col-md-4">
             <div class="clearfix">
-                <button type="button" class="btn btn-primary" ng-click="saveTimesheet()">
-                    <!--<button type="button" class="btn btn-primary" ng-click="saveTimesheet()" ng-disabled="formTimesheet.$invalid">-->
+                <button type="button" class="btn btn-primary" (click)="saveTimesheet()">
                     OK
                 </button>
-                <button type="button" class="btn btn-primary pull-right" ng-click="cancelTimesheet()">
+                <button type="button" class="btn btn-primary pull-right" (click)="cancelTimesheet()">
                     Cancel
                 </button>
             </div>
         </div>
     </div>
+
+    <div [hidden]="getTimesheetSuccess" class="alert alert-danger">Error getting Timesheet</div>
+
+
 </form>
+
+<timesheet-line [timesheetLine]="tempTimesheetLine"
+                [edit]="editTimesheetLine"
+                [timesheetLineVisible]="timesheetLineVisible"
+                (cancel)="cancelTimesheetLine()"
+                (ok)="saveTimesheetLine()">
+</timesheet-line>

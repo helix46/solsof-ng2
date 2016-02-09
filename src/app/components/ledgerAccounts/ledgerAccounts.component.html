@@ -2,6 +2,8 @@
 <label>
     <input [ngModel]="excludeInactive" #chkExcludeInactive type="checkbox" (change)="chkExcludeInactiveClicked(chkExcludeInactive)"> <big>Exclude Inactive</big>
 </label>
+{{getLedgerAccountsComplete}}
 <div>
     <ag-grid-ng2 class="ag-fresh clsGridLedgerAccounts" [gridOptions]="gridOptions"></ag-grid-ng2>
 </div>
+<div  [hidden]="getLedgerAccountsSuccess" class="alert alert-danger">Error getting Ledger Accounts</div>

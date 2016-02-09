@@ -4,7 +4,6 @@ import {GetEntityService} from '../../services/GetEntity/GetEntity.service';
 import {Response} from 'angular2/http';
 import {Component} from 'angular2/core';
 import {TimesheetsService} from '../../services/Timesheets/Timesheets.service';
-//import 'rxjs/Rx'; //for map
 
 
 
@@ -18,14 +17,12 @@ import {TimesheetsService} from '../../services/Timesheets/Timesheets.service';
 
 export class TimesheetsComponent {
 
-    public Timesheets: SolsofSpa.Api.DataContext.tblTimesheet[] = [];
-    public excludeInactive: boolean = true;
 
     constructor(private TimesheetsService: TimesheetsService, public router: Router) {
         console.log('constructor TimesheetsComponent');
+        this.getTimesheetsSuccess = true;
         window.onresize = () => {
             this.gridOptions.api.sizeColumnsToFit();
-            //HelperService.autoSizeAll(this.columnDefs, this.gridOptions);
         };
     }
     ngOnInit() {
@@ -34,36 +31,40 @@ export class TimesheetsComponent {
     //////////////////////////////////////////////////////////
     //properties
     selectedTimesheet: SolsofSpa.Api.DataContext.tblTimesheet;
-
+    public Timesheets: SolsofSpa.Api.DataContext.tblTimesheet[] = [];
+    public excludeInactive: boolean = true;
+    getTimesheetsSuccess: boolean 
     //////////////////////////////////////////////////////////
+
     //events
-    addTimesheet() {
+    addTimesheet = () => {
         this.router.navigate(['Timesheet', { edit: "false" }]);
     }
 
-    chkExcludeInactiveClicked(chkExcludeInactive: HTMLInputElement) {
+    chkExcludeInactiveClicked = (chkExcludeInactive: HTMLInputElement) => {
         this.excludeInactive = chkExcludeInactive.checked;
         this.loadTimesheets();
     }
 
     /////////////////////////////////////////////////////////
     //get data
-    logError(e: any) {
+    logError = () => {
         console.log('getTimesheets Error');
+        this.getTimesheetsSuccess = false;
     }
 
-    complete() {
+    complete = () => {
         console.log('getTimesheets complete');
     }
 
     onGetTimesheetsSuccess = (timesheets: SolsofSpa.Api.DataContext.tblTimesheet[]) => {
         this.Timesheets = timesheets;
         this.gridOptions.api.setRowData(timesheets);
-        //HelperService.autoSizeAll(this.columnDefs, this.gridOptions);
         this.gridOptions.api.sizeColumnsToFit();
+        this.getTimesheetsSuccess = true;
     }
 
-    loadTimesheets() {
+    loadTimesheets = () => {
 
         if (HelperService.tokenIsValid()) {
             var EntityId = GetEntityService.getInstance().getEntityId();
@@ -109,7 +110,7 @@ export class TimesheetsComponent {
 
     onRowDoubleClicked = (params: any) => {
         this.onRowClicked(params);
-        this.router.navigate(['Transactions', { TimesheetID: this.selectedTimesheet.timesheetID }]);
+        this.router.navigate(['Timesheet', { timesheetID: this.selectedTimesheet.timesheetID, edit: true }]);
     }
 
     gridOptions: ag.grid.GridOptions = HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);

@@ -302,10 +302,7 @@ declare module SolsofSpa.Helper {
         sTransactionDate: string;
         amount: number;
     }
-}
 
-
-declare module SolsofSpa.Helper {
     export const enum enumTransactionType {
         Cheque = 0,
         Deposit = 1,
@@ -341,3 +338,13 @@ interface IChangePasswordModel {
     currentPassword: string;
     newPassword: string;
 }
+
+//interface StructTimesheetLineJs {
+//    timesheetLineDate: Date;
+//    sStartTime: string; // for display only
+//    sFinishTime: string;// for display only
+//    sTimeout: string;// for display only
+//    startTimeMinutes: number;
+//    finishTimeMinutes: number;
+//    timeoutMinutes: number;
+//}
