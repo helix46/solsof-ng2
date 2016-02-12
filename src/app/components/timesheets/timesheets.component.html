@@ -11,3 +11,15 @@
 </div>
 
 <div [hidden]="getTimesheetsSuccess" class="alert alert-danger">Error getting Timesheets</div>
+<div [hidden]="getDebtorsSuccess" class="alert alert-danger">Error getting Debtors</div>
+
+
+
+<!--<timesheetModal [timesheet]="timesheet"
+                [bEditTimesheet]="editTimesheet"
+                (cancel)="cancelTimesheet()"
+                (ok)="saveTimesheet()">
+</timesheetModal>-->
+
+
+<timesheetModal [debtors]="debtors"></timesheetModal>

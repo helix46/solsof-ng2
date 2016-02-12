@@ -1,4 +1,7 @@
-﻿
+﻿<!--<div id="modalTimeSheet" class="modalSolsof" [class.modalSolsofVisible]="timesheetVisible">-->
+<!-- Modal content -->
+<!--<div class="modal-contentSolsof" (keyup.esc)="modalOnKeyup()">-->
+<!--contents-->
 <form novalidate name="formTimesheet" class="form-horizontal" (keyup.esc)="modalOnKeyup()">
     <h1>{{title}}</h1>
     <br />
@@ -7,7 +10,7 @@
     <div class="form-group">
         <label class="col-md-2 control-label">Debtor</label>
         <div class="col-md-4">
-            <select class="input-group form-control" #cmbDebtors (change)="onChange(cmbDebtors.value)" [(ngModel)]="timesheeet.debtorID">
+            <select class="input-group form-control" #cmbDebtors (change)="onChange(cmbDebtors.value)" [(ngModel)]="timesheet.debtorID">
                 <option *ngFor="#debtor of debtors" [value]="debtor.debtorID">
                     {{ debtor.debtorName }}
                 </option>
@@ -17,16 +20,13 @@
     <div class="form-group">
         <label for="inputWeekEnding" class="col-md-2 control-label">Week Ending</label>
         <div class="col-md-4">
-            <!--<p class="input-group">-->
-            <!--<input class="form-control" [(ngModel)]="weekEnding" required (change)="dateChange()" />-->
-            <input type="date" class="form-control" [(ngModel)]="weekEnding" required (change)="dateChange()" />
-            <!--</p>-->
+            <input type="date" [(ngModel)]="timesheet.sWeekEnding" class="form-control" placeholder="Comment">
         </div>
     </div>
     <div class="form-group">
         <label for="inputComment" class="col-md-2 control-label">Comment</label>
         <div class="col-md-6">
-            <input [(ngModel)]="timesheeet.comment" class="form-control" id="inputComment" placeholder="Comment">
+            <input [(ngModel)]="timesheet.comment" class="form-control" id="inputComment" placeholder="Comment">
         </div>
     </div>
     <!--detail grid-->
@@ -42,7 +42,7 @@
     <div class="form-group">
         <label class="col-md-2 control-label">Total</label>
         <div class="col-md-2">
-            <input ng-model="timesheetTotal" class="form-control" ng-disabled="true">
+            <input [(ngModel)]="timesheetTotal" class="form-control" ng-disabled="true">
         </div>
     </div>
 
@@ -78,15 +78,23 @@
             </div>
         </div>
     </div>
-
     <div [hidden]="getTimesheetSuccess" class="alert alert-danger">Error getting Timesheet</div>
-
-
 </form>
-
-<timesheet-line [timesheetLine]="tempTimesheetLine"
+<!--</div>
+</div>-->
+<!--<timesheet-line [timesheetLine]="tempTimesheetLine"
                 [edit]="editTimesheetLine"
                 [timesheetLineVisible]="timesheetLineVisible"
                 (cancel)="cancelTimesheetLine()"
                 (ok)="saveTimesheetLine()">
-</timesheet-line>
+</timesheet-line>-->
+<!--<form novalidate name="formTimesheet" class="form-horizontal" (keyup.esc)="modalOnKeyup()">
+    <h1>{{title}}</h1>
+    <br />
+    <div class="form-group">
+        <label for="inputComment" class="col-md-2 control-label">Comment</label>
+        <div class="col-md-6">
+            <input [(ngModel)]="timesheet.comment" class="form-control" id="inputComment" placeholder="Comment">
+        </div>
+    </div>
+</form>-->

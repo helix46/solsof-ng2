@@ -289,25 +289,25 @@ System.register([], function(exports_1) {
                     return s;
                 };
                 ;
-                HelperService.getInputFormatDateString = function (s, daysToAdd) {
-                    if (s === '') {
-                        return '';
-                    }
-                    else {
-                        var d = this.translateJavascriptDate(s);
-                        d.setDate(d.getDate() + daysToAdd);
-                        var year = d.getFullYear();
-                        var month = d.getMonth() + 1;
-                        var day = d.getDate();
-                        return this.pad(year, 4) + '-' + this.pad(month, 2) + '-' + this.pad(day, 2);
-                    }
-                };
                 HelperService.sTrue = 'true';
                 HelperService.sFalse = 'false';
                 HelperService.C_tokenName = 'idToken';
                 HelperService.C_userName = 'userName';
                 HelperService.C_tokenExpiryDate = 'tokenExpiryDate';
                 HelperService.Month_Names = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                //use this format to allow angular2 to bind to an input type="date"
+                //static getInputFormatDateString(s: string, daysToAdd: number): string {
+                //    if (s === '') {
+                //        return '';
+                //    } else {
+                //        var d: Date = this.translateJavascriptDate(s);
+                //        d.setDate(d.getDate() + daysToAdd);
+                //        var year: number = d.getFullYear();
+                //        var month: number = d.getMonth() + 1;
+                //        var day: number = d.getDate();
+                //        return this.pad(year, 4) + '-' + this.pad(month, 2) + '-' + this.pad(day, 2);
+                //    }
+                //}
                 HelperService.convertMinutesToTimeString = function (pMinutes) {
                     var hour = Math.floor(pMinutes / 60);
                     var minute = pMinutes % 60;
