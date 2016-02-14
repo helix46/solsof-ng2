@@ -22,6 +22,11 @@
     width: 100%;
 }
 
+.clsTimesheetLine {
+    height: 180px;
+    width: 100%;
+}
+
 .clsInvoices {
     height: 500px;
     width: 100%;
@@ -32,36 +37,106 @@
     border-radius: 0;
 }
 
+.inheritFont {
+    font-family: inherit;
+}
+
 label {
 }
 
-
 /* The Modal (background) */
 .modalSolsof {
-    /*visibility: hidden;
-    opacity: 0;
+    /*opacity: 0;
     transition: visibility 0s, opacity 0.2s linear;*/
-    
-    display:none;
-
-    position: fixed;    /*Stay in place*/ 
-    z-index: 1; /* Sit on top */
+    display: none;
+    position: fixed; /*Stay in place*/
     left: 0;
     top: 0;
     width: 100%; /* Full width */
     min-height: 100vh;
     overflow: auto; /* Enable scroll if needed */
     background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.05); /* Black w/ opacity */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.modalSolsof100 {
+    z-index: 100;
+}
+
+.modalSolsof200 {
+    z-index: 200;
+}
+
+.modalSolsof-wide {
+    width: 60%;
+}
+
+.modalSolsof-narrow {
+    width: 40%;
 }
 
 /* Modal Content/Box */
 .modal-contentSolsof {
     background-color: white;
-    margin: 200px auto 0 auto;
+    margin: 100px auto 0 auto;
     padding: 20px;
     border: 1px solid darkgrey;
-    width: 30%; 
     min-width: 300px;
-    box-shadow: 0 0 2px darkgrey;
+    box-shadow: 0 0 50px black;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.navbar-simple .brand {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.navbar-simple .navbar-inner {
+    background: #fff;
+    filter: none !important;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.25);
+    -moz-box-shadow: 0 2px 15px rgba(0,0,0,0.25);
+    -webkit-box-shadow: 0 2px 15px rgba(0,0,0,0.25);
+    border-bottom: 1px solid rgba(0,0,0,0.2);
+}
+
+    .navbar-simple .navbar-inner .nav {
+        float: right;
+    }
+
+        .navbar-simple .navbar-inner .nav li a {
+            background: none;
+            -webkit-box-shadow: none;
+            -moz-box-shadow: none;
+            box-shadow: none;
+            color: #777;
+            font-size: 13px;
+            padding-top: 15px;
+            padding-bottom: 15px;
+            font-weight: 600;
+        }
+
+            .navbar-simple .navbar-inner .nav li a:hover {
+                background: none;
+                -webkit-box-shadow: none;
+                -moz-box-shadow: none;
+                box-shadow: none;
+                color: #bf3604;
+            }
+
+        .navbar-simple .navbar-inner .nav li.active a {
+            color: #bf3604;
+        }

@@ -1,8 +1,10 @@
-timesheet:
-	open timesheet in modal
-	host opens timesheet
-	timesheet linked to child
+sources of bugs:
+	html does not match TS. To minimise, reduce variables in html and put them into TS
 
+
+timesheet:
+	style nav bar
+	double click on timesheet line
 
 	//put modal wrapper on timesheet
 	//add inputs, replace router params

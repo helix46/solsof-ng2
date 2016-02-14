@@ -17,7 +17,7 @@ export class TimesheetsService {
         return res.json();
     }
 
-    getTimesheets(EntityId: number): Observable<SolsofSpa.Api.DataContext.tblTimesheet[]> {
+    getTimesheets(EntityId: number): Observable<SolsofSpa.Api.DataContext.spListTimesheets_Result[]> {
 
         var parameters: modSharedTypes.IHttpParameter[] = [];
         parameters[0] = {
@@ -26,7 +26,7 @@ export class TimesheetsService {
         };
 
         var httpHandlerService = new HttpHandlerService(this.http);
-        return httpHandlerService.getObject<SolsofSpa.Api.DataContext.tblTimesheet[]>(parameters, 'api/timesheets');
+        return httpHandlerService.getObject<SolsofSpa.Api.DataContext.spListTimesheets_Result[]>(parameters, 'api/timesheets');
     }
 }
 

@@ -1,9 +1,12 @@
-﻿import {Router} from 'angular2/router';
+﻿/// <reference path="../../../../node_modules/ag-grid-ng2/main.d.ts" />
+import {Router} from 'angular2/router';
 import {HelperService} from '../../services/helper/helper.service';
 import {GetEntityService} from '../../services/GetEntity/GetEntity.service';
 import {Response} from 'angular2/http';
 import {Component} from 'angular2/core';
 import {LedgerAccountsService} from '../../services/LedgerAccounts/LedgerAccounts.service';
+import {AgGridNg2} from 'ag-grid-ng2/main';
+import {GridOptions} from 'ag-grid/main';
 //import 'rxjs/Rx'; //for map
 
 
@@ -13,7 +16,7 @@ import {LedgerAccountsService} from '../../services/LedgerAccounts/LedgerAccount
     templateUrl: 'src/app/components/LedgerAccounts/LedgerAccounts.component.html',
     pipes: [],
     providers: [LedgerAccountsService],
-    directives: [(<any>window).ag.grid.AgGridNg2]
+    directives: [AgGridNg2]
 })
 
 export class LedgerAccountsComponent {
@@ -75,7 +78,7 @@ export class LedgerAccountsComponent {
      
     /////////////////////////////////////////////////////////////
     //grid
-    columnDefs: ag.grid.ColDef[] = [
+    columnDefs: any[] = [
         { headerName: "Id", field: "LedgerAccountID", hide: true },
         { headerName: "Name", field: "name", minWidth: 100 },
         {
@@ -83,7 +86,7 @@ export class LedgerAccountsComponent {
             field: "balance",
             cellClass: 'rightJustify',
             cellRenderer: function (params: any) {
-                return HelperService.noNullNumber(params.value).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","); //thanks http://stackoverflow.com/users/28324/elias-zamaria
+                return HelperService.formatMoney(params.value);
             },
             minWidth: 80
         },
@@ -101,5 +104,5 @@ export class LedgerAccountsComponent {
         this.router.navigate(['Transactions', { ledgerAccountID: this.selectedLedgerAccount.ledgerAccountID }]);
     }
 
-    gridOptions: ag.grid.GridOptions = HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
+    gridOptions: GridOptions = HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
 }

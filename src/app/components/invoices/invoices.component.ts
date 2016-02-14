@@ -4,6 +4,9 @@ import {GetEntityService} from '../../services/GetEntity/GetEntity.service';
 import {Response} from 'angular2/http';
 import {Component} from 'angular2/core';
 import {InvoicesService} from '../../services/Invoices/Invoices.service';
+import {AgGridNg2} from 'ag-grid-ng2/main';
+import {GridOptions} from 'ag-grid/main';
+
 //import 'rxjs/Rx'; //for map
 
 
@@ -13,7 +16,7 @@ import {InvoicesService} from '../../services/Invoices/Invoices.service';
     templateUrl: 'src/app/components/Invoices/Invoices.component.html',
     pipes: [],
     providers: [InvoicesService],
-    directives: [(<any>window).ag.grid.AgGridNg2]
+    directives: [AgGridNg2]
 })
 
 export class InvoicesComponent {
@@ -75,7 +78,7 @@ export class InvoicesComponent {
      
     /////////////////////////////////////////////////////////////
     //grid
-    columnDefs: ag.grid.ColDef[] = [
+    columnDefs: any[] = [
         //{ field: 'datePaid', type: 'date', cellFilter: 'date:"dd/MM/yyyy"' }
 
         { headerName: "Id", field: "transactionID", hide: true },
@@ -123,5 +126,5 @@ export class InvoicesComponent {
         this.router.navigate(['Transactions', { transactionID: this.selectedInvoice.transactionID }]);
     }
 
-    gridOptions: ag.grid.GridOptions = HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
+    gridOptions: GridOptions = HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
 }

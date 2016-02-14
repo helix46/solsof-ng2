@@ -13,8 +13,8 @@
     <link href="src/styles/navbar.css" rel="stylesheet" />
 
     <!--ag-grid styles-->
-    <link href="node_modules/ag-grid/dist/ag-grid.css" rel="stylesheet" />
-    <link href="node_modules/ag-grid/dist/theme-fresh.css" rel="stylesheet" />
+    <link href="node_modules/ag-grid/dist/styles/ag-grid.css" rel="stylesheet" />
+    <link href="node_modules/ag-grid/dist/styles/theme-fresh.css" rel="stylesheet" />
 
     <!--custom styles-->
     <link href="src/styles/styles.css" rel="stylesheet" />
@@ -27,10 +27,26 @@
     <script src="node_modules/angular2/bundles/router.dev.js"></script>
     <script src="node_modules/angular2/bundles/http.dev.js"></script>
 
-    <!--ag-grid-->
-    <script src="node_modules/ag-grid/dist/ag-grid.js"></script>
-
     <script>
+        System.config({
+            packages: {
+                lib: {
+                    format: 'register',
+                    defaultExtension: 'js'
+                },
+                'ag-grid-ng2': {
+                    defaultExtension: "js"
+                },
+                'ag-grid': {
+                    defaultExtension: "js"
+                }
+            },
+            map: {
+                'ag-grid-ng2': 'node_modules/ag-grid-ng2',
+                'ag-grid': 'node_modules/ag-grid'
+            }
+        });
+
         System.config({ packages: { src: { format: 'register', defaultExtension: 'js' } } });
         System.import('src/boot')
               .then(null, console.error.bind(console));

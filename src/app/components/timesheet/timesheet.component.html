@@ -1,100 +1,57 @@
-﻿<!--<div id="modalTimeSheet" class="modalSolsof" [class.modalSolsofVisible]="timesheetVisible">-->
-<!-- Modal content -->
-<!--<div class="modal-contentSolsof" (keyup.esc)="modalOnKeyup()">-->
-<!--contents-->
-<form novalidate name="formTimesheet" class="form-horizontal" (keyup.esc)="modalOnKeyup()">
-    <h1>{{title}}</h1>
-    <br />
-    {{modalSolsofVisible}}
-    <!--master inputs-->
-    <div class="form-group">
-        <label class="col-md-2 control-label">Debtor</label>
-        <div class="col-md-4">
-            <select class="input-group form-control" #cmbDebtors (change)="onChange(cmbDebtors.value)" [(ngModel)]="timesheet.debtorID">
-                <option *ngFor="#debtor of debtors" [value]="debtor.debtorID">
-                    {{ debtor.debtorName }}
-                </option>
-            </select>
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="inputWeekEnding" class="col-md-2 control-label">Week Ending</label>
-        <div class="col-md-4">
-            <input type="date" [(ngModel)]="timesheet.sWeekEnding" class="form-control" placeholder="Comment">
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="inputComment" class="col-md-2 control-label">Comment</label>
-        <div class="col-md-6">
-            <input [(ngModel)]="timesheet.comment" class="form-control" id="inputComment" placeholder="Comment">
-        </div>
-    </div>
-    <!--detail grid-->
-    <div class="form-group">
-        <div class="col-md-2">
-            &nbsp;
-        </div>
-        <div class="col-md-2" ng-dblclick="editTimesheetLine()">
-            <div id="gridTimesheetLine" ui-grid="gridOptions" class="timesheetLineGrid" ui-grid-selection></div>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label class="col-md-2 control-label">Total</label>
-        <div class="col-md-2">
-            <input [(ngModel)]="timesheetTotal" class="form-control" ng-disabled="true">
-        </div>
-    </div>
-
-    <!--buttons-->
-    <div class="form-group">
-        <div class="col-md-2">
-            &nbsp;
-        </div>
-        <div class="col-md-4">
-            <div class="clearfix">
-                <button style="font-family: inherit;" type="button" class="glyphicon glyphicon-plus btn btn-primary" (click)="newTimesheetLine()">
-                    New Line
-                </button>
-                <button type="button" class="btn btn-primary pull-right" (click)="deleteTimesheetLine()">
-                    Delete Line
-                </button>
+﻿<div class="modalSolsof modalSolsof100" [class.modalSolsofVisible]="timesheetVisible" (keyup.esc)="cancelTimesheet()">
+    <!-- Modal content -->
+    <div class="modal-contentSolsof modalSolsof-wide" (keyup.esc)="modalOnKeyup()">
+        <!--contents-->
+        <form novalidate name="formTimesheet" class="form-horizontal" (keyup.esc)="modalOnKeyup()">
+            <h1>{{titleTimesheet}}</h1>
+            <br />
+            <!--master inputs-->
+            <div class="form-group">
+                <label class="col-md-2 control-label">Debtor</label>
+                <div class="col-md-4">
+                    <select class="input-group form-control" #cmbDebtors (change)="onChange(cmbDebtors.value)" [(ngModel)]="timesheet.debtorID">
+                        <option *ngFor="#debtor of debtors" [value]="debtor.debtorID">
+                            {{ debtor.debtorName }}
+                        </option>
+                    </select>
+                </div>
             </div>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <div class="col-md-2">
-            &nbsp;
-        </div>
-        <div class="col-md-4">
-            <div class="clearfix">
-                <button type="button" class="btn btn-primary" (click)="saveTimesheet()">
-                    OK
-                </button>
-                <button type="button" class="btn btn-primary pull-right" (click)="cancelTimesheet()">
-                    Cancel
-                </button>
+            <div class="form-group">
+                <label for="inputWeekEnding" class="col-md-2 control-label">Week Ending</label>
+                <div class="col-md-4">
+                    <input type="date" [(ngModel)]="timesheet.sWeekEnding" class="form-control" placeholder="Comment">
+                </div>
             </div>
-        </div>
+            <div class="form-group">
+                <label for="inputComment" class="col-md-2 control-label">Comment</label>
+                <div class="col-md-6">
+                    <input [(ngModel)]="timesheet.comment" class="form-control" id="inputComment" placeholder="Comment">
+                </div>
+            </div>
+            <!--detail grid-->
+            <div class="form-group">
+                <div class="col-md-2">
+                    <div class="btn-group-vertical">
+                        <button class="btn btn-primary glyphicon glyphicon-plus inheritFont" (click)="newTimesheetLine()"> New Line</button>
+                        <button class="btn btn-primary glyphicon glyphicon-minus inheritFont" (click)="deleteTimesheetLine()"> Delete Line</button>
+                        <button class="btn btn-primary glyphicon inheritFont" (click)="okClicked()"> OK</button>
+                        <button class="btn btn-primary glyphicon inheritFont" (click)="cancelTimesheet()"> Cancel</button>
+                    </div>
+                </div>
+                <div class="col-md-10">
+                    <ag-grid-ng2 class="ag-fresh clsTimesheetLine" [gridOptions]="gridOptions"></ag-grid-ng2>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">Total</label>
+                <div class="col-md-2">
+                    <input [(ngModel)]="timesheetTotal" class="form-control rightJustify" ng-disabled="true">
+                </div>
+            </div>
+            <div [hidden]="getTimesheetSuccess" class="alert alert-danger">Error getting Timesheet</div>
+        </form>
     </div>
-    <div [hidden]="getTimesheetSuccess" class="alert alert-danger">Error getting Timesheet</div>
-</form>
-<!--</div>
-</div>-->
-<!--<timesheet-line [timesheetLine]="tempTimesheetLine"
-                [edit]="editTimesheetLine"
-                [timesheetLineVisible]="timesheetLineVisible"
-                (cancel)="cancelTimesheetLine()"
-                (ok)="saveTimesheetLine()">
-</timesheet-line>-->
-<!--<form novalidate name="formTimesheet" class="form-horizontal" (keyup.esc)="modalOnKeyup()">
-    <h1>{{title}}</h1>
-    <br />
-    <div class="form-group">
-        <label for="inputComment" class="col-md-2 control-label">Comment</label>
-        <div class="col-md-6">
-            <input [(ngModel)]="timesheet.comment" class="form-control" id="inputComment" placeholder="Comment">
-        </div>
-    </div>
-</form>-->
+</div>
+
+<timesheet-line (saver)="saveTimesheetLine($event);"></timesheet-line>

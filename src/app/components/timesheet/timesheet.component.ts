@@ -1,37 +1,38 @@
 ﻿/// <reference path="../../solsof.d.ts" />
 import {Response} from 'angular2/http';
-import {Component, Input, Output, EventEmitter} from 'angular2/core';
+import {Component, Input, Output, EventEmitter, ViewChild} from 'angular2/core';
 import {HelperService} from '../../services/helper/helper.service';
 import {TimesheetService} from '../../services/timesheet/timesheet.service';
-//import {DebtorsService} from '../../services/debtors/debtors.service';
 import { Router, RouterLink} from 'angular2/router';
 import {GetEntityService} from '../../services/GetEntity/GetEntity.service';
+import {TimesheetLineComponent} from '../timesheetline/timesheetline.component';
+import {AgGridNg2} from 'ag-grid-ng2/main';
+import {GridOptions} from 'ag-grid/main';
 
 @Component({
     selector: 'timesheetModal',
     templateUrl: 'src/app/components/timesheet/timesheet.component.html',
-    providers: [TimesheetService]
-    //providers: [TimesheetService, DebtorsService]
+    styles: ['.modalSolsofVisible {display: block;}'],
+    providers: [TimesheetService],
+    directives: [AgGridNg2, TimesheetLineComponent]
 })
-
 
 export class TimesheetComponent {
     constructor(private timesheetService: TimesheetService, private router: Router) {
-        //constructor(private timesheetService: TimesheetService, private router: Router, private debtorsService: DebtorsService) {
         console.log('constructor timesheetComponent');
         this.currentDebtorID = -1;
 
     }
 
     editTimesheet: boolean;
+    titleTimesheet: string;
     title: string;
     currentDebtorID: number;
     weekEnding: string;
     timesheetTotal: string;
     getTimesheetSuccess: boolean = true;
-
+    selectedTimesheetLineIndex: number;
     @Output() ok: EventEmitter<any> = new EventEmitter();
-    @Output() cancel: EventEmitter<any> = new EventEmitter();
 
     timesheet: SolsofSpa.Helper.structTimesheet = {
         comment: '',
@@ -41,17 +42,15 @@ export class TimesheetComponent {
         timesheetID: -1,
         timesheetLineArray: []
     };
-    @Input() debtors: SolsofSpa.Api.DataContext.tblDebtor[];
-    //@Input() timesheetVisible: boolean;
+    debtors: SolsofSpa.Api.DataContext.tblDebtor[];
+    @ViewChild(TimesheetLineComponent) timesheetLineComponent: TimesheetLineComponent;
+
+    timesheetVisible: boolean = false;
 
     bEditTimesheetLine: boolean;
 
-    //tempTimesheetLine: StructTimesheetLineJs;
-    //selectedTimesheetLine: StructTimesheetLineJs;
-
     ngOnInit() {
-        //this.bEditTimesheet = Boolean(this.routeParams.params['edit']);
-        //this.bEditTimesheet = <any>this.routeParams.params['edit'];
+
         if (HelperService.tokenIsValid() === false) {
             this.router.navigate(['Login']);
         }
@@ -70,8 +69,11 @@ export class TimesheetComponent {
 
     onGetTimesheet = (timesheet: SolsofSpa.Helper.structTimesheet) => {
         this.timesheet = timesheet;
+        this.gridOptions.api.setRowData(timesheet.timesheetLineArray);
+        this.gridOptions.api.sizeColumnsToFit();
         this.getTimesheetSuccess = true;
         this.calculateTimesheetTotal();
+        this.timesheetVisible = true;
     }
 
 
@@ -80,54 +82,20 @@ export class TimesheetComponent {
         this.getTimesheetSuccess = false;
     }
 
-    getTimesheet(timesheetID: number) {
-        var EntityId = GetEntityService.getInstance().getEntityId();
-        this.timesheetService.getTimesheet(timesheetID, EntityId).subscribe(this.onGetTimesheet, this.logTimesheetError);
+    saveTimesheet = () => {
+
     }
 
-    //newTimesheetLine = () => {
-    //    var newTimesheetLineThis = this;
-    //    this.timesheetLineVisible = true;
-    //}
-
-    //modalOnKeyup = (ev: any) => {
-    //    this.timesheetLineVisible = false;
-    //}
-
-    //cancelTimeSheetLine = () => {
-    //    this.timesheetLineVisible = false;
-    //}
-
-    //saveTimeSheetLine = () => {
-
-    //    if (this.bEditTimesheetLine) {
-    //        this.copyTimesheetLine(this.tempTimesheetLine, this.selectedTimesheetLine);
-    //    } else {
-    //        this.timesheet.timesheetLineArray.push(this.tempTimesheetLine);
-    //    }
-    //    this.calculateTimesheetTotal();
-
-    //    this.modalSolsofVisible = false;
-    //}
-
-    //copyTimesheetLine = function (sourceTimesheetLine: StructTimesheetLineJs, destinationTimesheetLine: StructTimesheetLineJs) {
-    //    destinationTimesheetLine.timesheetLineDate = sourceTimesheetLine.timesheetLineDate;
-
-    //    destinationTimesheetLine.startTimeMinutes = sourceTimesheetLine.startTimeMinutes;
-    //    destinationTimesheetLine.finishTimeMinutes = sourceTimesheetLine.finishTimeMinutes;
-    //    destinationTimesheetLine.timeoutMinutes = sourceTimesheetLine.timeoutMinutes;
-
-    //    destinationTimesheetLine.sStartTime = sourceTimesheetLine.sStartTime;
-    //    destinationTimesheetLine.sFinishTime = sourceTimesheetLine.sFinishTime;
-    //    destinationTimesheetLine.sTimeout = sourceTimesheetLine.sTimeout;
-    //};
-
-
-    //closeModal = () => {
-    //    this.modalSolsofVisible = false;
-    //    window.onkeyup = null;
-    //}
-
+    getTimesheet(timesheetID: number, debtors: SolsofSpa.Api.DataContext.tblDebtor[]) {
+        if (HelperService.tokenIsValid()) {
+            this.debtors = debtors;
+            var EntityId = GetEntityService.getInstance().getEntityId();
+            this.titleTimesheet = 'Edit Timesheet';
+            this.timesheetService.getTimesheet(timesheetID, EntityId).subscribe(this.onGetTimesheet, this.logTimesheetError);
+        } else {
+            this.router.navigate(['Login']);
+        }
+    }
 
     logGetDebtorsError = (obj: any) => {
         //this.getTimesheetSuccess = false;
@@ -142,13 +110,6 @@ export class TimesheetComponent {
     //    }
     //}
 
-    //onGetTimesheet = (timesheet: SolsofSpa.Helper.structTimesheet) => {
-    //    this.timesheet = timesheet;
-    //}
-
-    //ongetDebtors = (debtors: SolsofSpa.Api.DataContext.tblDebtor[]) => {
-    //    this.debtors = debtors;
-    //}
 
     onChange = (value: any) => {
         var currentTarget: HTMLSelectElement = <HTMLSelectElement>event.currentTarget;
@@ -173,98 +134,58 @@ export class TimesheetComponent {
         console.log('get success');
     }
 
-    okClick = () => {
-        var structTimesheet: SolsofSpa.Helper.structTimesheet = {
-            comment: '',
-            debtorID: this.selectedDebtor.debtorID,
-            entityID: GetEntityService.getInstance().getEntityId(),
-            timesheetID: -1,
-            sWeekEnding: '',
-            timesheetLineArray: []
-        }
-        if (HelperService.tokenIsValid()) {
-            this.timesheetService.saveNewTimesheet(this.timesheet);
-        } else {
-            this.router.navigate(['Login']);
-        }
+    cancelTimesheet = () => {
+        this.timesheetVisible = false;
     }
+
+    okClicked = () => {
+        //var structTimesheet: SolsofSpa.Helper.structTimesheet = {
+        //    comment: '',
+        //    debtorID: this.selectedDebtor.debtorID,
+        //    entityID: GetEntityService.getInstance().getEntityId(),
+        //    timesheetID: -1,
+        //    sWeekEnding: '',
+        //    timesheetLineArray: []
+        //}
+        //if (HelperService.tokenIsValid()) {
+        //    this.timesheetService.saveNewTimesheet(this.timesheet);
+        //} else {
+        //    this.router.navigate(['Login']);
+        //}
+        this.timesheetVisible = true
+        this.ok.emit('');
+    }
+
+    saveTimesheetLine = (savededTimesheetLine: SolsofSpa.Helper.structTimesheetLine) => {
+        this.timesheet.timesheetLineArray[this.selectedTimesheetLineIndex] = savededTimesheetLine;
+        this.gridOptions.api.setRowData(this.timesheet.timesheetLineArray);
+        this.calculateTimesheetTotal();
+    }
+
     ////////////////////////////////////
     //grid
     ////////////////////////////////////
-    columnDefs: ag.grid.ColDef[] = [
+    columnDefs: any[] = [
         {
-            headerName: "Date", field: "timesheetLineDate", cellRenderer: function (params: any) {
-                return HelperService.formatDateForDisplay(new Date(params.value), false, false, false);
+            headerName: 'Date', field: 'sTimesheetLineDate', cellRenderer: (params: any) => {
+                var d: Date = HelperService.translateJavascriptDate(params.value);
+                return HelperService.formatDateForDisplay(d, false, false, false);
             }
         },
-        { headerName: "Start Time", field: "sStartTime", minWidth: 100 },
-        { headerName: "Finish Time", field: "sFinishTime", minWidth: 100 },
-        { headerName: "Time out", field: "sTimeout", minWidth: 100 }
+        { headerName: 'Start Time', field: 'startTimeMinutes', cellClass: 'rightJustify', cellRenderer: (params: any) => { return HelperService.convertMinutesToTimeString(params.value); } },
+        { headerName: 'Finish Time', field: 'finishTimeMinutes', cellClass: 'rightJustify', cellRenderer: (params: any) => { return HelperService.convertMinutesToTimeString(params.value); } },
+        { headerName: 'Time out', field: 'timeoutMinutes', cellClass: 'rightJustify', cellRenderer: (params: any) => { return HelperService.convertMinutesToTimeString(params.value); } }
     ];
     onRowClicked = () => {
     }
-    onRowDoubleClicked = () => {
-        this.bEditTimesheetLine = true;
-        //this.showTimesheetLinePopup();
+    onRowDoubleClicked = (params: any) => {
+        var selectedTimesheetLine = <SolsofSpa.Helper.structTimesheetLine>params.data;
+        //params.node.id seems to be index of data array (not row number!)
+        this.selectedTimesheetLineIndex = params.node.id;
+        this.timesheetLineComponent.displayTimesheetline(selectedTimesheetLine);
     }
-    gridOptions: ag.grid.GridOptions = HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
-
+    gridOptions: GridOptions = HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
 }
 
 
-
-//import {Response} from 'angular2/http';
-//import {Component, Input, Output, EventEmitter} from 'angular2/core';
-//import {HelperService} from '../../services/helper/helper.service';
-//import {TimesheetService} from '../../services/timesheet/timesheet.service';
-//import { Router, RouterLink} from 'angular2/router';
-//import {GetEntityService} from '../../services/GetEntity/GetEntity.service';
-
-//@Component({
-//    selector: 'timesheetModal',
-//    templateUrl: 'src/app/components/timesheet/timesheet.component.html',
-//    providers: [TimesheetService]
-//})
-
-
-//export class TimesheetComponent {
-//    constructor(private timesheetService: TimesheetService, private router: Router) {
-//        this.timesheet = {
-//            comment: '',
-//            debtorID: -1,
-//            entityID: -1,
-//            sWeekEnding: '',
-//            timesheetID: -1,
-//            timesheetLineArray: []
-//        };
-//    }
-
-//    ngOnInit() {
-//        this.timesheet = {
-//            comment: '',
-//            debtorID: -1,
-//            entityID: -1,
-//            sWeekEnding: '',
-//            timesheetID: -1,
-//            timesheetLineArray: []
-//        };
-//    }
-
-
-//    editTimesheet: boolean;
-//    title: string;
-
-//    @Output() ok: EventEmitter<any> = new EventEmitter();
-//    @Output() cancel: EventEmitter<any> = new EventEmitter();
-
-//    @Input() timesheet: SolsofSpa.Helper.structTimesheet = {
-//        comment: '',
-//        debtorID: -1,
-//        entityID: -1,
-//        sWeekEnding: '',
-//        timesheetID: -1,
-//        timesheetLineArray: []
-//    };
-
-//}
 

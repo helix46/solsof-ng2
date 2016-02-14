@@ -1,10 +1,11 @@
-﻿/// <reference path="../../../../node_modules/ag-grid/dist/ag-grid.d.ts" />
-import {GetEntityService} from '../../services/GetEntity/GetEntity.service';
+﻿import {GetEntityService} from '../../services/GetEntity/GetEntity.service';
 import {Response} from 'angular2/http';
 import {Component} from 'angular2/core';
 import {EntitiesService} from '../../services/entities/entities.service';
 import {HelperService} from '../../services/helper/helper.service';
 import { Router, RouterLink } from 'angular2/router';
+import {AgGridNg2} from 'ag-grid-ng2/main';
+import {GridOptions} from 'ag-grid/main';
 
 
 @Component({
@@ -12,7 +13,7 @@ import { Router, RouterLink } from 'angular2/router';
     templateUrl: 'src/app/components/entities/entities.component.html',
     pipes: [],
     providers: [EntitiesService],
-    directives: [(<any>window).ag.grid.AgGridNg2]
+    directives: [AgGridNg2]
 })
 
 export class EntitiesComponent {
@@ -65,7 +66,7 @@ export class EntitiesComponent {
 
     //////////////////////////////////////////////
     //grid
-    columnDefs: ag.grid.ColDef[] = [
+    columnDefs: any[] = [
         { headerName: "Id", field: "entityID", hide: true },
         { headerName: "Entity", field: "name" }
     ];
@@ -81,5 +82,5 @@ export class EntitiesComponent {
         console.log('onRowClicked');
     }
 
-    gridOptions: ag.grid.GridOptions = HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
+    gridOptions: GridOptions = HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
 }

@@ -8,15 +8,16 @@
     "start": "concurrent \"npm run tsc:w\" \"npm run lite\" "
   },
   "dependencies": {
-    "angular2": "^2.0.0-beta.1",
+    "ag-grid": "3.3.0",
+    "ag-grid-ng2": "3.3.0",
+    "angular2": "2.0.0-beta.3",
     "systemjs": "0.19.6",
     "es6-promise": "^3.0.2",
     "es6-shim": "^0.33.3",
     "reflect-metadata": "0.1.2",
     "rxjs": "5.0.0-beta.0",
-    "zone.js": "0.5.10",
-    "bootstrap": "^3.3.6",
-    "ag-grid": "^3.1.2"
+    "zone.js": "0.5.11",
+    "bootstrap": "3.3.6"
   },
 
   "devDependencies": {
@@ -25,6 +26,3 @@
     "typescript": "^1.7.5"
   }
 }
-
-
-

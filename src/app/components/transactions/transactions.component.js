@@ -1,4 +1,4 @@
-System.register(['../../services/GetEntity/GetEntity.service', 'angular2/router', '../../services/helper/helper.service', 'angular2/core', '../../services/Transactions/Transactions.service'], function(exports_1) {
+System.register(['ag-grid-ng2/main', '../../services/GetEntity/GetEntity.service', 'angular2/router', '../../services/helper/helper.service', 'angular2/core', '../../services/Transactions/Transactions.service'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,10 +8,13 @@ System.register(['../../services/GetEntity/GetEntity.service', 'angular2/router'
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var GetEntity_service_1, router_1, helper_service_1, core_1, Transactions_service_1;
+    var main_1, GetEntity_service_1, router_1, helper_service_1, core_1, Transactions_service_1;
     var TransactionsComponent;
     return {
         setters:[
+            function (main_1_1) {
+                main_1 = main_1_1;
+            },
             function (GetEntity_service_1_1) {
                 GetEntity_service_1 = GetEntity_service_1_1;
             },
@@ -129,7 +132,7 @@ System.register(['../../services/GetEntity/GetEntity.service', 'angular2/router'
                         templateUrl: 'src/app/components/transactions/transactions.component.html',
                         pipes: [],
                         providers: [Transactions_service_1.TransactionsService],
-                        directives: [window.ag.grid.AgGridNg2]
+                        directives: [main_1.AgGridNg2]
                     }), 
                     __metadata('design:paramtypes', [Transactions_service_1.TransactionsService, router_1.Router, router_1.RouteParams])
                 ], TransactionsComponent);

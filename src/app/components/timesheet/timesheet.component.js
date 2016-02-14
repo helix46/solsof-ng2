@@ -1,4 +1,4 @@
-System.register(['angular2/core', '../../services/helper/helper.service', '../../services/timesheet/timesheet.service', 'angular2/router', '../../services/GetEntity/GetEntity.service'], function(exports_1) {
+System.register(['angular2/core', '../../services/helper/helper.service', '../../services/timesheet/timesheet.service', 'angular2/router', '../../services/GetEntity/GetEntity.service', '../timesheetline/timesheetline.component', 'ag-grid-ng2/main'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, helper_service_1, timesheet_service_1, router_1, GetEntity_service_1;
+    var core_1, helper_service_1, timesheet_service_1, router_1, GetEntity_service_1, timesheetline_component_1, main_1;
     var TimesheetComponent;
     return {
         setters:[
@@ -26,6 +26,12 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
             },
             function (GetEntity_service_1_1) {
                 GetEntity_service_1 = GetEntity_service_1_1;
+            },
+            function (timesheetline_component_1_1) {
+                timesheetline_component_1 = timesheetline_component_1_1;
+            },
+            function (main_1_1) {
+                main_1 = main_1_1;
             }],
         execute: function() {
             TimesheetComponent = (function () {
@@ -35,7 +41,6 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                     this.router = router;
                     this.getTimesheetSuccess = true;
                     this.ok = new core_1.EventEmitter();
-                    this.cancel = new core_1.EventEmitter();
                     this.timesheet = {
                         comment: '',
                         debtorID: -1,
@@ -44,6 +49,7 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                         timesheetID: -1,
                         timesheetLineArray: []
                     };
+                    this.timesheetVisible = false;
                     this.calculateTimesheetTotal = function () {
                         var totalMinutes = 0, startTimeMinutes, finishTimeMinutes, timeoutMinutes, i;
                         for (i = 0; i < _this.timesheet.timesheetLineArray.length; i = i + 1) {
@@ -56,45 +62,18 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                     };
                     this.onGetTimesheet = function (timesheet) {
                         _this.timesheet = timesheet;
+                        _this.gridOptions.api.setRowData(timesheet.timesheetLineArray);
+                        _this.gridOptions.api.sizeColumnsToFit();
                         _this.getTimesheetSuccess = true;
                         _this.calculateTimesheetTotal();
+                        _this.timesheetVisible = true;
                     };
                     this.logTimesheetError = function () {
                         console.log('getTimesheet Error');
                         _this.getTimesheetSuccess = false;
                     };
-                    //newTimesheetLine = () => {
-                    //    var newTimesheetLineThis = this;
-                    //    this.timesheetLineVisible = true;
-                    //}
-                    //modalOnKeyup = (ev: any) => {
-                    //    this.timesheetLineVisible = false;
-                    //}
-                    //cancelTimeSheetLine = () => {
-                    //    this.timesheetLineVisible = false;
-                    //}
-                    //saveTimeSheetLine = () => {
-                    //    if (this.bEditTimesheetLine) {
-                    //        this.copyTimesheetLine(this.tempTimesheetLine, this.selectedTimesheetLine);
-                    //    } else {
-                    //        this.timesheet.timesheetLineArray.push(this.tempTimesheetLine);
-                    //    }
-                    //    this.calculateTimesheetTotal();
-                    //    this.modalSolsofVisible = false;
-                    //}
-                    //copyTimesheetLine = function (sourceTimesheetLine: StructTimesheetLineJs, destinationTimesheetLine: StructTimesheetLineJs) {
-                    //    destinationTimesheetLine.timesheetLineDate = sourceTimesheetLine.timesheetLineDate;
-                    //    destinationTimesheetLine.startTimeMinutes = sourceTimesheetLine.startTimeMinutes;
-                    //    destinationTimesheetLine.finishTimeMinutes = sourceTimesheetLine.finishTimeMinutes;
-                    //    destinationTimesheetLine.timeoutMinutes = sourceTimesheetLine.timeoutMinutes;
-                    //    destinationTimesheetLine.sStartTime = sourceTimesheetLine.sStartTime;
-                    //    destinationTimesheetLine.sFinishTime = sourceTimesheetLine.sFinishTime;
-                    //    destinationTimesheetLine.sTimeout = sourceTimesheetLine.sTimeout;
-                    //};
-                    //closeModal = () => {
-                    //    this.modalSolsofVisible = false;
-                    //    window.onkeyup = null;
-                    //}
+                    this.saveTimesheet = function () {
+                    };
                     this.logGetDebtorsError = function (obj) {
                         //this.getTimesheetSuccess = false;
                         var s = JSON.stringify(obj);
@@ -105,12 +84,6 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                     //    if (mostRecentTimesheet !== undefined) {
                     //        this.timesheet.debtorID = mostRecentTimesheet.debtorID;
                     //    }
-                    //}
-                    //onGetTimesheet = (timesheet: SolsofSpa.Helper.structTimesheet) => {
-                    //    this.timesheet = timesheet;
-                    //}
-                    //ongetDebtors = (debtors: SolsofSpa.Api.DataContext.tblDebtor[]) => {
-                    //    this.debtors = debtors;
                     //}
                     this.onChange = function (value) {
                         var currentTarget = event.currentTarget;
@@ -129,76 +102,88 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                     this.logSuccess = function () {
                         console.log('get success');
                     };
-                    this.okClick = function () {
-                        var structTimesheet = {
-                            comment: '',
-                            debtorID: _this.selectedDebtor.debtorID,
-                            entityID: GetEntity_service_1.GetEntityService.getInstance().getEntityId(),
-                            timesheetID: -1,
-                            sWeekEnding: '',
-                            timesheetLineArray: []
-                        };
-                        if (helper_service_1.HelperService.tokenIsValid()) {
-                            _this.timesheetService.saveNewTimesheet(_this.timesheet);
-                        }
-                        else {
-                            _this.router.navigate(['Login']);
-                        }
+                    this.cancelTimesheet = function () {
+                        _this.timesheetVisible = false;
+                    };
+                    this.okClicked = function () {
+                        //var structTimesheet: SolsofSpa.Helper.structTimesheet = {
+                        //    comment: '',
+                        //    debtorID: this.selectedDebtor.debtorID,
+                        //    entityID: GetEntityService.getInstance().getEntityId(),
+                        //    timesheetID: -1,
+                        //    sWeekEnding: '',
+                        //    timesheetLineArray: []
+                        //}
+                        //if (HelperService.tokenIsValid()) {
+                        //    this.timesheetService.saveNewTimesheet(this.timesheet);
+                        //} else {
+                        //    this.router.navigate(['Login']);
+                        //}
+                        _this.timesheetVisible = true;
+                        _this.ok.emit('');
+                    };
+                    this.saveTimesheetLine = function (savededTimesheetLine) {
+                        _this.timesheet.timesheetLineArray[_this.selectedTimesheetLineIndex] = savededTimesheetLine;
+                        _this.gridOptions.api.setRowData(_this.timesheet.timesheetLineArray);
+                        _this.calculateTimesheetTotal();
                     };
                     ////////////////////////////////////
                     //grid
                     ////////////////////////////////////
                     this.columnDefs = [
                         {
-                            headerName: "Date", field: "timesheetLineDate", cellRenderer: function (params) {
-                                return helper_service_1.HelperService.formatDateForDisplay(new Date(params.value), false, false, false);
+                            headerName: 'Date', field: 'sTimesheetLineDate', cellRenderer: function (params) {
+                                var d = helper_service_1.HelperService.translateJavascriptDate(params.value);
+                                return helper_service_1.HelperService.formatDateForDisplay(d, false, false, false);
                             }
                         },
-                        { headerName: "Start Time", field: "sStartTime", minWidth: 100 },
-                        { headerName: "Finish Time", field: "sFinishTime", minWidth: 100 },
-                        { headerName: "Time out", field: "sTimeout", minWidth: 100 }
+                        { headerName: 'Start Time', field: 'startTimeMinutes', cellClass: 'rightJustify', cellRenderer: function (params) { return helper_service_1.HelperService.convertMinutesToTimeString(params.value); } },
+                        { headerName: 'Finish Time', field: 'finishTimeMinutes', cellClass: 'rightJustify', cellRenderer: function (params) { return helper_service_1.HelperService.convertMinutesToTimeString(params.value); } },
+                        { headerName: 'Time out', field: 'timeoutMinutes', cellClass: 'rightJustify', cellRenderer: function (params) { return helper_service_1.HelperService.convertMinutesToTimeString(params.value); } }
                     ];
                     this.onRowClicked = function () {
                     };
-                    this.onRowDoubleClicked = function () {
-                        _this.bEditTimesheetLine = true;
-                        //this.showTimesheetLinePopup();
+                    this.onRowDoubleClicked = function (params) {
+                        var selectedTimesheetLine = params.data;
+                        //params.node.id seems to be index of data array (not row number!)
+                        _this.selectedTimesheetLineIndex = params.node.id;
+                        _this.timesheetLineComponent.displayTimesheetline(selectedTimesheetLine);
                     };
                     this.gridOptions = helper_service_1.HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
-                    //constructor(private timesheetService: TimesheetService, private router: Router, private debtorsService: DebtorsService) {
                     console.log('constructor timesheetComponent');
                     this.currentDebtorID = -1;
                 }
-                //tempTimesheetLine: StructTimesheetLineJs;
-                //selectedTimesheetLine: StructTimesheetLineJs;
                 TimesheetComponent.prototype.ngOnInit = function () {
-                    //this.bEditTimesheet = Boolean(this.routeParams.params['edit']);
-                    //this.bEditTimesheet = <any>this.routeParams.params['edit'];
                     if (helper_service_1.HelperService.tokenIsValid() === false) {
                         this.router.navigate(['Login']);
                     }
                 };
-                TimesheetComponent.prototype.getTimesheet = function (timesheetID) {
-                    var EntityId = GetEntity_service_1.GetEntityService.getInstance().getEntityId();
-                    this.timesheetService.getTimesheet(timesheetID, EntityId).subscribe(this.onGetTimesheet, this.logTimesheetError);
+                TimesheetComponent.prototype.getTimesheet = function (timesheetID, debtors) {
+                    if (helper_service_1.HelperService.tokenIsValid()) {
+                        this.debtors = debtors;
+                        var EntityId = GetEntity_service_1.GetEntityService.getInstance().getEntityId();
+                        this.titleTimesheet = 'Edit Timesheet';
+                        this.timesheetService.getTimesheet(timesheetID, EntityId).subscribe(this.onGetTimesheet, this.logTimesheetError);
+                    }
+                    else {
+                        this.router.navigate(['Login']);
+                    }
                 };
                 __decorate([
                     core_1.Output(), 
                     __metadata('design:type', core_1.EventEmitter)
                 ], TimesheetComponent.prototype, "ok", void 0);
                 __decorate([
-                    core_1.Output(), 
-                    __metadata('design:type', core_1.EventEmitter)
-                ], TimesheetComponent.prototype, "cancel", void 0);
-                __decorate([
-                    core_1.Input(), 
-                    __metadata('design:type', Array)
-                ], TimesheetComponent.prototype, "debtors", void 0);
+                    core_1.ViewChild(timesheetline_component_1.TimesheetLineComponent), 
+                    __metadata('design:type', timesheetline_component_1.TimesheetLineComponent)
+                ], TimesheetComponent.prototype, "timesheetLineComponent", void 0);
                 TimesheetComponent = __decorate([
                     core_1.Component({
                         selector: 'timesheetModal',
                         templateUrl: 'src/app/components/timesheet/timesheet.component.html',
-                        providers: [timesheet_service_1.TimesheetService]
+                        styles: ['.modalSolsofVisible {display: block;}'],
+                        providers: [timesheet_service_1.TimesheetService],
+                        directives: [main_1.AgGridNg2, timesheetline_component_1.TimesheetLineComponent]
                     }), 
                     __metadata('design:paramtypes', [timesheet_service_1.TimesheetService, router_1.Router])
                 ], TimesheetComponent);
@@ -208,49 +193,4 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
         }
     }
 });
-//import {Response} from 'angular2/http';
-//import {Component, Input, Output, EventEmitter} from 'angular2/core';
-//import {HelperService} from '../../services/helper/helper.service';
-//import {TimesheetService} from '../../services/timesheet/timesheet.service';
-//import { Router, RouterLink} from 'angular2/router';
-//import {GetEntityService} from '../../services/GetEntity/GetEntity.service';
-//@Component({
-//    selector: 'timesheetModal',
-//    templateUrl: 'src/app/components/timesheet/timesheet.component.html',
-//    providers: [TimesheetService]
-//})
-//export class TimesheetComponent {
-//    constructor(private timesheetService: TimesheetService, private router: Router) {
-//        this.timesheet = {
-//            comment: '',
-//            debtorID: -1,
-//            entityID: -1,
-//            sWeekEnding: '',
-//            timesheetID: -1,
-//            timesheetLineArray: []
-//        };
-//    }
-//    ngOnInit() {
-//        this.timesheet = {
-//            comment: '',
-//            debtorID: -1,
-//            entityID: -1,
-//            sWeekEnding: '',
-//            timesheetID: -1,
-//            timesheetLineArray: []
-//        };
-//    }
-//    editTimesheet: boolean;
-//    title: string;
-//    @Output() ok: EventEmitter<any> = new EventEmitter();
-//    @Output() cancel: EventEmitter<any> = new EventEmitter();
-//    @Input() timesheet: SolsofSpa.Helper.structTimesheet = {
-//        comment: '',
-//        debtorID: -1,
-//        entityID: -1,
-//        sWeekEnding: '',
-//        timesheetID: -1,
-//        timesheetLineArray: []
-//    };
-//}
 //# sourceMappingURL=timesheet.component.js.map

@@ -6,15 +6,15 @@ import {Component, ViewChild} from 'angular2/core';
 import {TimesheetsService} from '../../services/Timesheets/Timesheets.service';
 import {TimesheetComponent} from '../timesheet/timesheet.component';
 import {DebtorsService} from '../../services/debtors/debtors.service';
-
-
+import {AgGridNg2} from 'ag-grid-ng2/main';
+import {GridOptions} from 'ag-grid/main';
 
 @Component({
     //selector: 'ledger-accounts',
     templateUrl: 'src/app/components/Timesheets/Timesheets.component.html',
     pipes: [],
     providers: [TimesheetsService, DebtorsService],
-    directives: [(<any>window).ag.grid.AgGridNg2, TimesheetComponent]
+    directives: [AgGridNg2, TimesheetComponent]
 })
 
 export class TimesheetsComponent {
@@ -28,7 +28,6 @@ export class TimesheetsComponent {
         //};
     }
     ngOnInit() {
-        this.timesheetVisible = false;
         this.loadTimesheets();
         this.loadDebtors();
         //need this
@@ -36,21 +35,19 @@ export class TimesheetsComponent {
     //////////////////////////////////////////////////////////
     //properties
     debtors: SolsofSpa.Api.DataContext.tblDebtor[];
-    //selectedTimesheet: SolsofSpa.Api.DataContext.tblTimesheet;
-    public Timesheets: SolsofSpa.Api.DataContext.tblTimesheet[] = [];
+    public Timesheets: SolsofSpa.Api.DataContext.spListTimesheets_Result[] = [];
     public excludeInactive: boolean = true;
     getTimesheetsSuccess: boolean = true;
     getDebtorsSuccess: boolean = true;
     editTimesheet: boolean;
-    timesheetVisible: boolean;
     @ViewChild(TimesheetComponent) timesheetComponent: TimesheetComponent;
+
     //////////////////////////////////////////////////////////
 
     //events
     addTimesheet = () => {
         //this.router.navigate(['Timesheet', { edit: "false" }]);
         this.editTimesheet = false;
-        this.timesheetVisible = true;
     }
 
     chkExcludeInactiveClicked = (chkExcludeInactive: HTMLInputElement) => {
@@ -78,7 +75,7 @@ export class TimesheetsComponent {
         this.debtors = debtors;
     }
 
-    onGetTimesheetsSuccess = (timesheets: SolsofSpa.Api.DataContext.tblTimesheet[]) => {
+    onGetTimesheetsSuccess = (timesheets: SolsofSpa.Api.DataContext.spListTimesheets_Result[]) => {
         this.Timesheets = timesheets;
         this.gridOptions.api.setRowData(timesheets);
         this.gridOptions.api.sizeColumnsToFit();
@@ -113,9 +110,13 @@ export class TimesheetsComponent {
         }
     };
  
+    refreshList = () => {
+        alert('refreshList ');
+    }
+
     ////////////////////////////////////////////////
     //grid
-    columnDefs: ag.grid.ColDef[] = [
+    columnDefs: any[] = [
         { headerName: "Id", field: "timesheetID", hide: true },
         {
             headerName: "Week Ending",
@@ -131,7 +132,7 @@ export class TimesheetsComponent {
             field: "minutes",
             cellClass: 'rightJustify',
             cellRenderer: function (params: any) {
-                return HelperService.noNullNumber(params.value).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ","); //thanks http://stackoverflow.com/users/28324/elias-zamaria
+                return HelperService.formatMoney(params.value);
             },
             minWidth: 80
         },
@@ -144,22 +145,11 @@ export class TimesheetsComponent {
         console.log('Timesheet onRowClicked');
     }
 
-    //onGetTimesheet = (timesheet: SolsofSpa.Helper.structTimesheet) => {
-    //    this.structTimesheet = timesheet;
-    //    this.getTimesheetSuccess = true;
-    //    this.timesheetComponent.calculateTimesheetTotal();
-    //}
-
     onRowDoubleClicked = (params: any) => {
-        //this.onRowClicked(params);
-        var selectedTimesheet = <SolsofSpa.Api.DataContext.tblTimesheet>params.data;
-        //var EntityId = GetEntityService.getInstance().getEntityId();
-        //this.timesheetService.getTimesheet(selectedTimesheet.timesheetID, EntityId).subscribe(this.onGetTimesheet, this.logTimesheetError);
-        this.timesheetComponent.getTimesheet(selectedTimesheet.timesheetID);
+        var selectedTimesheet = <SolsofSpa.Api.DataContext.spListTimesheets_Result>params.data;
+        this.timesheetComponent.getTimesheet(selectedTimesheet.timesheetID, this.debtors);
         this.editTimesheet = true;
-        this.timesheetVisible = true;
-        //this.router.navigate(['Timesheet', { timesheetID: this.selectedTimesheet.timesheetID, edit: true }]);
     }
 
-    gridOptions: ag.grid.GridOptions = HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
+    gridOptions: GridOptions = HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
 }

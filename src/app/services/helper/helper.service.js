@@ -41,7 +41,7 @@ System.register([], function(exports_1) {
                     if (d === null) {
                         return "";
                     }
-                    str = d.getFullYear().toString() + "." + (d.getMonth() + 1).toString() + "." + d.getDate().toString();
+                    str = d.getFullYear().toString() + "-" + this.pad((d.getMonth() + 1), 2).toString() + "-" + this.pad(d.getDate(), 2).toString();
                     return str;
                 };
                 ;
@@ -53,10 +53,13 @@ System.register([], function(exports_1) {
                     if (d === null) {
                         return '';
                     }
-                    str = d.getFullYear().toString() + '.' + (d.getMonth() + 1).toString() + '.' + d.getDate().toString() + '.' + d.getHours().toString() + '.' + d.getMinutes().toString() + '.' + d.getSeconds().toString() + '.' + d.getMilliseconds().toString();
+                    str = d.getFullYear().toString() + '-' + this.pad((d.getMonth() + 1), 2).toString() + "-" + this.pad(d.getDate(), 2).toString() + '-' + d.getHours().toString() + '-' + d.getMinutes().toString() + '-' + d.getSeconds().toString() + '-' + d.getMilliseconds().toString();
                     return str;
                 };
                 ;
+                HelperService.formatMoney = function (value) {
+                    return value.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ","); //thanks http://stackoverflow.com/users/28324/elias-zamaria
+                };
                 HelperService.translateJavascriptDateAndTime = function (s) {
                     var day, month, year, hour, minute, second, millisecond, ss, d;
                     if (s === undefined) {
@@ -68,7 +71,7 @@ System.register([], function(exports_1) {
                     if (s === '') {
                         return null;
                     }
-                    ss = s.split('.');
+                    ss = s.split('-');
                     year = Number(ss[0]);
                     month = Number(ss[1]);
                     day = Number(ss[2]);
@@ -94,7 +97,7 @@ System.register([], function(exports_1) {
                     if (s === '') {
                         return null;
                     }
-                    ss = s.split('.');
+                    ss = s.split('-');
                     year = Number(ss[0]);
                     month = Number(ss[1]);
                     day = Number(ss[2]);
@@ -179,6 +182,7 @@ System.register([], function(exports_1) {
                         rowData: null,
                         enableSorting: true,
                         enableFilter: true,
+                        groupUseEntireRow: true,
                         enableColResize: true,
                         rowSelection: "single",
                         onRowClicked: onRowClicked,

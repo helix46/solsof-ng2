@@ -1,4 +1,6 @@
-﻿
+﻿import {AgGridNg2} from 'ag-grid-ng2/main';
+import {GridOptions} from 'ag-grid/main';
+
 
 export class HelperService {
 
@@ -44,7 +46,7 @@ export class HelperService {
         if (d === null) {
             return "";
         }
-        str = d.getFullYear().toString() + "." + (d.getMonth() + 1).toString() + "." + d.getDate().toString();
+        str = d.getFullYear().toString() + "-" + this.pad((d.getMonth() + 1), 2).toString() + "-" + this.pad(d.getDate(), 2).toString();
         return str;
     };
 
@@ -56,9 +58,13 @@ export class HelperService {
         if (d === null) {
             return '';
         }
-        str = d.getFullYear().toString() + '.' + (d.getMonth() + 1).toString() + '.' + d.getDate().toString() + '.' + d.getHours().toString() + '.' + d.getMinutes().toString() + '.' + d.getSeconds().toString() + '.' + d.getMilliseconds().toString();
+        str = d.getFullYear().toString() + '-' + this.pad((d.getMonth() + 1), 2).toString() + "-" + this.pad(d.getDate(), 2).toString() + '-' + d.getHours().toString() + '-' + d.getMinutes().toString() + '-' + d.getSeconds().toString() + '-' + d.getMilliseconds().toString();
         return str;
     };
+
+    static formatMoney(value: number) {
+        return value.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ","); //thanks http://stackoverflow.com/users/28324/elias-zamaria
+    }
 
     static translateJavascriptDateAndTime(s: string): Date {
         var day: number, month: number, year: number, hour: number, minute: number, second: number, millisecond: number, ss: string[], d: Date;
@@ -72,7 +78,7 @@ export class HelperService {
             return null;
         }
 
-        ss = s.split('.');
+        ss = s.split('-');
         year = Number(ss[0]);
         month = Number(ss[1]);
         day = Number(ss[2]);
@@ -99,7 +105,7 @@ export class HelperService {
             return null;
         }
 
-        ss = s.split('.');
+        ss = s.split('-');
         year = Number(ss[0]);
         month = Number(ss[1]);
         day = Number(ss[2]);
@@ -175,19 +181,20 @@ export class HelperService {
             return inp;
         }
     }
-    static autoSizeAll(columnDefs: ag.grid.ColDef[], gridOptions: ag.grid.GridOptions) {
+    static autoSizeAll(columnDefs: any[], gridOptions: GridOptions) {
         var allColumnIds: string[] = [];
         columnDefs.forEach(function (columnDef) {
             allColumnIds.push(columnDef.field);
         });
         gridOptions.columnApi.autoSizeColumns(allColumnIds);
     };
-    static getGridOptions(columnDefs: ag.grid.ColDef[], onRowClicked: (params: any) => void, onRowDoubleClicked: (params: any) => void): ag.grid.GridOptions {
-        var gridOptions: ag.grid.GridOptions = {
+    static getGridOptions(columnDefs: any[], onRowClicked: (params: any) => void, onRowDoubleClicked: (params: any) => void): GridOptions {
+        var gridOptions: GridOptions = {
             columnDefs: columnDefs,
             rowData: null,
             enableSorting: true,
             enableFilter: true,
+            groupUseEntireRow: true,
             enableColResize: true,            rowSelection: "single",
             onRowClicked: onRowClicked,
             onRowDoubleClicked: onRowDoubleClicked

@@ -1,4 +1,6 @@
-﻿import {GetEntityService} from '../../services/GetEntity/GetEntity.service';
+﻿import {AgGridNg2} from 'ag-grid-ng2/main';
+import {GridOptions} from 'ag-grid/main';
+import {GetEntityService} from '../../services/GetEntity/GetEntity.service';
 import {Router, RouteParams} from 'angular2/router';
 import {HelperService} from '../../services/helper/helper.service';
 import {Response} from 'angular2/http';
@@ -8,12 +10,13 @@ import {TransactionsService} from '../../services/Transactions/Transactions.serv
 
 
 
+
 @Component({
     selector: 'transaction',
     templateUrl: 'src/app/components/transactions/transactions.component.html',
     pipes: [],
     providers: [TransactionsService],
-    directives: [(<any>window).ag.grid.AgGridNg2]
+    directives: [AgGridNg2]
 })
 
 export class TransactionsComponent {
@@ -75,7 +78,7 @@ export class TransactionsComponent {
      
     /////////////////////////////////////////////////////////////
     //grid
-    columnDefs: ag.grid.ColDef[] = [
+    columnDefs: any[] = [
         { headerName: "transactionID", field: "transactionID", hide: true },
         {
             headerName: "Date",
@@ -117,5 +120,5 @@ export class TransactionsComponent {
         alert('this.router.navigate([]);')
     }
 
-    gridOptions: ag.grid.GridOptions = HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
+    gridOptions: GridOptions = HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
 }

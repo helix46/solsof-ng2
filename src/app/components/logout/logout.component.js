@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/router', '../../services/helper/helper.service'], function(exports_1) {
+System.register(['angular2/core', 'angular2/router', '../../services/helper/helper.service', '../../services/GetEntity/GetEntity.service'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['angular2/core', 'angular2/router', '../../services/helper/help
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, helper_service_1;
+    var core_1, router_1, helper_service_1, GetEntity_service_1;
     var LogoutComponent;
     return {
         setters:[
@@ -20,6 +20,9 @@ System.register(['angular2/core', 'angular2/router', '../../services/helper/help
             },
             function (helper_service_1_1) {
                 helper_service_1 = helper_service_1_1;
+            },
+            function (GetEntity_service_1_1) {
+                GetEntity_service_1 = GetEntity_service_1_1;
             }],
         execute: function() {
             LogoutComponent = (function () {
@@ -28,6 +31,7 @@ System.register(['angular2/core', 'angular2/router', '../../services/helper/help
                 }
                 LogoutComponent.prototype.ngOnInit = function () {
                     helper_service_1.HelperService.deleteTokenFromStorage();
+                    GetEntity_service_1.GetEntityService.getInstance().setEntityId(-1);
                     this.router.navigate(['Login']);
                 };
                 LogoutComponent = __decorate([
