@@ -4,8 +4,8 @@ import {GetEntityService} from '../../services/GetEntity/GetEntity.service';
 import {Response} from 'angular2/http';
 import {Component} from 'angular2/core';
 import {InvoicesService} from '../../services/Invoices/Invoices.service';
-import {AgGridNg2} from 'ag-grid-ng2/main';
-import {GridOptions} from 'ag-grid/main';
+//import {AgGridNg2} from 'ag-grid-ng2/main';
+//import {GridOptions} from 'ag-grid/main';
 
 //import 'rxjs/Rx'; //for map
 
@@ -16,7 +16,8 @@ import {GridOptions} from 'ag-grid/main';
     templateUrl: 'src/app/components/Invoices/Invoices.component.html',
     pipes: [],
     providers: [InvoicesService],
-    directives: [AgGridNg2]
+    directives: [(<any>window).ag.grid.AgGridNg2]
+    //directives: [AgGridNg2]
 })
 
 export class InvoicesComponent {
@@ -28,8 +29,7 @@ export class InvoicesComponent {
     constructor(private InvoicesService: InvoicesService, public router: Router) {
         console.log('constructor InvoicesComponent');
         window.onresize = () => {
-            this.gridOptions.api.sizeColumnsToFit();
-            //HelperService.autoSizeAll(this.columnDefs, this.gridOptions);
+            //this.gridOptions.api.sizeColumnsToFit();
         };
     }
     ngOnInit() {
@@ -56,7 +56,6 @@ export class InvoicesComponent {
     onGetInvoicesSuccess = (data: SolsofSpa.Api.DataContext.spGetInvoices_Result[]) => {
         this.Invoices = data;
         this.gridOptions.api.setRowData(data);
-        //HelperService.autoSizeAll(this.columnDefs, this.gridOptions);
         this.gridOptions.api.sizeColumnsToFit();
         this.getInvoicesSuccess = true;
     }
@@ -126,5 +125,5 @@ export class InvoicesComponent {
         this.router.navigate(['Transactions', { transactionID: this.selectedInvoice.transactionID }]);
     }
 
-    gridOptions: GridOptions = HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
+    gridOptions: any = HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
 }

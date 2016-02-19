@@ -1,5 +1,5 @@
-﻿import {AgGridNg2} from 'ag-grid-ng2/main';
-import {GridOptions} from 'ag-grid/main';
+﻿//import {AgGridNg2} from 'ag-grid-ng2/main';
+//import {GridOptions} from 'ag-grid/main';
 
 
 export class HelperService {
@@ -29,9 +29,9 @@ export class HelperService {
     }
 
     static getServiceBase(): string {
-        return 'https://solsofoz.azurewebsites.net/';
+        //return 'https://solsofoz.azurewebsites.net/';
 
-        //return 'http://localhost:10614/';
+        return 'http://localhost:10614/';
     }
 
     static getTokenName(): string {
@@ -181,17 +181,18 @@ export class HelperService {
             return inp;
         }
     }
-    static autoSizeAll(columnDefs: any[], gridOptions: GridOptions) {
+    static autoSizeAll(columnDefs: any[], gridOptions: any) {
         var allColumnIds: string[] = [];
         columnDefs.forEach(function (columnDef) {
             allColumnIds.push(columnDef.field);
         });
         gridOptions.columnApi.autoSizeColumns(allColumnIds);
     };
-    static getGridOptions(columnDefs: any[], onRowClicked: (params: any) => void, onRowDoubleClicked: (params: any) => void): GridOptions {
-        var gridOptions: GridOptions = {
+    static getGridOptions(columnDefs: any[], onRowClicked: (params: any) => void, onRowDoubleClicked: (params: any) => void) {
+        var rowData: any[] = [];
+        var gridOptions = {
             columnDefs: columnDefs,
-            rowData: null,
+            rowData: rowData,
             enableSorting: true,
             enableFilter: true,
             groupUseEntireRow: true,

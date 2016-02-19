@@ -44,6 +44,10 @@ System.register(['angular2/router', 'angular2/src/core/di', 'angular2/http', '..
                     var httpHandlerService = new http_handler_service_1.HttpHandlerService(this.http);
                     return httpHandlerService.postObject(structTimesheet, 'api/timesheet');
                 };
+                TimesheetService.prototype.updateTimesheet = function (timesheet) {
+                    var httpHandlerService = new http_handler_service_1.HttpHandlerService(this.http);
+                    return httpHandlerService.putObject(timesheet, 'api/timesheet');
+                };
                 TimesheetService.prototype.getTimesheet = function (timesheetID, entityID) {
                     var parameters = [];
                     parameters[0] = {

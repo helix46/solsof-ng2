@@ -40,7 +40,14 @@ System.register(['angular2/src/core/di', 'angular2/http', '../helper/helper.serv
                     if (includeToken === void 0) { includeToken = true; }
                     var options = this.postOptions(includeToken);
                     var s = JSON.stringify(parameterObj);
-                    return this.http.post(this.serviceBase + url, s, options).map(function (res) { return res.json(); });
+                    return this.http.post(this.serviceBase + url, s, options);
+                };
+                //use http put to send an object 
+                HttpHandlerService.prototype.putObject = function (parameterObj, url, includeToken) {
+                    if (includeToken === void 0) { includeToken = true; }
+                    var options = this.postOptions(includeToken);
+                    var s = JSON.stringify(parameterObj);
+                    return this.http.put(this.serviceBase + url, s, options);
                 };
                 HttpHandlerService.prototype.logError = function () {
                     console.log('get Entities failed');

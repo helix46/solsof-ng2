@@ -4,8 +4,8 @@ import {Component} from 'angular2/core';
 import {EntitiesService} from '../../services/entities/entities.service';
 import {HelperService} from '../../services/helper/helper.service';
 import { Router, RouterLink } from 'angular2/router';
-import {AgGridNg2} from 'ag-grid-ng2/main';
-import {GridOptions} from 'ag-grid/main';
+//import {AgGridNg2} from 'ag-grid-ng2/main';
+//import {GridOptions} from 'ag-grid/main';
 
 
 @Component({
@@ -13,7 +13,8 @@ import {GridOptions} from 'ag-grid/main';
     templateUrl: 'src/app/components/entities/entities.component.html',
     pipes: [],
     providers: [EntitiesService],
-    directives: [AgGridNg2]
+    directives: [(<any>window).ag.grid.AgGridNg2]
+    //directives: [AgGridNg2]
 })
 
 export class EntitiesComponent {
@@ -82,5 +83,5 @@ export class EntitiesComponent {
         console.log('onRowClicked');
     }
 
-    gridOptions: GridOptions = HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
+    gridOptions: any = HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
 }

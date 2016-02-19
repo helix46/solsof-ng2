@@ -22,10 +22,16 @@ export class HttpHandlerService {
     }
 
     //use http post to send an object 
-    postObject<T>(parameterObj: Object, url: string, includeToken: boolean = true): Observable<T> {
+    postObject<T>(parameterObj: Object, url: string, includeToken: boolean = true): Observable<Response> {
         var options: RequestOptionsArgs = this.postOptions(includeToken);
         var s = JSON.stringify(parameterObj);
-        return this.http.post(this.serviceBase + url, s, options).map(res=> res.json());
+        return this.http.post(this.serviceBase + url, s, options);
+    }
+    //use http put to send an object 
+    putObject<T>(parameterObj: Object, url: string, includeToken: boolean = true): Observable<Response> {
+        var options: RequestOptionsArgs = this.postOptions(includeToken);
+        var s = JSON.stringify(parameterObj);
+        return this.http.put(this.serviceBase + url, s, options);
     }
 
 

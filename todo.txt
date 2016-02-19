@@ -4,10 +4,7 @@ sources of bugs:
 
 timesheet:
 	style nav bar
-	double click on timesheet line
 
-	//put modal wrapper on timesheet
-	//add inputs, replace router params
 	//add events to timesheet
 	put element on TS list page
 	add parameter and events to element

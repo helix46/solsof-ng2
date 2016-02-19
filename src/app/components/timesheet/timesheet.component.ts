@@ -6,15 +6,16 @@ import {TimesheetService} from '../../services/timesheet/timesheet.service';
 import { Router, RouterLink} from 'angular2/router';
 import {GetEntityService} from '../../services/GetEntity/GetEntity.service';
 import {TimesheetLineComponent} from '../timesheetline/timesheetline.component';
-import {AgGridNg2} from 'ag-grid-ng2/main';
-import {GridOptions} from 'ag-grid/main';
+//import {AgGridNg2} from 'ag-grid-ng2/main';
+//import {GridOptions} from 'ag-grid/main';
 
 @Component({
     selector: 'timesheetModal',
     templateUrl: 'src/app/components/timesheet/timesheet.component.html',
     styles: ['.modalSolsofVisible {display: block;}'],
     providers: [TimesheetService],
-    directives: [AgGridNg2, TimesheetLineComponent]
+    directives: [(<any>window).ag.grid.AgGridNg2, TimesheetLineComponent]
+    //directives: [AgGridNg2, TimesheetLineComponent]
 })
 
 export class TimesheetComponent {
@@ -32,7 +33,7 @@ export class TimesheetComponent {
     timesheetTotal: string;
     getTimesheetSuccess: boolean = true;
     selectedTimesheetLineIndex: number;
-    @Output() ok: EventEmitter<any> = new EventEmitter();
+    @Output() ok: EventEmitter<string> = new EventEmitter();
 
     timesheet: SolsofSpa.Helper.structTimesheet = {
         comment: '',
@@ -68,6 +69,7 @@ export class TimesheetComponent {
     };
 
     onGetTimesheet = (timesheet: SolsofSpa.Helper.structTimesheet) => {
+        this.editTimesheet = true;
         this.timesheet = timesheet;
         this.gridOptions.api.setRowData(timesheet.timesheetLineArray);
         this.gridOptions.api.sizeColumnsToFit();
@@ -127,7 +129,6 @@ export class TimesheetComponent {
     }
     complete = () => {
         console.log('timesheet complete');
-        this.router.navigate(['TimeSheets']);
     }
 
     logSuccess = () => {
@@ -138,22 +139,19 @@ export class TimesheetComponent {
         this.timesheetVisible = false;
     }
 
-    okClicked = () => {
-        //var structTimesheet: SolsofSpa.Helper.structTimesheet = {
-        //    comment: '',
-        //    debtorID: this.selectedDebtor.debtorID,
-        //    entityID: GetEntityService.getInstance().getEntityId(),
-        //    timesheetID: -1,
-        //    sWeekEnding: '',
-        //    timesheetLineArray: []
-        //}
-        //if (HelperService.tokenIsValid()) {
-        //    this.timesheetService.saveNewTimesheet(this.timesheet);
-        //} else {
-        //    this.router.navigate(['Login']);
-        //}
-        this.timesheetVisible = true
+    updateTimesheetSuccess = () => {
         this.ok.emit('');
+    }
+
+    okClicked = () => {
+        if (this.editTimesheet) {
+            if (HelperService.tokenIsValid()) {
+                this.timesheetService.updateTimesheet(this.timesheet).subscribe(this.updateTimesheetSuccess, this.logError, this.complete);
+                this.timesheetVisible = false;
+            } else {
+                this.router.navigate(['Login']);
+            }
+        }
     }
 
     saveTimesheetLine = (savededTimesheetLine: SolsofSpa.Helper.structTimesheetLine) => {
@@ -184,7 +182,7 @@ export class TimesheetComponent {
         this.selectedTimesheetLineIndex = params.node.id;
         this.timesheetLineComponent.displayTimesheetline(selectedTimesheetLine);
     }
-    gridOptions: GridOptions = HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
+    gridOptions: any = HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
 }
 
 

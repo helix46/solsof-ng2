@@ -6,15 +6,16 @@ import {Component, ViewChild} from 'angular2/core';
 import {TimesheetsService} from '../../services/Timesheets/Timesheets.service';
 import {TimesheetComponent} from '../timesheet/timesheet.component';
 import {DebtorsService} from '../../services/debtors/debtors.service';
-import {AgGridNg2} from 'ag-grid-ng2/main';
-import {GridOptions} from 'ag-grid/main';
+//import {AgGridNg2} from 'ag-grid-ng2/main';
+//import {GridOptions} from 'ag-grid/main';
 
 @Component({
     //selector: 'ledger-accounts',
     templateUrl: 'src/app/components/Timesheets/Timesheets.component.html',
     pipes: [],
     providers: [TimesheetsService, DebtorsService],
-    directives: [AgGridNg2, TimesheetComponent]
+    directives: [(<any>window).ag.grid.AgGridNg2, TimesheetComponent]
+    //directives: [AgGridNg2, TimesheetComponent]
 })
 
 export class TimesheetsComponent {
@@ -110,10 +111,6 @@ export class TimesheetsComponent {
         }
     };
  
-    refreshList = () => {
-        alert('refreshList ');
-    }
-
     ////////////////////////////////////////////////
     //grid
     columnDefs: any[] = [
@@ -151,5 +148,5 @@ export class TimesheetsComponent {
         this.editTimesheet = true;
     }
 
-    gridOptions: GridOptions = HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
+    gridOptions: any = HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
 }

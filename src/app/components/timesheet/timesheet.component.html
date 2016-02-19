@@ -1,8 +1,8 @@
 ﻿<div class="modalSolsof modalSolsof100" [class.modalSolsofVisible]="timesheetVisible" (keyup.esc)="cancelTimesheet()">
     <!-- Modal content -->
-    <div class="modal-contentSolsof modalSolsof-wide" (keyup.esc)="modalOnKeyup()">
+    <div class="modal-contentSolsof modalSolsof-wide" (keyup.esc)="cancelTimesheet()">
         <!--contents-->
-        <form novalidate name="formTimesheet" class="form-horizontal" (keyup.esc)="modalOnKeyup()">
+        <form novalidate name="formTimesheet" class="form-horizontal" (keyup.esc)="cancelTimesheet()">
             <h1>{{titleTimesheet}}</h1>
             <br />
             <!--master inputs-->

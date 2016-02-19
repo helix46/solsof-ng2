@@ -1,13 +1,11 @@
-﻿/// <reference path="../../../../node_modules/ag-grid-ng2/main.d.ts" />
-import {Router} from 'angular2/router';
+﻿import {Router} from 'angular2/router';
 import {HelperService} from '../../services/helper/helper.service';
 import {GetEntityService} from '../../services/GetEntity/GetEntity.service';
 import {Response} from 'angular2/http';
 import {Component} from 'angular2/core';
 import {LedgerAccountsService} from '../../services/LedgerAccounts/LedgerAccounts.service';
-import {AgGridNg2} from 'ag-grid-ng2/main';
-import {GridOptions} from 'ag-grid/main';
-//import 'rxjs/Rx'; //for map
+//import {AgGridNg2} from 'ag-grid-ng2/main';
+//import {GridOptions} from 'ag-grid/main';
 
 
 
@@ -16,7 +14,8 @@ import {GridOptions} from 'ag-grid/main';
     templateUrl: 'src/app/components/LedgerAccounts/LedgerAccounts.component.html',
     pipes: [],
     providers: [LedgerAccountsService],
-    directives: [AgGridNg2]
+    directives: [(<any>window).ag.grid.AgGridNg2]
+    //directives: [AgGridNg2]
 })
 
 export class LedgerAccountsComponent {
@@ -28,8 +27,7 @@ export class LedgerAccountsComponent {
         console.log('constructor LedgerAccountsComponent');
         this.getLedgerAccountsSuccess = true;
         window.onresize = () => {
-            this.gridOptions.api.sizeColumnsToFit();
-            //HelperService.autoSizeAll(this.columnDefs, this.gridOptions);
+            //this.gridOptions.api.sizeColumnsToFit();
         };
     }
     ngOnInit() {
@@ -59,7 +57,6 @@ export class LedgerAccountsComponent {
         this.getLedgerAccountsSuccess = true;
         this.LedgerAccounts = data;
         this.gridOptions.api.setRowData(data);
-        //HelperService.autoSizeAll(this.columnDefs, this.gridOptions);
         this.gridOptions.api.sizeColumnsToFit();
     }
 
@@ -104,5 +101,5 @@ export class LedgerAccountsComponent {
         this.router.navigate(['Transactions', { ledgerAccountID: this.selectedLedgerAccount.ledgerAccountID }]);
     }
 
-    gridOptions: GridOptions = HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
+    gridOptions: any = HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
 }

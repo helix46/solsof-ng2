@@ -21,7 +21,7 @@ export class ChangePasswordService {
     storeToken(response: any, username: any) {
     }
 
-    changePassword(changePasswordModel: IChangePasswordModel): Observable<string> {
+    changePassword(changePasswordModel: IChangePasswordModel): Observable<Response> {
         var httpHandlerService = new HttpHandlerService(this.http);
         return httpHandlerService.postObject<string>(changePasswordModel, 'api/account/changePassword');
     }

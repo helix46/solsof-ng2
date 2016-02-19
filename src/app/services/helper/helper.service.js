@@ -1,3 +1,5 @@
+//import {AgGridNg2} from 'ag-grid-ng2/main';
+//import {GridOptions} from 'ag-grid/main';
 System.register([], function(exports_1) {
     var HelperService;
     return {
@@ -27,8 +29,8 @@ System.register([], function(exports_1) {
                     return false;
                 };
                 HelperService.getServiceBase = function () {
-                    return 'https://solsofoz.azurewebsites.net/';
-                    //return 'http://localhost:10614/';
+                    //return 'https://solsofoz.azurewebsites.net/';
+                    return 'http://localhost:10614/';
                 };
                 HelperService.getTokenName = function () {
                     return 'id_token';
@@ -177,9 +179,10 @@ System.register([], function(exports_1) {
                 };
                 ;
                 HelperService.getGridOptions = function (columnDefs, onRowClicked, onRowDoubleClicked) {
+                    var rowData = [];
                     var gridOptions = {
                         columnDefs: columnDefs,
-                        rowData: null,
+                        rowData: rowData,
                         enableSorting: true,
                         enableFilter: true,
                         groupUseEntireRow: true,

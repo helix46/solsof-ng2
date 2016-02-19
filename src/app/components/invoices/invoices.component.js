@@ -1,4 +1,4 @@
-System.register(['angular2/router', '../../services/helper/helper.service', '../../services/GetEntity/GetEntity.service', 'angular2/core', '../../services/Invoices/Invoices.service', 'ag-grid-ng2/main'], function(exports_1) {
+System.register(['angular2/router', '../../services/helper/helper.service', '../../services/GetEntity/GetEntity.service', 'angular2/core', '../../services/Invoices/Invoices.service'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['angular2/router', '../../services/helper/helper.service', '../
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var router_1, helper_service_1, GetEntity_service_1, core_1, Invoices_service_1, main_1;
+    var router_1, helper_service_1, GetEntity_service_1, core_1, Invoices_service_1;
     var InvoicesComponent;
     return {
         setters:[
@@ -26,11 +26,10 @@ System.register(['angular2/router', '../../services/helper/helper.service', '../
             },
             function (Invoices_service_1_1) {
                 Invoices_service_1 = Invoices_service_1_1;
-            },
-            function (main_1_1) {
-                main_1 = main_1_1;
             }],
         execute: function() {
+            //import {AgGridNg2} from 'ag-grid-ng2/main';
+            //import {GridOptions} from 'ag-grid/main';
             //import 'rxjs/Rx'; //for map
             InvoicesComponent = (function () {
                 function InvoicesComponent(InvoicesService, router) {
@@ -52,7 +51,6 @@ System.register(['angular2/router', '../../services/helper/helper.service', '../
                     this.onGetInvoicesSuccess = function (data) {
                         _this.Invoices = data;
                         _this.gridOptions.api.setRowData(data);
-                        //HelperService.autoSizeAll(this.columnDefs, this.gridOptions);
                         _this.gridOptions.api.sizeColumnsToFit();
                         _this.getInvoicesSuccess = true;
                     };
@@ -121,8 +119,7 @@ System.register(['angular2/router', '../../services/helper/helper.service', '../
                     this.gridOptions = helper_service_1.HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
                     console.log('constructor InvoicesComponent');
                     window.onresize = function () {
-                        _this.gridOptions.api.sizeColumnsToFit();
-                        //HelperService.autoSizeAll(this.columnDefs, this.gridOptions);
+                        //this.gridOptions.api.sizeColumnsToFit();
                     };
                 }
                 InvoicesComponent.prototype.ngOnInit = function () {
@@ -138,7 +135,7 @@ System.register(['angular2/router', '../../services/helper/helper.service', '../
                         templateUrl: 'src/app/components/Invoices/Invoices.component.html',
                         pipes: [],
                         providers: [Invoices_service_1.InvoicesService],
-                        directives: [main_1.AgGridNg2]
+                        directives: [window.ag.grid.AgGridNg2]
                     }), 
                     __metadata('design:paramtypes', [Invoices_service_1.InvoicesService, router_1.Router])
                 ], InvoicesComponent);

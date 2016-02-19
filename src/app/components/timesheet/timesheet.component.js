@@ -1,4 +1,4 @@
-System.register(['angular2/core', '../../services/helper/helper.service', '../../services/timesheet/timesheet.service', 'angular2/router', '../../services/GetEntity/GetEntity.service', '../timesheetline/timesheetline.component', 'ag-grid-ng2/main'], function(exports_1) {
+System.register(['angular2/core', '../../services/helper/helper.service', '../../services/timesheet/timesheet.service', 'angular2/router', '../../services/GetEntity/GetEntity.service', '../timesheetline/timesheetline.component'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, helper_service_1, timesheet_service_1, router_1, GetEntity_service_1, timesheetline_component_1, main_1;
+    var core_1, helper_service_1, timesheet_service_1, router_1, GetEntity_service_1, timesheetline_component_1;
     var TimesheetComponent;
     return {
         setters:[
@@ -29,11 +29,10 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
             },
             function (timesheetline_component_1_1) {
                 timesheetline_component_1 = timesheetline_component_1_1;
-            },
-            function (main_1_1) {
-                main_1 = main_1_1;
             }],
         execute: function() {
+            //import {AgGridNg2} from 'ag-grid-ng2/main';
+            //import {GridOptions} from 'ag-grid/main';
             TimesheetComponent = (function () {
                 function TimesheetComponent(timesheetService, router) {
                     var _this = this;
@@ -61,6 +60,7 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                         _this.timesheetTotal = helper_service_1.HelperService.convertMinutesToTimeString(totalMinutes);
                     };
                     this.onGetTimesheet = function (timesheet) {
+                        _this.editTimesheet = true;
                         _this.timesheet = timesheet;
                         _this.gridOptions.api.setRowData(timesheet.timesheetLineArray);
                         _this.gridOptions.api.sizeColumnsToFit();
@@ -97,7 +97,6 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                     };
                     this.complete = function () {
                         console.log('timesheet complete');
-                        _this.router.navigate(['TimeSheets']);
                     };
                     this.logSuccess = function () {
                         console.log('get success');
@@ -105,22 +104,19 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                     this.cancelTimesheet = function () {
                         _this.timesheetVisible = false;
                     };
-                    this.okClicked = function () {
-                        //var structTimesheet: SolsofSpa.Helper.structTimesheet = {
-                        //    comment: '',
-                        //    debtorID: this.selectedDebtor.debtorID,
-                        //    entityID: GetEntityService.getInstance().getEntityId(),
-                        //    timesheetID: -1,
-                        //    sWeekEnding: '',
-                        //    timesheetLineArray: []
-                        //}
-                        //if (HelperService.tokenIsValid()) {
-                        //    this.timesheetService.saveNewTimesheet(this.timesheet);
-                        //} else {
-                        //    this.router.navigate(['Login']);
-                        //}
-                        _this.timesheetVisible = true;
+                    this.updateTimesheetSuccess = function () {
                         _this.ok.emit('');
+                    };
+                    this.okClicked = function () {
+                        if (_this.editTimesheet) {
+                            if (helper_service_1.HelperService.tokenIsValid()) {
+                                _this.timesheetService.updateTimesheet(_this.timesheet).subscribe(_this.updateTimesheetSuccess, _this.logError, _this.complete);
+                                _this.timesheetVisible = false;
+                            }
+                            else {
+                                _this.router.navigate(['Login']);
+                            }
+                        }
                     };
                     this.saveTimesheetLine = function (savededTimesheetLine) {
                         _this.timesheet.timesheetLineArray[_this.selectedTimesheetLineIndex] = savededTimesheetLine;
@@ -183,7 +179,7 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                         templateUrl: 'src/app/components/timesheet/timesheet.component.html',
                         styles: ['.modalSolsofVisible {display: block;}'],
                         providers: [timesheet_service_1.TimesheetService],
-                        directives: [main_1.AgGridNg2, timesheetline_component_1.TimesheetLineComponent]
+                        directives: [window.ag.grid.AgGridNg2, timesheetline_component_1.TimesheetLineComponent]
                     }), 
                     __metadata('design:paramtypes', [timesheet_service_1.TimesheetService, router_1.Router])
                 ], TimesheetComponent);

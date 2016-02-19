@@ -1,12 +1,11 @@
-﻿import {AgGridNg2} from 'ag-grid-ng2/main';
-import {GridOptions} from 'ag-grid/main';
+﻿//import {AgGridNg2} from 'ag-grid-ng2/main';
+//import {GridOptions} from 'ag-grid/main';
 import {GetEntityService} from '../../services/GetEntity/GetEntity.service';
 import {Router, RouteParams} from 'angular2/router';
 import {HelperService} from '../../services/helper/helper.service';
 import {Response} from 'angular2/http';
 import {Component} from 'angular2/core';
 import {TransactionsService} from '../../services/Transactions/Transactions.service';
-//import 'rxjs/Rx'; //for map
 
 
 
@@ -16,7 +15,8 @@ import {TransactionsService} from '../../services/Transactions/Transactions.serv
     templateUrl: 'src/app/components/transactions/transactions.component.html',
     pipes: [],
     providers: [TransactionsService],
-    directives: [AgGridNg2]
+    directives: [(<any>window).ag.grid.AgGridNg2]
+    //directives: [AgGridNg2]
 })
 
 export class TransactionsComponent {
@@ -27,8 +27,7 @@ export class TransactionsComponent {
         console.log('constructor TransactionsComponent');
         this.listDateDescending = true;
         window.onresize = () => {
-            this.gridOptions.api.sizeColumnsToFit();
-            //HelperService.autoSizeAll(this.columnDefs, this.gridOptions);
+            //this.gridOptions.api.sizeColumnsToFit();
         };
     }
     ledgerAccountID: number;
@@ -57,7 +56,6 @@ export class TransactionsComponent {
     onGetTransactionsSuccess = (data: SolsofSpa.Api.DataContext.tblTransaction[]) => {
         this.Transactions = data;
         this.gridOptions.api.setRowData(data);
-        //HelperService.autoSizeAll(this.columnDefs, this.gridOptions);
         this.gridOptions.api.sizeColumnsToFit();
     }
 
@@ -120,5 +118,5 @@ export class TransactionsComponent {
         alert('this.router.navigate([]);')
     }
 
-    gridOptions: GridOptions = HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
+    gridOptions: any = HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
 }

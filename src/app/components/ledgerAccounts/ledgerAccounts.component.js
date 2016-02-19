@@ -1,4 +1,4 @@
-System.register(['angular2/router', '../../services/helper/helper.service', '../../services/GetEntity/GetEntity.service', 'angular2/core', '../../services/LedgerAccounts/LedgerAccounts.service', 'ag-grid-ng2/main'], function(exports_1) {
+System.register(['angular2/router', '../../services/helper/helper.service', '../../services/GetEntity/GetEntity.service', 'angular2/core', '../../services/LedgerAccounts/LedgerAccounts.service'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['angular2/router', '../../services/helper/helper.service', '../
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var router_1, helper_service_1, GetEntity_service_1, core_1, LedgerAccounts_service_1, main_1;
+    var router_1, helper_service_1, GetEntity_service_1, core_1, LedgerAccounts_service_1;
     var LedgerAccountsComponent;
     return {
         setters:[
@@ -26,12 +26,10 @@ System.register(['angular2/router', '../../services/helper/helper.service', '../
             },
             function (LedgerAccounts_service_1_1) {
                 LedgerAccounts_service_1 = LedgerAccounts_service_1_1;
-            },
-            function (main_1_1) {
-                main_1 = main_1_1;
             }],
         execute: function() {
-            //import 'rxjs/Rx'; //for map
+            //import {AgGridNg2} from 'ag-grid-ng2/main';
+            //import {GridOptions} from 'ag-grid/main';
             LedgerAccountsComponent = (function () {
                 function LedgerAccountsComponent(ledgerAccountsService, router) {
                     var _this = this;
@@ -56,7 +54,6 @@ System.register(['angular2/router', '../../services/helper/helper.service', '../
                         _this.getLedgerAccountsSuccess = true;
                         _this.LedgerAccounts = data;
                         _this.gridOptions.api.setRowData(data);
-                        //HelperService.autoSizeAll(this.columnDefs, this.gridOptions);
                         _this.gridOptions.api.sizeColumnsToFit();
                     };
                     this.loadLedgerAccounts = function () {
@@ -102,8 +99,7 @@ System.register(['angular2/router', '../../services/helper/helper.service', '../
                     console.log('constructor LedgerAccountsComponent');
                     this.getLedgerAccountsSuccess = true;
                     window.onresize = function () {
-                        _this.gridOptions.api.sizeColumnsToFit();
-                        //HelperService.autoSizeAll(this.columnDefs, this.gridOptions);
+                        //this.gridOptions.api.sizeColumnsToFit();
                     };
                 }
                 LedgerAccountsComponent.prototype.ngOnInit = function () {
@@ -115,7 +111,7 @@ System.register(['angular2/router', '../../services/helper/helper.service', '../
                         templateUrl: 'src/app/components/LedgerAccounts/LedgerAccounts.component.html',
                         pipes: [],
                         providers: [LedgerAccounts_service_1.LedgerAccountsService],
-                        directives: [main_1.AgGridNg2]
+                        directives: [window.ag.grid.AgGridNg2]
                     }), 
                     __metadata('design:paramtypes', [LedgerAccounts_service_1.LedgerAccountsService, router_1.Router])
                 ], LedgerAccountsComponent);
