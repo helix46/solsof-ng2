@@ -32,23 +32,19 @@ export class TimesheetComponent {
     weekEnding: string;
     timesheetTotal: string;
     getTimesheetSuccess: boolean = true;
-    selectedTimesheetLineIndex: number;
     @Output() ok: EventEmitter<string> = new EventEmitter();
+    debtors: SolsofSpa.Api.DataContext.tblDebtor[];
 
     timesheet: SolsofSpa.Helper.structTimesheet = {
         comment: '',
         debtorID: -1,
         entityID: -1,
-        sWeekEnding: '',
+        sWeekEnding: HelperService.formatDateForJSon(new Date()),
         timesheetID: -1,
         timesheetLineArray: []
     };
-    debtors: SolsofSpa.Api.DataContext.tblDebtor[];
-    @ViewChild(TimesheetLineComponent) timesheetLineComponent: TimesheetLineComponent;
 
     timesheetVisible: boolean = false;
-
-    bEditTimesheetLine: boolean;
 
     ngOnInit() {
 
@@ -68,42 +64,56 @@ export class TimesheetComponent {
         this.timesheetTotal = HelperService.convertMinutesToTimeString(totalMinutes);
     };
 
-    onGetTimesheet = (timesheet: SolsofSpa.Helper.structTimesheet) => {
-        this.editTimesheet = true;
-        this.timesheet = timesheet;
-        this.gridOptions.api.setRowData(timesheet.timesheetLineArray);
-        this.gridOptions.api.sizeColumnsToFit();
-        this.getTimesheetSuccess = true;
-        this.calculateTimesheetTotal();
-        this.timesheetVisible = true;
-    }
-
-
-    logTimesheetError = () => {
-        console.log('getTimesheet Error');
-        this.getTimesheetSuccess = false;
-    }
-
-    saveTimesheet = () => {
-
-    }
-
-    getTimesheet(timesheetID: number, debtors: SolsofSpa.Api.DataContext.tblDebtor[]) {
+    newTimesheet = (debtors: SolsofSpa.Api.DataContext.tblDebtor[]) => {
         if (HelperService.tokenIsValid()) {
             this.debtors = debtors;
+            this.titleTimesheet = 'Add Timesheet';
             var EntityId = GetEntityService.getInstance().getEntityId();
-            this.titleTimesheet = 'Edit Timesheet';
-            this.timesheetService.getTimesheet(timesheetID, EntityId).subscribe(this.onGetTimesheet, this.logTimesheetError);
+            if (EntityId === -1) {
+                this.router.navigate(['Entities']);
+            } else {
+                this.timesheet = {
+                    comment: '',
+                    debtorID: -1,
+                    entityID: EntityId,
+                    sWeekEnding: HelperService.formatDateForJSon(new Date()),
+                    timesheetID: -1,
+                    timesheetLineArray: []
+                }
+                this.gridOptions.api.setRowData(this.timesheet.timesheetLineArray);
+            }
+            this.editTimesheet = false;
+            this.getTimesheetSuccess = true;
+            this.calculateTimesheetTotal();
+            this.timesheetVisible = true;
         } else {
             this.router.navigate(['Login']);
         }
     }
 
-    logGetDebtorsError = (obj: any) => {
-        //this.getTimesheetSuccess = false;
-        var s = JSON.stringify(obj);
-        console.log(s);
-        alert(s);
+    getTimesheet = (timesheetID: number, debtors: SolsofSpa.Api.DataContext.tblDebtor[]) => {
+        var getTimesheetThis = this;
+        if (HelperService.tokenIsValid()) {
+            this.debtors = debtors;
+            var EntityId = GetEntityService.getInstance().getEntityId();
+            this.titleTimesheet = 'Edit Timesheet';
+            this.timesheetService.getTimesheet(timesheetID, EntityId).subscribe(onGetTimesheet, logTimesheetError);
+        } else {
+            this.router.navigate(['Login']);
+        }
+        function onGetTimesheet(timesheet: SolsofSpa.Helper.structTimesheet) {
+            getTimesheetThis.editTimesheet = true;
+            getTimesheetThis.timesheet = timesheet;
+            getTimesheetThis.gridOptions.api.setRowData(timesheet.timesheetLineArray);
+            getTimesheetThis.gridOptions.api.sizeColumnsToFit();
+            getTimesheetThis.getTimesheetSuccess = true;
+            getTimesheetThis.calculateTimesheetTotal();
+            getTimesheetThis.timesheetVisible = true;
+        }
+        function logTimesheetError() {
+            console.log('getTimesheet Error');
+            getTimesheetThis.getTimesheetSuccess = false;
+        }
     }
 
     //onGetMostRecentTimesheet = (mostRecentTimesheet: SolsofSpa.Helper.structTimesheet) => {
@@ -123,14 +133,6 @@ export class TimesheetComponent {
 
     selectedDebtor: SolsofSpa.Api.DataContext.tblDebtor;
 
-    logError = (obj: any) => {
-        console.log(JSON.stringify(obj));
-        alert(JSON.stringify(obj));
-    }
-    complete = () => {
-        console.log('timesheet complete');
-    }
-
     logSuccess = () => {
         console.log('get success');
     }
@@ -146,18 +148,71 @@ export class TimesheetComponent {
     okClicked = () => {
         if (this.editTimesheet) {
             if (HelperService.tokenIsValid()) {
-                this.timesheetService.updateTimesheet(this.timesheet).subscribe(this.updateTimesheetSuccess, this.logError, this.complete);
+                this.timesheetService.updateTimesheet(this.timesheet).subscribe(this.updateTimesheetSuccess, logError, complete);
+                this.timesheetVisible = false;
+            } else {
+                this.router.navigate(['Login']);
+            }
+        } else {
+            if (HelperService.tokenIsValid()) {
+                this.timesheetService.saveNewTimesheet(this.timesheet).subscribe(this.updateTimesheetSuccess, logError, complete);
                 this.timesheetVisible = false;
             } else {
                 this.router.navigate(['Login']);
             }
         }
+
+
+
+        function logError(obj: any) {
+            console.log(JSON.stringify(obj));
+            alert(JSON.stringify(obj));
+        }
+        function complete() {
+            console.log('timesheet complete');
+        }
     }
 
+
+    ////////////////////////////////////
+    //TimesheetLine
+    ////////////////////////////////////
+    selectedTimesheetLineIndex: number;
+    @ViewChild(TimesheetLineComponent) timesheetLineComponent: TimesheetLineComponent;
+    bEditTimesheetLine: boolean;
+
     saveTimesheetLine = (savededTimesheetLine: SolsofSpa.Helper.structTimesheetLine) => {
-        this.timesheet.timesheetLineArray[this.selectedTimesheetLineIndex] = savededTimesheetLine;
+        if (this.bEditTimesheetLine) {
+            this.timesheet.timesheetLineArray[this.selectedTimesheetLineIndex] = savededTimesheetLine;
+        } else {
+            this.timesheet.timesheetLineArray.push(savededTimesheetLine);
+        };
         this.gridOptions.api.setRowData(this.timesheet.timesheetLineArray);
         this.calculateTimesheetTotal();
+    }
+
+    newTimesheetLine = () => {
+        //var newTimesheetLineThis = this;
+        var getTimesheetLineDate = (): Date => {
+            var d: Date;
+            var dow: number;
+            if (this.timesheet.timesheetLineArray.length === 0) {
+                //if (newTimesheetLineThis.timesheet.timesheetLineArray.length === 0) {
+                //set to previous Monday
+                d = new Date();
+                var dow = d.getDay();
+                d.setDate(d.getDate() - dow + 1);
+                return d;
+            } else {
+                var s = this.timesheet.timesheetLineArray[this.timesheet.timesheetLineArray.length - 1].sTimesheetLineDate;
+                //var s = newTimesheetLineThis.timesheet.timesheetLineArray[newTimesheetLineThis.timesheet.timesheetLineArray.length - 1].sTimesheetLineDate;
+                d = HelperService.translateJavascriptDate(s);
+                d.setDate(d.getDate() + 1);
+                return d;
+            }
+        }
+        var TimesheetLineDate: Date = getTimesheetLineDate();
+        this.timesheetLineComponent.newTimesheetLine(TimesheetLineDate);
     }
 
     ////////////////////////////////////

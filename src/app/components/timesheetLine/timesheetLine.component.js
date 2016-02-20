@@ -1,4 +1,4 @@
-System.register(['angular2/core'], function(exports_1) {
+System.register(['angular2/core', '../../services/helper/helper.service'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,12 +8,15 @@ System.register(['angular2/core'], function(exports_1) {
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1;
+    var core_1, helper_service_1;
     var TimesheetLineComponent;
     return {
         setters:[
             function (core_1_1) {
                 core_1 = core_1_1;
+            },
+            function (helper_service_1_1) {
+                helper_service_1 = helper_service_1_1;
             }],
         execute: function() {
             TimesheetLineComponent = (function () {
@@ -29,6 +32,17 @@ System.register(['angular2/core'], function(exports_1) {
                         _this.finishMinutes = selectedTimesheetLine.finishTimeMinutes % 60;
                         _this.timeoutHours = Math.floor(selectedTimesheetLine.timeoutMinutes / 60);
                         _this.timeoutMinutes = selectedTimesheetLine.timeoutMinutes % 60;
+                        _this.timesheetLineVisible = true;
+                    };
+                    this.newTimesheetLine = function (TimesheetLineDate) {
+                        _this.titleTimesheetLine = 'Add Timesheet Line';
+                        _this.timesheetLineDate = helper_service_1.HelperService.formatDateForJSon(TimesheetLineDate);
+                        _this.startHours = 8;
+                        _this.startMinutes = 0;
+                        _this.finishHours = 16;
+                        _this.finishMinutes = 0;
+                        _this.timeoutHours = 0;
+                        _this.timeoutMinutes = 20;
                         _this.timesheetLineVisible = true;
                     };
                     this.cancelTimeSheetLine = function () {

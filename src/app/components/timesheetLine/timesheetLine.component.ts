@@ -42,6 +42,19 @@ export class TimesheetLineComponent {
         this.timesheetLineVisible = true;
     }
 
+    newTimesheetLine = (TimesheetLineDate: Date) => {
+        this.titleTimesheetLine = 'Add Timesheet Line';
+        this.timesheetLineDate = HelperService.formatDateForJSon(TimesheetLineDate);
+        this.startHours = 8;
+        this.startMinutes = 0;
+        this.finishHours = 16;
+        this.finishMinutes = 0;
+        this.timeoutHours = 0;
+        this.timeoutMinutes = 20;
+
+        this.timesheetLineVisible = true;
+    }
+
     modalOnKeyup() {
     }
 

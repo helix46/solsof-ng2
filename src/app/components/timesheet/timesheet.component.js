@@ -44,7 +44,7 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                         comment: '',
                         debtorID: -1,
                         entityID: -1,
-                        sWeekEnding: '',
+                        sWeekEnding: helper_service_1.HelperService.formatDateForJSon(new Date()),
                         timesheetID: -1,
                         timesheetLineArray: []
                     };
@@ -59,26 +59,58 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                         }
                         _this.timesheetTotal = helper_service_1.HelperService.convertMinutesToTimeString(totalMinutes);
                     };
-                    this.onGetTimesheet = function (timesheet) {
-                        _this.editTimesheet = true;
-                        _this.timesheet = timesheet;
-                        _this.gridOptions.api.setRowData(timesheet.timesheetLineArray);
-                        _this.gridOptions.api.sizeColumnsToFit();
-                        _this.getTimesheetSuccess = true;
-                        _this.calculateTimesheetTotal();
-                        _this.timesheetVisible = true;
+                    this.newTimesheet = function (debtors) {
+                        if (helper_service_1.HelperService.tokenIsValid()) {
+                            _this.debtors = debtors;
+                            _this.titleTimesheet = 'Add Timesheet';
+                            var EntityId = GetEntity_service_1.GetEntityService.getInstance().getEntityId();
+                            if (EntityId === -1) {
+                                _this.router.navigate(['Entities']);
+                            }
+                            else {
+                                _this.timesheet = {
+                                    comment: '',
+                                    debtorID: -1,
+                                    entityID: EntityId,
+                                    sWeekEnding: helper_service_1.HelperService.formatDateForJSon(new Date()),
+                                    timesheetID: -1,
+                                    timesheetLineArray: []
+                                };
+                                _this.gridOptions.api.setRowData(_this.timesheet.timesheetLineArray);
+                            }
+                            _this.editTimesheet = false;
+                            _this.getTimesheetSuccess = true;
+                            _this.calculateTimesheetTotal();
+                            _this.timesheetVisible = true;
+                        }
+                        else {
+                            _this.router.navigate(['Login']);
+                        }
                     };
-                    this.logTimesheetError = function () {
-                        console.log('getTimesheet Error');
-                        _this.getTimesheetSuccess = false;
-                    };
-                    this.saveTimesheet = function () {
-                    };
-                    this.logGetDebtorsError = function (obj) {
-                        //this.getTimesheetSuccess = false;
-                        var s = JSON.stringify(obj);
-                        console.log(s);
-                        alert(s);
+                    this.getTimesheet = function (timesheetID, debtors) {
+                        var getTimesheetThis = _this;
+                        if (helper_service_1.HelperService.tokenIsValid()) {
+                            _this.debtors = debtors;
+                            var EntityId = GetEntity_service_1.GetEntityService.getInstance().getEntityId();
+                            _this.titleTimesheet = 'Edit Timesheet';
+                            _this.timesheetService.getTimesheet(timesheetID, EntityId).subscribe(onGetTimesheet, logTimesheetError);
+                        }
+                        else {
+                            _this.router.navigate(['Login']);
+                        }
+                        function onGetTimesheet(timesheet) {
+                            getTimesheetThis.editTimesheet = true;
+                            getTimesheetThis.timesheet = timesheet;
+                            getTimesheetThis.gridOptions.api.setRowData(timesheet.timesheetLineArray);
+                            getTimesheetThis.gridOptions.api.sizeColumnsToFit();
+                            getTimesheetThis.getTimesheetSuccess = true;
+                            getTimesheetThis.calculateTimesheetTotal();
+                            getTimesheetThis.timesheetVisible = true;
+                        }
+                        function logTimesheetError() {
+                            console.log('getTimesheet Error');
+                            getTimesheetThis.getTimesheetSuccess = false;
+                        }
                     };
                     //onGetMostRecentTimesheet = (mostRecentTimesheet: SolsofSpa.Helper.structTimesheet) => {
                     //    if (mostRecentTimesheet !== undefined) {
@@ -90,13 +122,6 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                         _this.currentDebtorID = Number(currentTarget.value);
                     };
                     this.onSelect = function (debtor) {
-                    };
-                    this.logError = function (obj) {
-                        console.log(JSON.stringify(obj));
-                        alert(JSON.stringify(obj));
-                    };
-                    this.complete = function () {
-                        console.log('timesheet complete');
                     };
                     this.logSuccess = function () {
                         console.log('get success');
@@ -110,18 +135,64 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                     this.okClicked = function () {
                         if (_this.editTimesheet) {
                             if (helper_service_1.HelperService.tokenIsValid()) {
-                                _this.timesheetService.updateTimesheet(_this.timesheet).subscribe(_this.updateTimesheetSuccess, _this.logError, _this.complete);
+                                _this.timesheetService.updateTimesheet(_this.timesheet).subscribe(_this.updateTimesheetSuccess, logError, complete);
                                 _this.timesheetVisible = false;
                             }
                             else {
                                 _this.router.navigate(['Login']);
                             }
                         }
+                        else {
+                            if (helper_service_1.HelperService.tokenIsValid()) {
+                                _this.timesheetService.saveNewTimesheet(_this.timesheet).subscribe(_this.updateTimesheetSuccess, logError, complete);
+                                _this.timesheetVisible = false;
+                            }
+                            else {
+                                _this.router.navigate(['Login']);
+                            }
+                        }
+                        function logError(obj) {
+                            console.log(JSON.stringify(obj));
+                            alert(JSON.stringify(obj));
+                        }
+                        function complete() {
+                            console.log('timesheet complete');
+                        }
                     };
                     this.saveTimesheetLine = function (savededTimesheetLine) {
-                        _this.timesheet.timesheetLineArray[_this.selectedTimesheetLineIndex] = savededTimesheetLine;
+                        if (_this.bEditTimesheetLine) {
+                            _this.timesheet.timesheetLineArray[_this.selectedTimesheetLineIndex] = savededTimesheetLine;
+                        }
+                        else {
+                            _this.timesheet.timesheetLineArray.push(savededTimesheetLine);
+                        }
+                        ;
                         _this.gridOptions.api.setRowData(_this.timesheet.timesheetLineArray);
                         _this.calculateTimesheetTotal();
+                    };
+                    this.newTimesheetLine = function () {
+                        //var newTimesheetLineThis = this;
+                        var getTimesheetLineDate = function () {
+                            var d;
+                            var dow;
+                            if (_this.timesheet.timesheetLineArray.length === 0) {
+                                //if (newTimesheetLineThis.timesheet.timesheetLineArray.length === 0) {
+                                //set to previous Monday
+                                d = new Date();
+                                var dow = d.getDay();
+                                d.setDate(d.getDate() - dow + 1);
+                                return d;
+                            }
+                            else {
+                                var s = _this.timesheet.timesheetLineArray[_this.timesheet.timesheetLineArray.length - 1].sTimesheetLineDate;
+                                //var s = newTimesheetLineThis.timesheet.timesheetLineArray[newTimesheetLineThis.timesheet.timesheetLineArray.length - 1].sTimesheetLineDate;
+                                d = helper_service_1.HelperService.translateJavascriptDate(s);
+                                d.setDate(d.getDate() + 1);
+                                return d;
+                            }
+                        };
+                        var TimesheetLineDate = getTimesheetLineDate();
+                        _this.timesheetLineComponent.newTimesheetLine(TimesheetLineDate);
                     };
                     ////////////////////////////////////
                     //grid
@@ -151,17 +222,6 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                 }
                 TimesheetComponent.prototype.ngOnInit = function () {
                     if (helper_service_1.HelperService.tokenIsValid() === false) {
-                        this.router.navigate(['Login']);
-                    }
-                };
-                TimesheetComponent.prototype.getTimesheet = function (timesheetID, debtors) {
-                    if (helper_service_1.HelperService.tokenIsValid()) {
-                        this.debtors = debtors;
-                        var EntityId = GetEntity_service_1.GetEntityService.getInstance().getEntityId();
-                        this.titleTimesheet = 'Edit Timesheet';
-                        this.timesheetService.getTimesheet(timesheetID, EntityId).subscribe(this.onGetTimesheet, this.logTimesheetError);
-                    }
-                    else {
                         this.router.navigate(['Login']);
                     }
                 };

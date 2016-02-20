@@ -48,6 +48,7 @@ export class TimesheetsComponent {
     //events
     addTimesheet = () => {
         //this.router.navigate(['Timesheet', { edit: "false" }]);
+        this.timesheetComponent.newTimesheet(this.debtors);
         this.editTimesheet = false;
     }
 

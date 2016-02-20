@@ -50,6 +50,7 @@ System.register(['angular2/router', '../../services/helper/helper.service', '../
                     //events
                     this.addTimesheet = function () {
                         //this.router.navigate(['Timesheet', { edit: "false" }]);
+                        _this.timesheetComponent.newTimesheet(_this.debtors);
                         _this.editTimesheet = false;
                     };
                     this.chkExcludeInactiveClicked = function (chkExcludeInactive) {
