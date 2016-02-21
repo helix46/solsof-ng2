@@ -22,6 +22,7 @@ export class LedgerAccountsComponent {
 
     public LedgerAccounts: SolsofSpa.Api.DataContext.tblLedgerAccount[] = [];
     public excludeInactive: boolean = true;
+    getLedgerAccountsSuccess: boolean;
 
     constructor(private ledgerAccountsService: LedgerAccountsService, public router: Router) {
         console.log('constructor LedgerAccountsComponent');
@@ -42,34 +43,32 @@ export class LedgerAccountsComponent {
 
     //////////////////////////////////////////////////////////////
     //get data
-    logError = (e: any) => {
-        console.log('getLedgerAccounts Error');
-        this.getLedgerAccountsSuccess = false;
-    }
-
-    getLedgerAccountsSuccess: boolean;
-
-    complete = () => {
-        console.log('getLedgerAccounts complete');
-    }
-
-    onGetLedgerAccountsSuccess = (data: SolsofSpa.Api.DataContext.tblLedgerAccount[]) => {
-        this.getLedgerAccountsSuccess = true;
-        this.LedgerAccounts = data;
-        this.gridOptions.api.setRowData(data);
-        this.gridOptions.api.sizeColumnsToFit();
-    }
-
     loadLedgerAccounts = () => {
+        var loadLedgerAccountsThis = this;
         if (HelperService.tokenIsValid()) {
             var EntityId = GetEntityService.getInstance().getEntityId();
             if (EntityId === -1) {
                 this.router.navigate(['Entities']);
             } else {
-                this.ledgerAccountsService.getLedgerAccounts(this.excludeInactive, EntityId).subscribe(this.onGetLedgerAccountsSuccess, this.logError, this.complete);
+                this.ledgerAccountsService.getLedgerAccounts(this.excludeInactive, EntityId).subscribe(onGetLedgerAccountsSuccess, logError, complete);
             }
         } else {
             this.router.navigate(['Login']);
+        }
+        function logError(e: any) {
+            console.log('getLedgerAccounts Error');
+            loadLedgerAccountsThis.getLedgerAccountsSuccess = false;
+        }
+
+        function complete() {
+            console.log('getLedgerAccounts complete');
+        }
+
+        function onGetLedgerAccountsSuccess(data: SolsofSpa.Api.DataContext.tblLedgerAccount[]) {
+            loadLedgerAccountsThis.getLedgerAccountsSuccess = true;
+            loadLedgerAccountsThis.LedgerAccounts = data;
+            loadLedgerAccountsThis.gridOptions.api.setRowData(data);
+            loadLedgerAccountsThis.gridOptions.api.sizeColumnsToFit();
         }
     };
      

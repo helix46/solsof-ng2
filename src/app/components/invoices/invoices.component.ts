@@ -44,34 +44,34 @@ export class InvoicesComponent {
 
     //////////////////////////////////////////////////////////////
     //get data
-    logError = (e: any) => {
-        console.log('getInvoices Error');
-        this.getInvoicesSuccess = false;
-    }
-
-    complete = () =>{
-        console.log('getInvoices complete');
-    }
-
-    onGetInvoicesSuccess = (data: SolsofSpa.Api.DataContext.spGetInvoices_Result[]) => {
-        this.Invoices = data;
-        this.gridOptions.api.setRowData(data);
-        this.gridOptions.api.sizeColumnsToFit();
-        this.getInvoicesSuccess = true;
-    }
 
     loadInvoices = () => {
-        //var InvoicesComponentThis = this;
+        var loadInvoicesThis = this;
 
         if (HelperService.tokenIsValid()) {
             var EntityId = GetEntityService.getInstance().getEntityId();
             if (EntityId === -1) {
                 this.router.navigate(['Entities']);
             } else {
-                this.InvoicesService.getInvoices(EntityId).subscribe(this.onGetInvoicesSuccess, this.logError, this.complete);
+                this.InvoicesService.getInvoices(EntityId).subscribe(onGetInvoicesSuccess, logError, complete);
             }
         } else {
             this.router.navigate(['Login']);
+        }
+        function  logError  (e: any)  {
+            console.log('getInvoices Error');
+            loadInvoicesThis.getInvoicesSuccess = false;
+        }
+
+        function  complete  ()  {
+            console.log('getInvoices complete');
+        }
+
+        function  onGetInvoicesSuccess  (data: SolsofSpa.Api.DataContext.spGetInvoices_Result[])  {
+            loadInvoicesThis.Invoices = data;
+            loadInvoicesThis.gridOptions.api.setRowData(data);
+            loadInvoicesThis.gridOptions.api.sizeColumnsToFit();
+            loadInvoicesThis.getInvoicesSuccess = true;
         }
     };
      

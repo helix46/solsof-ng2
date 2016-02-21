@@ -43,31 +43,32 @@ System.register(['angular2/router', '../../services/helper/helper.service', '../
                     };
                     //////////////////////////////////////////////////////////////
                     //get data
-                    this.logError = function (e) {
-                        console.log('getLedgerAccounts Error');
-                        _this.getLedgerAccountsSuccess = false;
-                    };
-                    this.complete = function () {
-                        console.log('getLedgerAccounts complete');
-                    };
-                    this.onGetLedgerAccountsSuccess = function (data) {
-                        _this.getLedgerAccountsSuccess = true;
-                        _this.LedgerAccounts = data;
-                        _this.gridOptions.api.setRowData(data);
-                        _this.gridOptions.api.sizeColumnsToFit();
-                    };
                     this.loadLedgerAccounts = function () {
+                        var loadLedgerAccountsThis = _this;
                         if (helper_service_1.HelperService.tokenIsValid()) {
                             var EntityId = GetEntity_service_1.GetEntityService.getInstance().getEntityId();
                             if (EntityId === -1) {
                                 _this.router.navigate(['Entities']);
                             }
                             else {
-                                _this.ledgerAccountsService.getLedgerAccounts(_this.excludeInactive, EntityId).subscribe(_this.onGetLedgerAccountsSuccess, _this.logError, _this.complete);
+                                _this.ledgerAccountsService.getLedgerAccounts(_this.excludeInactive, EntityId).subscribe(onGetLedgerAccountsSuccess, logError, complete);
                             }
                         }
                         else {
                             _this.router.navigate(['Login']);
+                        }
+                        function logError(e) {
+                            console.log('getLedgerAccounts Error');
+                            loadLedgerAccountsThis.getLedgerAccountsSuccess = false;
+                        }
+                        function complete() {
+                            console.log('getLedgerAccounts complete');
+                        }
+                        function onGetLedgerAccountsSuccess(data) {
+                            loadLedgerAccountsThis.getLedgerAccountsSuccess = true;
+                            loadLedgerAccountsThis.LedgerAccounts = data;
+                            loadLedgerAccountsThis.gridOptions.api.setRowData(data);
+                            loadLedgerAccountsThis.gridOptions.api.sizeColumnsToFit();
                         }
                     };
                     /////////////////////////////////////////////////////////////

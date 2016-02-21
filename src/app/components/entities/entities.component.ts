@@ -28,10 +28,13 @@ export class EntitiesComponent {
         console.log('constructor EntitiesComponent');
         this.getEntitiesSuccess = false;
     }
-    
+
+    ServiceBase: string;
+
     //load entities when page loaded
     ngOnInit() {
         this.loadEntities();
+        this.ServiceBase = HelperService.getServiceBase();
     }
 
     //reload grid when checkbox clicked
@@ -42,26 +45,27 @@ export class EntitiesComponent {
 
     //////////////////////////////////////////////
     //get data
-    logError = (e: any) => {
-        console.log('getEntities Error');
-        this.getEntitiesSuccess = false;
-    }
-    complete = () => {
-        console.log('getEntities complete');
-    }
-
-    onGetEntitiesSuccess = (data: any) => {
-        this.entities = data;
-        this.gridOptions.api.setRowData(data);
-        this.gridOptions.api.sizeColumnsToFit();
-        this.getEntitiesSuccess = true;
-    }
 
     loadEntities = () => {
+        var loadEntitiesThis = this;
         if (HelperService.tokenIsValid()) {
-            this.entitiesService.getEntities(this.excludeInactive).subscribe(this.onGetEntitiesSuccess, this.logError, this.complete);
+            this.entitiesService.getEntities(this.excludeInactive).subscribe(onGetEntitiesSuccess, logError, complete);
         } else {
             this.router.navigate(['Login']);
+        }
+        function logError(e: any) {
+            console.log('getEntities Error');
+            loadEntitiesThis.getEntitiesSuccess = false;
+        }
+        function complete() {
+            console.log('getEntities complete');
+        }
+
+        function onGetEntitiesSuccess(data: any) {
+            loadEntitiesThis.entities = data;
+            loadEntitiesThis.gridOptions.api.setRowData(data);
+            loadEntitiesThis.gridOptions.api.sizeColumnsToFit();
+            loadEntitiesThis.getEntitiesSuccess = true;
         }
     }
 

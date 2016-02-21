@@ -34,21 +34,8 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                     this.passwordsEqual = function () {
                         return _this.newPassword === _this.repeatNewPassword;
                     };
-                    this.logError = function (resp) {
-                        alert('Password may be changed even though an error has been thrown');
-                        console.log('changePassword error');
-                        _this.getChangePasswordSuccess = false;
-                    };
-                    this.complete = function () {
-                        console.log('changePassword complete');
-                        //alert('changePassword success');
-                        setTimeout(function () { return _this.router.navigate(['Entities']); }, 2000);
-                    };
-                    this.onSuccess = function () {
-                        console.log('changePassword success');
-                        _this.getChangePasswordSuccess = true;
-                    };
                     this.onSubmit = function () {
+                        var onSubmitThis = _this;
                         if (_this.newPassword === _this.repeatNewPassword) {
                             var changePasswordModel = {
                                 userName: helper_service_1.HelperService.getUsername(),
@@ -56,7 +43,7 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                                 newPassword: _this.newPassword
                             };
                             if (helper_service_1.HelperService.tokenIsValid()) {
-                                _this.changePasswordService.changePassword(changePasswordModel).subscribe(_this.onSuccess, _this.logError, _this.complete);
+                                _this.changePasswordService.changePassword(changePasswordModel).subscribe(onSuccess, logError, complete);
                             }
                             else {
                                 _this.router.navigate(['Login']);
@@ -64,6 +51,20 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                         }
                         else {
                             alert('Passwords are not the same');
+                        }
+                        function logError(resp) {
+                            alert('Password may be changed even though an error has been thrown');
+                            console.log('changePassword error');
+                            onSubmitThis.getChangePasswordSuccess = false;
+                        }
+                        function complete() {
+                            var _this = this;
+                            console.log('changePassword complete');
+                            setTimeout(function () { return _this.router.navigate(['Entities']); }, 2000);
+                        }
+                        function onSuccess() {
+                            console.log('changePassword success');
+                            onSubmitThis.getChangePasswordSuccess = true;
                         }
                     };
                     this.userId = helper_service_1.HelperService.getUsername();

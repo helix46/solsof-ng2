@@ -1,4 +1,4 @@
-System.register(['angular2/router', '../../services/helper/helper.service', '../../services/GetEntity/GetEntity.service', 'angular2/core', '../../services/Timesheets/Timesheets.service', '../timesheet/timesheet.component', '../../services/debtors/debtors.service'], function(exports_1) {
+System.register(['angular2/router', '../../services/helper/helper.service', '../../services/GetEntity/GetEntity.service', 'angular2/core', '../../services/Timesheets/Timesheets.service', '../timesheet/timesheet.component', '../../services/debtors/debtors.service', '../../services/timesheet/timesheet.service', '../utilities/dialogBox/dialogBox.component'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['angular2/router', '../../services/helper/helper.service', '../
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var router_1, helper_service_1, GetEntity_service_1, core_1, Timesheets_service_1, timesheet_component_1, debtors_service_1;
+    var router_1, helper_service_1, GetEntity_service_1, core_1, Timesheets_service_1, timesheet_component_1, debtors_service_1, timesheet_service_1, dialogBox_component_1;
     var TimesheetsComponent;
     return {
         setters:[
@@ -32,20 +32,28 @@ System.register(['angular2/router', '../../services/helper/helper.service', '../
             },
             function (debtors_service_1_1) {
                 debtors_service_1 = debtors_service_1_1;
+            },
+            function (timesheet_service_1_1) {
+                timesheet_service_1 = timesheet_service_1_1;
+            },
+            function (dialogBox_component_1_1) {
+                dialogBox_component_1 = dialogBox_component_1_1;
             }],
         execute: function() {
             //import {AgGridNg2} from 'ag-grid-ng2/main';
             //import {GridOptions} from 'ag-grid/main';
             TimesheetsComponent = (function () {
-                function TimesheetsComponent(timesheetsService, router, debtorsService) {
+                function TimesheetsComponent(timesheetsService, router, debtorsService, timesheetService) {
                     var _this = this;
                     this.timesheetsService = timesheetsService;
                     this.router = router;
                     this.debtorsService = debtorsService;
+                    this.timesheetService = timesheetService;
                     this.Timesheets = [];
                     this.excludeInactive = true;
                     this.getTimesheetsSuccess = true;
                     this.getDebtorsSuccess = true;
+                    //selectedTimesheetIndex: number;
                     //////////////////////////////////////////////////////////
                     //events
                     this.addTimesheet = function () {
@@ -57,55 +65,80 @@ System.register(['angular2/router', '../../services/helper/helper.service', '../
                         _this.excludeInactive = chkExcludeInactive.checked;
                         _this.loadTimesheets();
                     };
-                    /////////////////////////////////////////////////////////
-                    //get data
-                    this.logTimesheetsError = function () {
-                        console.log('getTimesheets Error');
-                        _this.getTimesheetsSuccess = false;
-                    };
-                    this.logDebtorsError = function () {
-                        console.log('getDebtors Error');
-                        _this.getDebtorsSuccess = false;
-                    };
-                    this.complete = function () {
-                        console.log('getTimesheets complete');
-                    };
-                    this.onGetDebtorsSuccess = function (debtors) {
-                        _this.debtors = debtors;
-                    };
-                    this.onGetTimesheetsSuccess = function (timesheets) {
-                        _this.Timesheets = timesheets;
-                        _this.gridOptions.api.setRowData(timesheets);
-                        _this.gridOptions.api.sizeColumnsToFit();
-                        _this.getTimesheetsSuccess = true;
-                    };
                     //loadDebtors
                     this.loadDebtors = function () {
+                        var loadDebtorsThis = _this;
                         if (helper_service_1.HelperService.tokenIsValid()) {
                             var EntityId = GetEntity_service_1.GetEntityService.getInstance().getEntityId();
                             if (EntityId === -1) {
                                 _this.router.navigate(['Entities']);
                             }
                             else {
-                                _this.debtorsService.getDebtors(EntityId).subscribe(_this.onGetDebtorsSuccess, _this.logDebtorsError, _this.complete);
+                                _this.debtorsService.getDebtors(EntityId).subscribe(onGetDebtorsSuccess, logDebtorsError, complete);
                             }
                         }
                         else {
                             _this.router.navigate(['Login']);
+                        }
+                        function logDebtorsError() {
+                            console.log('getDebtors Error');
+                            loadDebtorsThis.getDebtorsSuccess = false;
+                        }
+                        function onGetDebtorsSuccess(debtors) {
+                            loadDebtorsThis.debtors = debtors;
+                        }
+                        function complete() {
+                            console.log('loadDebtors complete');
                         }
                     };
                     this.loadTimesheets = function () {
+                        var loadTimesheetsThis = _this;
                         if (helper_service_1.HelperService.tokenIsValid()) {
                             var EntityId = GetEntity_service_1.GetEntityService.getInstance().getEntityId();
                             if (EntityId === -1) {
                                 _this.router.navigate(['Entities']);
                             }
                             else {
-                                _this.timesheetsService.getTimesheets(EntityId).subscribe(_this.onGetTimesheetsSuccess, _this.logTimesheetsError, _this.complete);
+                                _this.timesheetsService.getTimesheets(EntityId).subscribe(onGetTimesheetsSuccess, logTimesheetsError, complete);
                             }
                         }
                         else {
                             _this.router.navigate(['Login']);
+                        }
+                        function onGetTimesheetsSuccess(timesheets) {
+                            loadTimesheetsThis.Timesheets = timesheets;
+                            loadTimesheetsThis.gridOptions.api.setRowData(timesheets);
+                            loadTimesheetsThis.gridOptions.api.sizeColumnsToFit();
+                            loadTimesheetsThis.getTimesheetsSuccess = true;
+                        }
+                        function logTimesheetsError() {
+                            console.log('getTimesheets Error');
+                            loadTimesheetsThis.getTimesheetsSuccess = false;
+                        }
+                        function complete() {
+                            console.log('loadTimesheets complete');
+                        }
+                    };
+                    this.deleteTimesheet = function () {
+                        var deleteTimesheetThis = _this;
+                        _this.dialogBoxComponent.displayDialogBox('Are you sure you want to delete this time sheet?', deleteTimesheetConfirmed);
+                        function deleteTimesheetConfirmed() {
+                            if (helper_service_1.HelperService.tokenIsValid()) {
+                                var obs = deleteTimesheetThis.timesheetService.deleteTimesheet(deleteTimesheetThis.selectedTimesheetID);
+                                obs.subscribe(onDeleteTimesheetSuccess, function (err) { return logTimesheetsError(err); }, complete);
+                            }
+                            else {
+                                deleteTimesheetThis.router.navigate(['Login']);
+                            }
+                            function onDeleteTimesheetSuccess() {
+                                deleteTimesheetThis.loadTimesheets();
+                            }
+                            function logTimesheetsError(err) {
+                                console.log('deleteTimesheet Error');
+                            }
+                            function complete() {
+                                console.log('loadTimesheets complete');
+                            }
                         }
                     };
                     ////////////////////////////////////////////////
@@ -122,11 +155,12 @@ System.register(['angular2/router', '../../services/helper/helper.service', '../
                         },
                         { headerName: "Name", field: "debtorName", minWidth: 100 },
                         {
-                            headerName: "Minutes",
+                            headerName: "Hours",
                             field: "minutes",
                             cellClass: 'rightJustify',
                             cellRenderer: function (params) {
-                                return helper_service_1.HelperService.formatMoney(params.value);
+                                var totalMinutes = params.value;
+                                return helper_service_1.HelperService.convertMinutesToTimeString(totalMinutes);
                             },
                             minWidth: 80
                         },
@@ -134,10 +168,11 @@ System.register(['angular2/router', '../../services/helper/helper.service', '../
                         { headerName: "#", field: "invoiceNumber", minWidth: 100 }
                     ];
                     this.onRowClicked = function (params) {
-                        //this.selectedTimesheet = <SolsofSpa.Api.DataContext.tblTimesheet>params.data;
-                        console.log('Timesheet onRowClicked');
+                        var selectedTimesheet = params.data;
+                        _this.selectedTimesheetID = selectedTimesheet.timesheetID;
                     };
                     this.onRowDoubleClicked = function (params) {
+                        _this.onRowClicked(params);
                         var selectedTimesheet = params.data;
                         _this.timesheetComponent.getTimesheet(selectedTimesheet.timesheetID, _this.debtors);
                         _this.editTimesheet = true;
@@ -158,15 +193,18 @@ System.register(['angular2/router', '../../services/helper/helper.service', '../
                     core_1.ViewChild(timesheet_component_1.TimesheetComponent), 
                     __metadata('design:type', timesheet_component_1.TimesheetComponent)
                 ], TimesheetsComponent.prototype, "timesheetComponent", void 0);
+                __decorate([
+                    core_1.ViewChild(dialogBox_component_1.DialogBoxComponent), 
+                    __metadata('design:type', dialogBox_component_1.DialogBoxComponent)
+                ], TimesheetsComponent.prototype, "dialogBoxComponent", void 0);
                 TimesheetsComponent = __decorate([
                     core_1.Component({
-                        //selector: 'ledger-accounts',
                         templateUrl: 'src/app/components/Timesheets/Timesheets.component.html',
                         pipes: [],
-                        providers: [Timesheets_service_1.TimesheetsService, debtors_service_1.DebtorsService],
-                        directives: [window.ag.grid.AgGridNg2, timesheet_component_1.TimesheetComponent]
+                        providers: [Timesheets_service_1.TimesheetsService, debtors_service_1.DebtorsService, timesheet_service_1.TimesheetService],
+                        directives: [window.ag.grid.AgGridNg2, timesheet_component_1.TimesheetComponent, dialogBox_component_1.DialogBoxComponent]
                     }), 
-                    __metadata('design:paramtypes', [Timesheets_service_1.TimesheetsService, router_1.Router, debtors_service_1.DebtorsService])
+                    __metadata('design:paramtypes', [Timesheets_service_1.TimesheetsService, router_1.Router, debtors_service_1.DebtorsService, timesheet_service_1.TimesheetService])
                 ], TimesheetsComponent);
                 return TimesheetsComponent;
             })();

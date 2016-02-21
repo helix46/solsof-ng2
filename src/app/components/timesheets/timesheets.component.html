@@ -1,25 +1,18 @@
 ﻿<h1>Timesheets</h1>
 <div class="col-md-2">
-    <div class="btn-group-vertical">
-        <button class="btn btn-primary" (click)="addTimesheet()">Add</button>
-        <button class="btn btn-primary">Create Invoice</button>
-        <button class="btn btn-primary">Delete</button>
+    <div class="buttonGroup" >
+        <button class="btn btn-primary separatedButton" style="color:coral;" (click)="addTimesheet()">Add</button>
+        <button class="btn btn-primary separatedButton" >Create Invoice</button>
+        <button class="btn btn-primary separatedButton"(click)="deleteTimesheet()">Delete</button>
     </div>
 </div>
 <div class="col-md-10">
-    <ag-grid-ng2 class="ag-fresh clsTimesheets" [gridOptions]="gridOptions"></ag-grid-ng2>
+    <ag-grid-ng2 class="ag-fresh clsTimesheets" [gridOptions]="gridOptions" title="Double click to edit"></ag-grid-ng2>
+    Double click grid to edit Timesheet 
 </div>
 
 <div [hidden]="getTimesheetsSuccess" class="alert alert-danger">Error getting Timesheets</div>
 <div [hidden]="getDebtorsSuccess" class="alert alert-danger">Error getting Debtors</div>
-
-
-
-<!--<timesheetModal [timesheet]="timesheet"
-                [bEditTimesheet]="editTimesheet"
-                (cancel)="cancelTimesheet()"
-                (ok)="saveTimesheet()">
-</timesheetModal>-->
-
-
 <timesheetModal (ok)="loadTimesheets()"></timesheetModal>
+
+<dialog-box></dialog-box>

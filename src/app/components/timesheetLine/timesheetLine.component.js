@@ -72,7 +72,7 @@ System.register(['angular2/core', '../../services/helper/helper.service'], funct
                     core_1.Component({
                         selector: 'timesheet-line',
                         templateUrl: 'src/app/components/timesheetLine/timesheetLine.component.html',
-                        styleUrls: ['src/app/components/timesheetLine/timesheetLine.component.css']
+                        styles: ['.modalSolsofVisible {display: block;}']
                     }), 
                     __metadata('design:paramtypes', [])
                 ], TimesheetLineComponent);

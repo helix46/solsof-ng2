@@ -41,32 +41,32 @@ System.register(['angular2/router', '../../services/helper/helper.service', '../
                     this.getInvoicesSuccess = true;
                     //////////////////////////////////////////////////////////////
                     //get data
-                    this.logError = function (e) {
-                        console.log('getInvoices Error');
-                        _this.getInvoicesSuccess = false;
-                    };
-                    this.complete = function () {
-                        console.log('getInvoices complete');
-                    };
-                    this.onGetInvoicesSuccess = function (data) {
-                        _this.Invoices = data;
-                        _this.gridOptions.api.setRowData(data);
-                        _this.gridOptions.api.sizeColumnsToFit();
-                        _this.getInvoicesSuccess = true;
-                    };
                     this.loadInvoices = function () {
-                        //var InvoicesComponentThis = this;
+                        var loadInvoicesThis = _this;
                         if (helper_service_1.HelperService.tokenIsValid()) {
                             var EntityId = GetEntity_service_1.GetEntityService.getInstance().getEntityId();
                             if (EntityId === -1) {
                                 _this.router.navigate(['Entities']);
                             }
                             else {
-                                _this.InvoicesService.getInvoices(EntityId).subscribe(_this.onGetInvoicesSuccess, _this.logError, _this.complete);
+                                _this.InvoicesService.getInvoices(EntityId).subscribe(onGetInvoicesSuccess, logError, complete);
                             }
                         }
                         else {
                             _this.router.navigate(['Login']);
+                        }
+                        function logError(e) {
+                            console.log('getInvoices Error');
+                            loadInvoicesThis.getInvoicesSuccess = false;
+                        }
+                        function complete() {
+                            console.log('getInvoices complete');
+                        }
+                        function onGetInvoicesSuccess(data) {
+                            loadInvoicesThis.Invoices = data;
+                            loadInvoicesThis.gridOptions.api.setRowData(data);
+                            loadInvoicesThis.gridOptions.api.sizeColumnsToFit();
+                            loadInvoicesThis.getInvoicesSuccess = true;
                         }
                     };
                     /////////////////////////////////////////////////////////////

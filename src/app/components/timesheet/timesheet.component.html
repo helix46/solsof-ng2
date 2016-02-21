@@ -9,7 +9,7 @@
             <div class="form-group">
                 <label class="col-md-2 control-label">Debtor</label>
                 <div class="col-md-4">
-                    <select class="input-group form-control" #cmbDebtors (change)="onChange(cmbDebtors.value)" [(ngModel)]="timesheet.debtorID">
+                    <select class="input-group form-control" #cmbDebtors (change)="onChangeDebtor(cmbDebtors.value)" [(ngModel)]="timesheet.debtorID">
                         <option *ngFor="#debtor of debtors" [value]="debtor.debtorID">
                             {{ debtor.debtorName }}
                         </option>

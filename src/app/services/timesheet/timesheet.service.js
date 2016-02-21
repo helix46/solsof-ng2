@@ -48,6 +48,15 @@ System.register(['angular2/router', 'angular2/src/core/di', 'angular2/http', '..
                     var httpHandlerService = new http_handler_service_1.HttpHandlerService(this.http);
                     return httpHandlerService.putObject(timesheet, 'api/timesheet');
                 };
+                TimesheetService.prototype.deleteTimesheet = function (timesheetID) {
+                    var httpHandlerService = new http_handler_service_1.HttpHandlerService(this.http);
+                    var parameters = [];
+                    parameters[0] = {
+                        name: 'timesheetID',
+                        value: timesheetID.toString()
+                    };
+                    return httpHandlerService.deleteObject(parameters, 'api/timesheet');
+                };
                 TimesheetService.prototype.getTimesheet = function (timesheetID, entityID) {
                     var parameters = [];
                     parameters[0] = {

@@ -33,6 +33,15 @@ export class TimesheetService {
         return httpHandlerService.putObject<string>(timesheet, 'api/timesheet');
     }
 
+    deleteTimesheet(timesheetID: number) {
+        var httpHandlerService = new HttpHandlerService(this.http);
+        var parameters: modSharedTypes.IHttpParameter[] = [];
+        parameters[0] = {
+            name: 'timesheetID',
+            value: timesheetID.toString()
+        };
+        return httpHandlerService.deleteObject<any>(parameters, 'api/timesheet');
+    }
 
 
     getTimesheet(timesheetID: number, entityID: number) {

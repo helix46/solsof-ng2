@@ -32,6 +32,20 @@
     width: 100%;
 }
 
+.okButton {
+    font-size: x-large;
+}
+
+.buttonGroup {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.separatedButton {
+    margin: 10px 0 10px 0;
+    width: 100%;
+}
 
 .solsof-btn, .btn {
     border-radius: 0;
@@ -42,6 +56,10 @@
 }
 
 label {
+}
+
+.modalSolsofVisible {
+    display: block;
 }
 
 /* The Modal (background) */
@@ -67,8 +85,16 @@ label {
     z-index: 200;
 }
 
+.modalSolsof1000 {
+    z-index: 1000;
+}
+
 .modalSolsof-wide {
     width: 60%;
+}
+
+.modalSolsof-very-narrow {
+    width: 20%;
 }
 
 .modalSolsof-narrow {

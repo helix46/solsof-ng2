@@ -30,16 +30,10 @@ System.register(['../../services/GetEntity/GetEntity.service', 'angular2/router'
         execute: function() {
             TransactionsComponent = (function () {
                 function TransactionsComponent(TransactionsService, router, routeParams) {
-                    var _this = this;
                     this.TransactionsService = TransactionsService;
                     this.router = router;
                     this.routeParams = routeParams;
                     this.Transactions = [];
-                    this.onGetTransactionsSuccess = function (data) {
-                        _this.Transactions = data;
-                        _this.gridOptions.api.setRowData(data);
-                        _this.gridOptions.api.sizeColumnsToFit();
-                    };
                     /////////////////////////////////////////////////////////////
                     //grid
                     this.columnDefs = [
@@ -90,13 +84,8 @@ System.register(['../../services/GetEntity/GetEntity.service', 'angular2/router'
                 };
                 //////////////////////////////////////////////////////////////
                 //get data
-                TransactionsComponent.prototype.logError = function (e) {
-                    console.log('getTransactions Error');
-                };
-                TransactionsComponent.prototype.complete = function () {
-                    console.log('getTransactions complete');
-                };
                 TransactionsComponent.prototype.loadTransactions = function () {
+                    var loadTransactionsThis = this;
                     //var TransactionsComponentThis = this;
                     if (helper_service_1.HelperService.tokenIsValid()) {
                         var entityID = GetEntity_service_1.GetEntityService.getInstance().getEntityId();
@@ -104,11 +93,22 @@ System.register(['../../services/GetEntity/GetEntity.service', 'angular2/router'
                             this.router.navigate(['Entities']);
                         }
                         else {
-                            this.TransactionsService.getTransactions(entityID, this.ledgerAccountID, this.listDateDescending).subscribe(this.onGetTransactionsSuccess, this.logError, this.complete);
+                            this.TransactionsService.getTransactions(entityID, this.ledgerAccountID, this.listDateDescending).subscribe(onGetTransactionsSuccess, logError, complete);
                         }
                     }
                     else {
                         this.router.navigate(['Login']);
+                    }
+                    function logError(e) {
+                        console.log('getTransactions Error');
+                    }
+                    function complete() {
+                        console.log('getTransactions complete');
+                    }
+                    function onGetTransactionsSuccess(data) {
+                        loadTransactionsThis.Transactions = data;
+                        loadTransactionsThis.gridOptions.api.setRowData(data);
+                        loadTransactionsThis.gridOptions.api.sizeColumnsToFit();
                     }
                 };
                 ;

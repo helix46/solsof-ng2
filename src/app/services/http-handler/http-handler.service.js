@@ -35,6 +35,10 @@ System.register(['angular2/src/core/di', 'angular2/http', '../helper/helper.serv
                     var options = this.getOptions(parameters, true);
                     return this.http.get(this.serviceBase + url, options).map(function (res) { return res.json(); });
                 };
+                HttpHandlerService.prototype.deleteObject = function (parameters, url) {
+                    var options = this.getOptions(parameters, true);
+                    return this.http.delete(this.serviceBase + url, options);
+                };
                 //use http post to send an object 
                 HttpHandlerService.prototype.postObject = function (parameterObj, url, includeToken) {
                     if (includeToken === void 0) { includeToken = true; }

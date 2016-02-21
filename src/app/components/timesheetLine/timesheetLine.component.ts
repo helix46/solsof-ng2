@@ -4,7 +4,7 @@ import {HelperService} from '../../services/helper/helper.service';
 @Component({
     selector: 'timesheet-line',
     templateUrl: 'src/app/components/timesheetLine/timesheetLine.component.html',
-    styleUrls: ['src/app/components/timesheetLine/timesheetLine.component.css']
+    styles: ['.modalSolsofVisible {display: block;}']
 })
 
 

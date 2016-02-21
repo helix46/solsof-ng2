@@ -60,6 +60,7 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                         _this.timesheetTotal = helper_service_1.HelperService.convertMinutesToTimeString(totalMinutes);
                     };
                     this.newTimesheet = function (debtors) {
+                        var newTimesheetThis = _this;
                         if (helper_service_1.HelperService.tokenIsValid()) {
                             _this.debtors = debtors;
                             _this.titleTimesheet = 'Add Timesheet';
@@ -77,6 +78,7 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                                     timesheetLineArray: []
                                 };
                                 _this.gridOptions.api.setRowData(_this.timesheet.timesheetLineArray);
+                                _this.timesheetService.getMostRecentTimesheet(EntityId).subscribe(onGetMostRecentTimesheet, logGetMostRecentTimesheet);
                             }
                             _this.editTimesheet = false;
                             _this.getTimesheetSuccess = true;
@@ -85,6 +87,18 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                         }
                         else {
                             _this.router.navigate(['Login']);
+                        }
+                        function onGetMostRecentTimesheet(mostRecentTimesheet) {
+                            if (mostRecentTimesheet !== undefined) {
+                                newTimesheetThis.timesheet.debtorID = mostRecentTimesheet.debtorID;
+                                //new date is 7 days after most recent timesheet
+                                var d = helper_service_1.HelperService.translateJavascriptDate(mostRecentTimesheet.sWeekEnding);
+                                d.setDate(d.getDate() + 7);
+                                newTimesheetThis.timesheet.sWeekEnding = helper_service_1.HelperService.formatDateForJSon(d);
+                            }
+                        }
+                        function logGetMostRecentTimesheet() {
+                            console.log('GetMostRecentTimesheet Error');
                         }
                     };
                     this.getTimesheet = function (timesheetID, debtors) {
@@ -112,30 +126,19 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                             getTimesheetThis.getTimesheetSuccess = false;
                         }
                     };
-                    //onGetMostRecentTimesheet = (mostRecentTimesheet: SolsofSpa.Helper.structTimesheet) => {
-                    //    if (mostRecentTimesheet !== undefined) {
-                    //        this.timesheet.debtorID = mostRecentTimesheet.debtorID;
-                    //    }
-                    //}
-                    this.onChange = function (value) {
+                    //dropdowns are not currently updating model
+                    this.onChangeDebtor = function (value) {
                         var currentTarget = event.currentTarget;
-                        _this.currentDebtorID = Number(currentTarget.value);
-                    };
-                    this.onSelect = function (debtor) {
-                    };
-                    this.logSuccess = function () {
-                        console.log('get success');
+                        _this.timesheet.debtorID = Number(currentTarget.value);
                     };
                     this.cancelTimesheet = function () {
                         _this.timesheetVisible = false;
                     };
-                    this.updateTimesheetSuccess = function () {
-                        _this.ok.emit('');
-                    };
                     this.okClicked = function () {
+                        var okClickedThis = _this;
                         if (_this.editTimesheet) {
                             if (helper_service_1.HelperService.tokenIsValid()) {
-                                _this.timesheetService.updateTimesheet(_this.timesheet).subscribe(_this.updateTimesheetSuccess, logError, complete);
+                                _this.timesheetService.updateTimesheet(_this.timesheet).subscribe(updateTimesheetSuccess, logError, complete);
                                 _this.timesheetVisible = false;
                             }
                             else {
@@ -144,7 +147,7 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                         }
                         else {
                             if (helper_service_1.HelperService.tokenIsValid()) {
-                                _this.timesheetService.saveNewTimesheet(_this.timesheet).subscribe(_this.updateTimesheetSuccess, logError, complete);
+                                _this.timesheetService.saveNewTimesheet(_this.timesheet).subscribe(updateTimesheetSuccess, logError, complete);
                                 _this.timesheetVisible = false;
                             }
                             else {
@@ -158,6 +161,13 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                         function complete() {
                             console.log('timesheet complete');
                         }
+                        function updateTimesheetSuccess() {
+                            okClickedThis.ok.emit('');
+                        }
+                    };
+                    this.deleteTimesheetLine = function () {
+                        _this.timesheet.timesheetLineArray.splice(_this.selectedTimesheetLineIndex, 1);
+                        _this.gridOptions.api.setRowData(_this.timesheet.timesheetLineArray);
                     };
                     this.saveTimesheetLine = function (savededTimesheetLine) {
                         if (_this.bEditTimesheetLine) {
@@ -208,17 +218,17 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                         { headerName: 'Finish Time', field: 'finishTimeMinutes', cellClass: 'rightJustify', cellRenderer: function (params) { return helper_service_1.HelperService.convertMinutesToTimeString(params.value); } },
                         { headerName: 'Time out', field: 'timeoutMinutes', cellClass: 'rightJustify', cellRenderer: function (params) { return helper_service_1.HelperService.convertMinutesToTimeString(params.value); } }
                     ];
-                    this.onRowClicked = function () {
+                    this.onRowClicked = function (params) {
+                        //params.node.id seems to be index of data array (not row number!)
+                        _this.selectedTimesheetLineIndex = params.node.id;
                     };
                     this.onRowDoubleClicked = function (params) {
                         var selectedTimesheetLine = params.data;
-                        //params.node.id seems to be index of data array (not row number!)
-                        _this.selectedTimesheetLineIndex = params.node.id;
                         _this.timesheetLineComponent.displayTimesheetline(selectedTimesheetLine);
                     };
                     this.gridOptions = helper_service_1.HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
                     console.log('constructor timesheetComponent');
-                    this.currentDebtorID = -1;
+                    this.currentDebtorID_ = -1;
                 }
                 TimesheetComponent.prototype.ngOnInit = function () {
                     if (helper_service_1.HelperService.tokenIsValid() === false) {

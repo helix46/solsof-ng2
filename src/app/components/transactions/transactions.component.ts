@@ -45,21 +45,9 @@ export class TransactionsComponent {
 
     //////////////////////////////////////////////////////////////
     //get data
-    logError(e: any) {
-        console.log('getTransactions Error');
-    }
-
-    complete() {
-        console.log('getTransactions complete');
-    }
-
-    onGetTransactionsSuccess = (data: SolsofSpa.Api.DataContext.tblTransaction[]) => {
-        this.Transactions = data;
-        this.gridOptions.api.setRowData(data);
-        this.gridOptions.api.sizeColumnsToFit();
-    }
 
     loadTransactions() {
+        var loadTransactionsThis = this;
         //var TransactionsComponentThis = this;
 
         if (HelperService.tokenIsValid()) {
@@ -67,10 +55,23 @@ export class TransactionsComponent {
             if (entityID === -1) {
                 this.router.navigate(['Entities']);
             } else {
-                this.TransactionsService.getTransactions(entityID, this.ledgerAccountID, this.listDateDescending).subscribe(this.onGetTransactionsSuccess, this.logError, this.complete);
+                this.TransactionsService.getTransactions(entityID, this.ledgerAccountID, this.listDateDescending).subscribe(onGetTransactionsSuccess, logError, complete);
             }
         } else {
             this.router.navigate(['Login']);
+        }
+        function logError(e: any) {
+            console.log('getTransactions Error');
+        }
+
+        function complete() {
+            console.log('getTransactions complete');
+        }
+
+        function onGetTransactionsSuccess  (data: SolsofSpa.Api.DataContext.tblTransaction[])  {
+            loadTransactionsThis.Transactions = data;
+            loadTransactionsThis.gridOptions.api.setRowData(data);
+            loadTransactionsThis.gridOptions.api.sizeColumnsToFit();
         }
     };
      

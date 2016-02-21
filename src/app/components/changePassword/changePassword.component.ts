@@ -35,23 +35,9 @@ export class ChangePasswordComponent {
         return this.newPassword === this.repeatNewPassword
     }
 
-    logError = (resp: any) => {
-        alert('Password may be changed even though an error has been thrown');
-        console.log('changePassword error');
-        this.getChangePasswordSuccess = false;
-    }
-    complete = () => {
-        console.log('changePassword complete');
-        //alert('changePassword success');
-        setTimeout(() => this.router.navigate(['Entities']), 2000)
-    }
-
-    onSuccess = () => {
-        console.log('changePassword success');
-        this.getChangePasswordSuccess = true;
-    }
 
     onSubmit = () => {
+        var onSubmitThis = this;
         if (this.newPassword === this.repeatNewPassword) {
             var changePasswordModel: IChangePasswordModel = {
                 userName: HelperService.getUsername(),
@@ -59,12 +45,26 @@ export class ChangePasswordComponent {
                 newPassword: this.newPassword
             }
             if (HelperService.tokenIsValid()) {
-                this.changePasswordService.changePassword(changePasswordModel).subscribe(this.onSuccess, this.logError, this.complete);
+                this.changePasswordService.changePassword(changePasswordModel).subscribe(onSuccess, logError, complete);
             } else {
                 this.router.navigate(['Login']);
             }
         } else {
             alert('Passwords are not the same');
+        }
+        function logError(resp: any) {
+            alert('Password may be changed even though an error has been thrown');
+            console.log('changePassword error');
+            onSubmitThis.getChangePasswordSuccess = false;
+        }
+        function complete() {
+            console.log('changePassword complete');
+            setTimeout(() => this.router.navigate(['Entities']), 2000)
+        }
+
+        function onSuccess() {
+            console.log('changePassword success');
+            onSubmitThis.getChangePasswordSuccess = true;
         }
     }
 }

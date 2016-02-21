@@ -1,0 +1,61 @@
+System.register(['angular2/core'], function(exports_1) {
+    var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+        var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+        else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+        return c > 3 && r && Object.defineProperty(target, key, r), r;
+    };
+    var __metadata = (this && this.__metadata) || function (k, v) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+    };
+    var core_1;
+    var DialogBoxComponent;
+    return {
+        setters:[
+            function (core_1_1) {
+                core_1 = core_1_1;
+            }],
+        execute: function() {
+            DialogBoxComponent = (function () {
+                function DialogBoxComponent() {
+                    var _this = this;
+                    this.OK = new core_1.EventEmitter();
+                    this.message = '';
+                    this.cancelLabel = 'Cancel';
+                    this.okLabel = 'Ok';
+                    this.dialogBoxVisible = false;
+                    this.cancel = function () {
+                        _this.dialogBoxVisible = false;
+                    };
+                    this.displayDialogBox = function (message, fnConfirmed) {
+                        _this.message = message;
+                        _this.fnConfirmed = fnConfirmed;
+                        _this.dialogBoxVisible = true;
+                    };
+                    console.log('constructor DialogBoxComponent');
+                }
+                DialogBoxComponent.prototype.ngOnInit = function () {
+                };
+                DialogBoxComponent.prototype.ok = function () {
+                    this.dialogBoxVisible = false;
+                    this.fnConfirmed();
+                };
+                __decorate([
+                    core_1.Output(), 
+                    __metadata('design:type', core_1.EventEmitter)
+                ], DialogBoxComponent.prototype, "OK", void 0);
+                DialogBoxComponent = __decorate([
+                    core_1.Component({
+                        selector: 'dialog-box',
+                        templateUrl: 'src/app/components/utilities/dialogBox/dialogBox.component.html',
+                        styles: ['.modalSolsofVisible {display: block;}']
+                    }), 
+                    __metadata('design:paramtypes', [])
+                ], DialogBoxComponent);
+                return DialogBoxComponent;
+            })();
+            exports_1("DialogBoxComponent", DialogBoxComponent);
+        }
+    }
+});
+//# sourceMappingURL=dialogBox.component.js.map
