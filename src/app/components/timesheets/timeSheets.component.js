@@ -53,6 +53,7 @@ System.register(['angular2/router', '../../services/helper/helper.service', '../
                     this.excludeInactive = true;
                     this.getTimesheetsSuccess = true;
                     this.getDebtorsSuccess = true;
+                    //selectedTimesheetID: number;
                     //selectedTimesheetIndex: number;
                     //////////////////////////////////////////////////////////
                     //events
@@ -121,10 +122,16 @@ System.register(['angular2/router', '../../services/helper/helper.service', '../
                     };
                     this.deleteTimesheet = function () {
                         var deleteTimesheetThis = _this;
-                        _this.dialogBoxComponent.displayDialogBox('Are you sure you want to delete this time sheet?', deleteTimesheetConfirmed);
+                        var selectedRows = deleteTimesheetThis.gridOptions.api.getSelectedRows();
+                        if (selectedRows.length > 0) {
+                            _this.dialogBoxComponent.displayDialogBox('Are you sure you want to delete this time sheet?', deleteTimesheetConfirmed);
+                        }
+                        else {
+                            _this.dialogBoxComponent.alert('Please select a Timesheet to delete');
+                        }
                         function deleteTimesheetConfirmed() {
                             if (helper_service_1.HelperService.tokenIsValid()) {
-                                var obs = deleteTimesheetThis.timesheetService.deleteTimesheet(deleteTimesheetThis.selectedTimesheetID);
+                                var obs = deleteTimesheetThis.timesheetService.deleteTimesheet(selectedRows[0].timesheetID);
                                 obs.subscribe(onDeleteTimesheetSuccess, function (err) { return logTimesheetsError(err); }, complete);
                             }
                             else {
@@ -168,11 +175,10 @@ System.register(['angular2/router', '../../services/helper/helper.service', '../
                         { headerName: "#", field: "invoiceNumber", minWidth: 100 }
                     ];
                     this.onRowClicked = function (params) {
-                        var selectedTimesheet = params.data;
-                        _this.selectedTimesheetID = selectedTimesheet.timesheetID;
+                        //do nothing
                     };
                     this.onRowDoubleClicked = function (params) {
-                        _this.onRowClicked(params);
+                        //this.onRowClicked(params);
                         var selectedTimesheet = params.data;
                         _this.timesheetComponent.getTimesheet(selectedTimesheet.timesheetID, _this.debtors);
                         _this.editTimesheet = true;

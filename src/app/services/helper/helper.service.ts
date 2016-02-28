@@ -29,9 +29,9 @@ export class HelperService {
     }
 
     static getServiceBase(): string {
-        return 'https://solsofoz.azurewebsites.net/';
+        //return 'https://solsofoz.azurewebsites.net/';
 
-        //return 'http://localhost:10614/';
+        return 'http://localhost:10614/';
     }
 
     static getTokenName(): string {
@@ -62,8 +62,12 @@ export class HelperService {
         return str;
     };
 
-    static formatMoney(value: number) {
-        return value.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ","); //thanks http://stackoverflow.com/users/28324/elias-zamaria
+    static formatMoney(value: number): string {
+        if (value === null) {
+            '';
+        } else {
+            return value.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ","); //thanks http://stackoverflow.com/users/28324/elias-zamaria
+        }
     }
 
     static translateJavascriptDateAndTime(s: string): Date {

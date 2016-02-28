@@ -24,13 +24,23 @@ System.register(['angular2/core'], function(exports_1) {
                     this.cancelLabel = 'Cancel';
                     this.okLabel = 'Ok';
                     this.dialogBoxVisible = false;
+                    this.enumModalType = 0 /* dialog */;
+                    this.cancelVisible = true;
                     this.cancel = function () {
                         _this.dialogBoxVisible = false;
                     };
                     this.displayDialogBox = function (message, fnConfirmed) {
+                        _this.enumModalType = 0 /* dialog */;
                         _this.message = message;
                         _this.fnConfirmed = fnConfirmed;
                         _this.dialogBoxVisible = true;
+                        _this.cancelVisible = true;
+                    };
+                    this.alert = function (message) {
+                        _this.enumModalType = 1 /* alert */;
+                        _this.message = message;
+                        _this.dialogBoxVisible = true;
+                        _this.cancelVisible = false;
                     };
                     console.log('constructor DialogBoxComponent');
                 }
@@ -38,7 +48,9 @@ System.register(['angular2/core'], function(exports_1) {
                 };
                 DialogBoxComponent.prototype.ok = function () {
                     this.dialogBoxVisible = false;
-                    this.fnConfirmed();
+                    if (this.enumModalType === 0 /* dialog */) {
+                        this.fnConfirmed();
+                    }
                 };
                 __decorate([
                     core_1.Output(), 
@@ -48,7 +60,7 @@ System.register(['angular2/core'], function(exports_1) {
                     core_1.Component({
                         selector: 'dialog-box',
                         templateUrl: 'src/app/components/utilities/dialogBox/dialogBox.component.html',
-                        styles: ['.modalSolsofVisible {display: block;}']
+                        styles: ['.modalSolsofVisible {display: block;}', '.modalCancelHidden {display: none;}']
                     }), 
                     __metadata('design:paramtypes', [])
                 ], DialogBoxComponent);

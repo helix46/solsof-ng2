@@ -1,55 +1,49 @@
 ﻿<div class="modalSolsof modalSolsof100" [class.modalSolsofVisible]="timesheetVisible" (keyup.esc)="cancelTimesheet()">
     <!-- Modal content -->
-    <div class="modal-contentSolsof modalSolsof-wide" (keyup.esc)="cancelTimesheet()">
+    <div class="modal-contentSolsof modalSolsof-wide container-fluid" (keyup.esc)="cancelTimesheet()">
         <!--contents-->
-        <form novalidate name="formTimesheet" class="form-horizontal" (keyup.esc)="cancelTimesheet()">
+        <form (ngSubmit)="login()" #timesheetForm="ngForm">
             <h1>{{titleTimesheet}}</h1>
             <br />
-            <!--master inputs-->
-            <div class="form-group">
-                <label class="col-md-2 control-label">Debtor</label>
-                <div class="col-md-4">
-                    <select class="input-group form-control" #cmbDebtors (change)="onChangeDebtor(cmbDebtors.value)" [(ngModel)]="timesheet.debtorID">
+            <!--buttons-->
+            <div class="col-md-2">
+                <div class="buttonGroup">
+                    <button class="btn btn-primary separatedButton" (click)="newTimesheetLine()"> New Line</button>
+                    <button class="btn btn-primary separatedButton deleteButton" (click)="deleteTimesheetLine()"> Delete Line</button>
+                    <button class="btn btn-primary separatedButton okButton" (click)="okClicked()"> OK</button>
+                    <button class="btn btn-primary separatedButton" (click)="cancelTimesheet()"> Cancel</button>
+                </div>
+            </div>
+            <!--inputs-->
+            <div class="col-md-10">
+                <div class="form-group">
+                    <label for="cmbDebtors">Debtor</label>
+                    <select class="form-control" required #cmbDebtors (change)="onChangeDebtor(cmbDebtors.value)" ngControl="ngcDebtors" [(ngModel)]="timesheet.debtorID">
                         <option *ngFor="#debtor of debtors" [value]="debtor.debtorID">
                             {{ debtor.debtorName }}
                         </option>
                     </select>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="inputWeekEnding" class="col-md-2 control-label">Week Ending</label>
-                <div class="col-md-4">
-                    <input type="date" [(ngModel)]="timesheet.sWeekEnding" class="form-control" placeholder="Comment">
+                <div class="form-group">
+                    <label for="inputWeekEnding">Week Ending</label>
+                    <input type="date" [(ngModel)]="timesheet.sWeekEnding" class="form-control" placeholder="Comment" #inputWeekEnding="ngForm" required ngControl="ngcWeekEnding">
+                    <div [hidden]="inputWeekEnding.valid || inputWeekEnding.pristine" class="alert alert-danger">Week Ending is required</div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="inputComment" class="col-md-2 control-label">Comment</label>
-                <div class="col-md-6">
-                    <input [(ngModel)]="timesheet.comment" class="form-control" id="inputComment" placeholder="Comment">
+                <div class="form-group">
+                    <label for="inputComment">Comment</label>
+                    <input type="text" [(ngModel)]="timesheet.comment" class="form-control" #inputComment="ngForm" placeholder="Comment" ngControl="ngcComment">
                 </div>
-            </div>
-            <!--detail grid-->
-            <div class="form-group">
-                <div class="col-md-2">
-                    <div class="btn-group-vertical">
-                        <button class="btn btn-primary glyphicon glyphicon-plus inheritFont" (click)="newTimesheetLine()"> New Line</button>
-                        <button class="btn btn-primary glyphicon glyphicon-minus inheritFont" (click)="deleteTimesheetLine()"> Delete Line</button>
-                        <button class="btn btn-primary glyphicon inheritFont" (click)="okClicked()"> OK</button>
-                        <button class="btn btn-primary glyphicon inheritFont" (click)="cancelTimesheet()"> Cancel</button>
-                    </div>
+                <!--detail grid-->
+                <div class="form-group">
+                    <ag-grid-ng2 class="ag-fresh clsTimesheetLine form-control" [gridOptions]="gridOptions"></ag-grid-ng2>
                 </div>
-                <div class="col-md-10">
-                    <ag-grid-ng2 class="ag-fresh clsTimesheetLine" [gridOptions]="gridOptions"></ag-grid-ng2>
-                </div>
-            </div>
 
-            <div class="form-group">
-                <label class="col-md-2 control-label">Total</label>
-                <div class="col-md-2">
-                    <input [(ngModel)]="timesheetTotal" class="form-control rightJustify" ng-disabled="true">
+                <div class="form-group">
+                    <label for="inputTotal">Total</label>
+                    <input type="text" [(ngModel)]="timesheetTotal" class="form-control" disabled="disabled" #inputTotal="ngForm">
                 </div>
+                <div [hidden]="getTimesheetSuccess" class="alert alert-danger">Error getting Timesheet</div>
             </div>
-            <div [hidden]="getTimesheetSuccess" class="alert alert-danger">Error getting Timesheet</div>
         </form>
     </div>
 </div>

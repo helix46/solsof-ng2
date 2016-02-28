@@ -3,9 +3,6 @@ import {Component} from 'angular2/core';
 import {HelperService} from '../../services/helper/helper.service';
 import {ChangePasswordService} from '../../services/changePassword/changePassword.service';
 import { Router, RouterLink } from 'angular2/router';
-//import 'rxjs/Rx'; //for map
-
-
 
 @Component({
     selector: 'changePassword',
@@ -31,8 +28,10 @@ export class ChangePasswordComponent {
             this.router.navigate(['Login', 'Entities']);
         }
     }
+    bPasswordsEqual: boolean = true;
     passwordsEqual = () => {
-        return this.newPassword === this.repeatNewPassword
+        this.bPasswordsEqual = this.newPassword === this.repeatNewPassword
+        return this.bPasswordsEqual;
     }
 
 

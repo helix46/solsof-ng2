@@ -4,9 +4,9 @@
         <!--contents-->
         <div class="form-group row">
             <div class="col-md-4">
-                <div class="btn-group-vertical">
-                    <button class="btn btn-primary glyphicon inheritFont okButton" (click)="ok()"> {{okLabel}}</button>
-                    <button class="btn btn-primary glyphicon inheritFont" (click)="cancel()"> {{cancelLabel}}</button>
+                <div class="buttonGroup">
+                    <button class="btn btn-primary separatedButton okButton" (click)="ok()"> {{okLabel}}</button>
+                    <button class="btn btn-primary separatedButton" [class.modalCancelHidden]="!cancelVisible" (click)="cancel()" > {{cancelLabel}}</button>
                 </div>
             </div>
             <h3 class="col-md-8">

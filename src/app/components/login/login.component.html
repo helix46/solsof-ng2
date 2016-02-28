@@ -1,21 +1,30 @@
 ﻿<h1>Login</h1>
-<form (ngSubmit)="login()" #loginForm="ngForm">
-    <div class="form-group row">
-        <div class="col-sm-5">
+<!--limit the width of the form controls-->
+<div class="col-sm-5">
+    <!--(ngSubmit)="login()": event that occurs when the submit button is clicked-->
+    <!--#loginForm="ngForm": loginForm is a local variable used to enable/disable submit button-->
+    <!--="ngForm"> binds loginForm to the ngForm object-->
+    <form (ngSubmit)="login()" #loginForm="ngForm">
+        <!--form-group is a bootstrap class-->
+        <div class="form-group">
             <label for="inpUsername">User name</label>
+            <!--type="text" bootstrap form classes require a type-->
+            <!--[(ngModel)]="username" 2 way binding to model-->
+            <!--ngControl="ngcUsername" Angular registers controls under their ngControl names with the NgForm-->
+            <!--#inpUsername="ngForm" assign local variable inpUsername to ngForm.
+                 #inpUsername.valid and #inpUsername.pristine are used to display or hide the error div-->
             <input type="text" class="form-control" required [(ngModel)]="username" ngControl="ngcUsername" #inpUsername="ngForm">
             <div [hidden]="inpUsername.valid || inpUsername.pristine" class="alert alert-danger">User name is required</div>
         </div>
-    </div>
-    <div class="form-group row">
-        <div class="col-sm-5">
+        <div class="form-group">
             <label for="inpPassword">Password</label>
             <input type="password" class="form-control" required [(ngModel)]="password" ngControl="ngcPassword" #inpPassword="ngForm">
             <div [hidden]="inpPassword.valid || inpPassword.pristine" class="alert alert-danger">Password is required</div>
         </div>
-    </div>
-    <button type="submit" class="btn btn-primary" [disabled]="!loginForm.form.valid">
-        Login
-    </button>
+        <!--submit button fires (ngSubmit)="login()" event on form-->
+        <button type="submit" class="btn btn-primary" [disabled]="!loginForm.form.valid">
+            Login
+        </button>
+    </form>
+</div>
 
-</form>

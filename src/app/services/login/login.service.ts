@@ -31,8 +31,6 @@ export class LoginService {
         args.headers = headers;
         var serviceBase = HelperService.getServiceBase();
 
-
-
         this.http
             .post(serviceBase + 'token',
             usernamePlusPassword, args)

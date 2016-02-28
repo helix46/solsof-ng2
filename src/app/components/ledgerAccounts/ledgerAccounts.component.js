@@ -37,6 +37,7 @@ System.register(['angular2/router', '../../services/helper/helper.service', '../
                     this.router = router;
                     this.LedgerAccounts = [];
                     this.excludeInactive = true;
+                    this.getLedgerAccountsSuccess = true;
                     this.chkExcludeInactiveClicked = function (chkExcludeInactive) {
                         _this.excludeInactive = chkExcludeInactive.checked;
                         _this.loadLedgerAccounts();

@@ -42,7 +42,7 @@ export class TimesheetsComponent {
     editTimesheet: boolean;
     @ViewChild(TimesheetComponent) timesheetComponent: TimesheetComponent;
     @ViewChild(DialogBoxComponent) dialogBoxComponent: DialogBoxComponent;
-    selectedTimesheetID: number;
+    //selectedTimesheetID: number;
     //selectedTimesheetIndex: number;
 
     //////////////////////////////////////////////////////////
@@ -113,12 +113,16 @@ export class TimesheetsComponent {
 
     deleteTimesheet = () => {
         var deleteTimesheetThis = this;
-        this.dialogBoxComponent.displayDialogBox('Are you sure you want to delete this time sheet?', deleteTimesheetConfirmed);
+        var selectedRows: SolsofSpa.Api.DataContext.spListTimesheets_Result[] = deleteTimesheetThis.gridOptions.api.getSelectedRows();
+        if (selectedRows.length > 0) {
+            this.dialogBoxComponent.displayDialogBox('Are you sure you want to delete this time sheet?', deleteTimesheetConfirmed);
+        } else {
+            this.dialogBoxComponent.alert('Please select a Timesheet to delete');
+        }
         function deleteTimesheetConfirmed() {
             if (HelperService.tokenIsValid()) {
-                var obs = deleteTimesheetThis.timesheetService.deleteTimesheet(deleteTimesheetThis.selectedTimesheetID);
+                var obs = deleteTimesheetThis.timesheetService.deleteTimesheet(selectedRows[0].timesheetID);
                 obs.subscribe(onDeleteTimesheetSuccess, err=> logTimesheetsError(err), complete)
-
             } else {
                 deleteTimesheetThis.router.navigate(['Login']);
             }
@@ -162,12 +166,11 @@ export class TimesheetsComponent {
     ];
 
     onRowClicked = (params: any) => {
-        var selectedTimesheet = <SolsofSpa.Api.DataContext.spListTimesheets_Result>params.data;
-        this.selectedTimesheetID = selectedTimesheet.timesheetID;
+        //do nothing
     }
 
     onRowDoubleClicked = (params: any) => {
-        this.onRowClicked(params);
+        //this.onRowClicked(params);
         var selectedTimesheet = <SolsofSpa.Api.DataContext.spListTimesheets_Result>params.data;
         this.timesheetComponent.getTimesheet(selectedTimesheet.timesheetID, this.debtors);
         this.editTimesheet = true;

@@ -22,7 +22,7 @@ export class LedgerAccountsComponent {
 
     public LedgerAccounts: SolsofSpa.Api.DataContext.tblLedgerAccount[] = [];
     public excludeInactive: boolean = true;
-    getLedgerAccountsSuccess: boolean;
+    getLedgerAccountsSuccess: boolean = true;
 
     constructor(private ledgerAccountsService: LedgerAccountsService, public router: Router) {
         console.log('constructor LedgerAccountsComponent');

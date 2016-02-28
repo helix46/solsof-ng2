@@ -1,3 +1,53 @@
+/*.btn {
+    padding: 14px 24px;
+    border: 0 none;
+    font-weight: 700;
+    letter-spacing: 1px;
+    /*text-transform: uppercase;*/
+/*}*/
+
+.btn:focus, .btn:active:focus, .btn.active:focus {
+    outline: 0 none;
+}
+
+.btn-primary {
+    background: #0099cc;
+    color: #ffffff;
+}
+
+    .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
+        background: #33a6cc;
+    }
+
+    .btn-primary:active, .btn-primary.active {
+        background: #007299;
+        box-shadow: none;
+    }
+
+
+
+.ng-valid[required] {
+    border-left: 5px solid #42A948; /* green */
+}
+
+.ng-invalid {
+    border-left: 5px solid #a94442; /* red */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .rightJustify {
     text-align: right;
 }
@@ -45,6 +95,14 @@
 .separatedButton {
     margin: 10px 0 10px 0;
     width: 100%;
+    font-family: inherit;
+}
+
+    .separatedButton:hover {
+    }
+
+.deleteButton {
+    color: #FEA300;
 }
 
 .solsof-btn, .btn {
@@ -109,6 +167,8 @@ label {
     border: 1px solid darkgrey;
     min-width: 300px;
     box-shadow: 0 0 50px black;
+    overflow:auto;
+    max-height: 100vh;
 }
 
 

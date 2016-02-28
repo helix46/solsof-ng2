@@ -55,7 +55,7 @@ System.register(['../../services/GetEntity/GetEntity.service', 'angular2/core', 
                         }
                         function logError(e) {
                             console.log('getEntities Error');
-                            loadEntitiesThis.getEntitiesSuccess = false;
+                            loadEntitiesThis.getEntitiesError = true;
                         }
                         function complete() {
                             console.log('getEntities complete');
@@ -64,7 +64,7 @@ System.register(['../../services/GetEntity/GetEntity.service', 'angular2/core', 
                             loadEntitiesThis.entities = data;
                             loadEntitiesThis.gridOptions.api.setRowData(data);
                             loadEntitiesThis.gridOptions.api.sizeColumnsToFit();
-                            loadEntitiesThis.getEntitiesSuccess = true;
+                            loadEntitiesThis.getEntitiesError = false;
                         }
                     };
                     //////////////////////////////////////////////
@@ -84,7 +84,7 @@ System.register(['../../services/GetEntity/GetEntity.service', 'angular2/core', 
                     };
                     this.gridOptions = helper_service_1.HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
                     console.log('constructor EntitiesComponent');
-                    this.getEntitiesSuccess = false;
+                    this.getEntitiesError = false;
                 }
                 //load entities when page loaded
                 EntitiesComponent.prototype.ngOnInit = function () {

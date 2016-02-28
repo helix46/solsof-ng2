@@ -25,14 +25,15 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                 router_1 = router_1_1;
             }],
         execute: function() {
-            //import 'rxjs/Rx'; //for map
             ChangePasswordComponent = (function () {
                 function ChangePasswordComponent(changePasswordService, router) {
                     var _this = this;
                     this.changePasswordService = changePasswordService;
                     this.router = router;
+                    this.bPasswordsEqual = true;
                     this.passwordsEqual = function () {
-                        return _this.newPassword === _this.repeatNewPassword;
+                        _this.bPasswordsEqual = _this.newPassword === _this.repeatNewPassword;
+                        return _this.bPasswordsEqual;
                     };
                     this.onSubmit = function () {
                         var onSubmitThis = _this;

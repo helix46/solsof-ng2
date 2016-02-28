@@ -6,4 +6,4 @@
     <ag-grid-ng2 class="ag-fresh clsEntities" [gridOptions]="gridOptions"></ag-grid-ng2>
 </div>
 {{ServiceBase}}
-<div [hidden]="getEntitiesSuccess" class="alert alert-danger">Error getting Entities</div>
+<div [hidden]="!getEntitiesError" class="alert alert-danger">Error getting Entities</div>

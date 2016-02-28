@@ -20,20 +20,14 @@ import {TimesheetLineComponent} from '../timesheetline/timesheetline.component';
 export class TimesheetComponent {
     constructor(private timesheetService: TimesheetService, private router: Router) {
         console.log('constructor timesheetComponent');
-        this.currentDebtorID_ = -1;
-
     }
 
     editTimesheet: boolean;
     titleTimesheet: string;
-    title: string;
-    currentDebtorID_: number;
-    weekEnding: string;
     timesheetTotal: string;
     getTimesheetSuccess: boolean = true;
     @Output() ok: EventEmitter<string> = new EventEmitter();
     debtors: SolsofSpa.Api.DataContext.tblDebtor[];
-
     timesheet: SolsofSpa.Helper.structTimesheet = {
         comment: '',
         debtorID: -1,
@@ -42,7 +36,6 @@ export class TimesheetComponent {
         timesheetID: -1,
         timesheetLineArray: []
     };
-
     timesheetVisible: boolean = false;
 
     ngOnInit() {

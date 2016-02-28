@@ -46,11 +46,9 @@ System.register(['angular2/core', 'angular2/router', '../../services/login/login
                 };
                 LoginComponent = __decorate([
                     core_1.Component({
-                        selector: 'login'
-                    }),
-                    core_1.View({
+                        selector: 'login',
+                        directives: [router_1.RouterLink],
                         templateUrl: 'src/app/components/login/login.component.html',
-                        directives: [router_1.RouterLink]
                     }), 
                     __metadata('design:paramtypes', [router_1.Router, http_1.Http])
                 ], LoginComponent);

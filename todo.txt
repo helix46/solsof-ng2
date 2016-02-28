@@ -1,16 +1,44 @@
 sources of bugs:
 	html does not match TS. To minimise, reduce variables in html and put them into TS
 
+forms:
+	foundation: 
+		<form>, 
+		<label for, 
+		<input type="text" , 
+		<select required>
+			<option ></option>
+		</select>
+		<button type="submit", 
+		</form>
+	bootstrap css: container, form-group, form-control
+	binding to model:
+		<select>
+			<option *ngFor="#p of powers" [value]="p">{{p}}</option>
+		</select>
+		where powers is an array of objects
+
+		<input type="text" [(ngModel)]="model.name" >
+		where model is the object, name is the property
+
+		<select [(ngModel)]="model.power" >
+			<option *ngFor="#p of powers" [value]="p">{{p}}</option>
+		</select>
+		where model is the object, power is the property
+
+	Track change-state and validity with ngControl:
+		Angular registers controls under their ngControl names with the NgForm
+		<input type="text" ngControl="ngCtrlName" >
+		NgControl updates the control with three classes that reflect the state.
+			ng-touched	ng-untouched
+			ng-dirty	ng-pristine
+			ng-valid	ng-invalid
+
 
 timesheet:
 	style nav bar
+	create invoice
 
-
-	dialogue:
-		ts, html files and folder
-		modal html
-		component
-			initialised with function to call if OK clicked
 			
 	re-structure folders
 

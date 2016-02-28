@@ -228,7 +228,6 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                     };
                     this.gridOptions = helper_service_1.HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
                     console.log('constructor timesheetComponent');
-                    this.currentDebtorID_ = -1;
                 }
                 TimesheetComponent.prototype.ngOnInit = function () {
                     if (helper_service_1.HelperService.tokenIsValid() === false) {

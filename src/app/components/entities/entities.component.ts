@@ -22,11 +22,12 @@ export class EntitiesComponent {
     public entities: SolsofSpa.Api.DataContext.tblEntity[] = [];
     public excludeInactive: boolean = true;
     selectedEntity: SolsofSpa.Api.DataContext.tblEntity;
-    getEntitiesSuccess: boolean;
+    //getEntitiesSuccess: boolean;
+    getEntitiesError: boolean;
 
     constructor(public router: Router, private entitiesService: EntitiesService) {
         console.log('constructor EntitiesComponent');
-        this.getEntitiesSuccess = false;
+        this.getEntitiesError = false;
     }
 
     ServiceBase: string;
@@ -55,7 +56,7 @@ export class EntitiesComponent {
         }
         function logError(e: any) {
             console.log('getEntities Error');
-            loadEntitiesThis.getEntitiesSuccess = false;
+            loadEntitiesThis.getEntitiesError = true;
         }
         function complete() {
             console.log('getEntities complete');
@@ -65,7 +66,7 @@ export class EntitiesComponent {
             loadEntitiesThis.entities = data;
             loadEntitiesThis.gridOptions.api.setRowData(data);
             loadEntitiesThis.gridOptions.api.sizeColumnsToFit();
-            loadEntitiesThis.getEntitiesSuccess = true;
+            loadEntitiesThis.getEntitiesError = false;
         }
     }
 

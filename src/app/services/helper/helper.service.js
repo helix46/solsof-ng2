@@ -29,8 +29,8 @@ System.register([], function(exports_1) {
                     return false;
                 };
                 HelperService.getServiceBase = function () {
-                    return 'https://solsofoz.azurewebsites.net/';
-                    //return 'http://localhost:10614/';
+                    //return 'https://solsofoz.azurewebsites.net/';
+                    return 'http://localhost:10614/';
                 };
                 HelperService.getTokenName = function () {
                     return 'id_token';
@@ -60,7 +60,12 @@ System.register([], function(exports_1) {
                 };
                 ;
                 HelperService.formatMoney = function (value) {
-                    return value.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ","); //thanks http://stackoverflow.com/users/28324/elias-zamaria
+                    if (value === null) {
+                        '';
+                    }
+                    else {
+                        return value.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ","); //thanks http://stackoverflow.com/users/28324/elias-zamaria
+                    }
                 };
                 HelperService.translateJavascriptDateAndTime = function (s) {
                     var day, month, year, hour, minute, second, millisecond, ss, d;
