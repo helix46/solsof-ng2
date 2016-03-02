@@ -66,7 +66,6 @@ System.register(['angular2/router', '../../services/helper/helper.service', '../
                         _this.excludeInactive = chkExcludeInactive.checked;
                         _this.loadTimesheets();
                     };
-                    //loadDebtors
                     this.loadDebtors = function () {
                         var loadDebtorsThis = _this;
                         if (helper_service_1.HelperService.tokenIsValid()) {

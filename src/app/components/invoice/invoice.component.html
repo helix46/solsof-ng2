@@ -1,0 +1,51 @@
+﻿<div class="modalSolsof modalSolsof100" [class.modalSolsofVisible]="invoiceVisible" (keyup.esc)="cancelInvoice()">
+    <!-- Modal content -->
+    <div class="modal-contentSolsof modalSolsof-wide container-fluid" (keyup.esc)="cancelInvoice()">
+        <!--contents-->
+        <form (ngSubmit)="okClicked()" #invoiceForm="ngForm">
+            <h1>{{titleInvoice}}</h1>
+            <br />
+            <!--buttons-->
+            <div class="col-md-2">
+                <div class="buttonGroup">
+                    <button type="button" class="btn btn-primary separatedButton" (click)="newInvoiceLine()"> New Line</button>
+                    <button type="button" class="btn btn-primary separatedButton deleteButton" (click)="deleteInvoiceLine()"> Delete Line</button>
+                    <button type="submit" class="btn btn-primary separatedButton okButton"> OK</button>
+                    <button type="button" class="btn btn-primary separatedButton" (click)="cancelInvoice()"> Cancel</button>
+                </div>
+            </div>
+            <!--inputs-->
+            <div class="col-md-10">
+                <div class="form-group">
+                    <label for="cmbDebtors">Debtor</label>
+                    <select class="form-control" required #cmbDebtors (change)="onChangeDebtor(cmbDebtors.value)" ngControl="ngcDebtors" [(ngModel)]="invoice.debtorID">
+                        <option *ngFor="#debtor of debtors" [value]="debtor.debtorID">
+                            {{ debtor.debtorName }}
+                        </option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="inputTransactionDate">Week Ending</label>
+                    <input type="date" [(ngModel)]="invoice.sTransactionDate" class="form-control" placeholder="Comment" #inputTransactionDate="ngForm" required ngControl="ngcTransactionDate">
+                    <div [hidden]="inputTransactionDate.valid || inputTransactionDate.pristine" class="alert alert-danger">Invoice Date is required</div>
+                </div>
+                <div class="form-group">
+                    <label for="inputComment">Comment</label>
+                    <input type="text" [(ngModel)]="invoice.comment" class="form-control" #inputComment="ngForm" placeholder="Comment" ngControl="ngcComment">
+                </div>
+                <!--detail grid-->
+                <div class="form-group">
+                    <ag-grid-ng2 class="ag-fresh clsInvoiceLine form-control" [gridOptions]="gridOptions"></ag-grid-ng2>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputTotal">Total</label>
+                    <input type="text" [(ngModel)]="invoiceTotal" class="form-control" disabled="disabled" #inputTotal="ngForm">
+                </div>
+                <div [hidden]="getInvoiceSuccess" class="alert alert-danger">Error getting Invoice</div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<invoice-line (returnInvoiceLine)="saveInvoiceLine($event);"></invoice-line>

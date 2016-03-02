@@ -1,0 +1,37 @@
+﻿<div class="modalSolsof modalSolsof200" [class.modalSolsofVisible]="invoiceLineVisible" (keyup.esc)="cancelInvoiceLine()">
+    <!-- Modal content -->
+    <div class="modal-contentSolsof modalSolsof-narrow" (keyup.esc)="modalOnKeyup()">
+        <!--contents-->
+        <form novalidate name="formInvoice" class="form-horizontal" (keyup.esc)="modalOnKeyup()">
+            <h1> {{titleInvoiceLine}}</h1>
+            <br />
+            <!--master inputs-->
+            <div class="form-group">
+                <div class="col-md-2">
+                    <div class="buttonGroup">
+                        <button class="btn btn-primary separatedButton okButton" (click)="saveInvoiceLine()"> OK</button>
+                        <button class="btn btn-primary separatedButton" (click)="cancelInvoiceLine()"> Cancel</button>
+                    </div>
+                </div>
+                <div class="col-md-10">
+                    <div class="form-group">
+                        <label for="cmbLedgerAccounts">Ledger Account</label>
+                        <select class="form-control" required #cmbLedgerAccounts ngControl="ngcLedgerAccounts" [(ngModel)]="sLledgerAccountID">
+                            <option *ngFor="#ledgerAccount of ledgerAccounts" [value]="ledgerAccount.ledgerAccountID">
+                                {{ ledgerAccount.name }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputAmount">Amount</label>
+                        <input type="number" [(ngModel)]="amount" class="form-control" #inputAmount="ngForm" placeholder="Amount" ngControl="ngcAmount">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputComment">Comment</label>
+                        <input type="text" [(ngModel)]="comment" class="form-control" #inputComment="ngForm" placeholder="Comment" ngControl="ngcComment">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

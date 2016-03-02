@@ -2,16 +2,16 @@
     <!-- Modal content -->
     <div class="modal-contentSolsof modalSolsof-wide container-fluid" (keyup.esc)="cancelTimesheet()">
         <!--contents-->
-        <form (ngSubmit)="login()" #timesheetForm="ngForm">
+        <form (ngSubmit)="okClicked()" #timesheetForm="ngForm">
             <h1>{{titleTimesheet}}</h1>
             <br />
             <!--buttons-->
             <div class="col-md-2">
                 <div class="buttonGroup">
-                    <button class="btn btn-primary separatedButton" (click)="newTimesheetLine()"> New Line</button>
-                    <button class="btn btn-primary separatedButton deleteButton" (click)="deleteTimesheetLine()"> Delete Line</button>
-                    <button class="btn btn-primary separatedButton okButton" (click)="okClicked()"> OK</button>
-                    <button class="btn btn-primary separatedButton" (click)="cancelTimesheet()"> Cancel</button>
+                    <button type="button"class="btn btn-primary separatedButton" (click)="newTimesheetLine()"> New Line</button>
+                    <button type="button"class="btn btn-primary separatedButton deleteButton" (click)="deleteTimesheetLine()"> Delete Line</button>
+                    <button type="submit" class="btn btn-primary separatedButton okButton"> OK</button>
+                    <button type="button"class="btn btn-primary separatedButton" (click)="cancelTimesheet()"> Cancel</button>
                 </div>
             </div>
             <!--inputs-->

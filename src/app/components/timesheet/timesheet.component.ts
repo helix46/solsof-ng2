@@ -206,6 +206,7 @@ export class TimesheetComponent {
             }
         }
         var TimesheetLineDate: Date = getTimesheetLineDate();
+        this.bEditTimesheetLine = false;
         this.timesheetLineComponent.newTimesheetLine(TimesheetLineDate);
     }
 
@@ -229,6 +230,7 @@ export class TimesheetComponent {
     }
     onRowDoubleClicked = (params: any) => {
         var selectedTimesheetLine = <SolsofSpa.Helper.structTimesheetLine>params.data;
+        this.bEditTimesheetLine = true;
         this.timesheetLineComponent.displayTimesheetline(selectedTimesheetLine);
     }
     gridOptions: any = HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);

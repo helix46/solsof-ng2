@@ -2,8 +2,12 @@
 import {HelperService} from '../../services/helper/helper.service';
 import {GetEntityService} from '../../services/GetEntity/GetEntity.service';
 import {Response} from 'angular2/http';
-import {Component} from 'angular2/core';
+import {Component, ViewChild} from 'angular2/core';
 import {InvoicesService} from '../../services/Invoices/Invoices.service';
+import {InvoiceComponent} from '../invoice/invoice.component';
+import {LedgerAccountsService} from '../../services/ledgeraccounts/ledgeraccounts.service';
+import {DebtorsService} from '../../services/debtors/debtors.service';
+
 //import {AgGridNg2} from 'ag-grid-ng2/main';
 //import {GridOptions} from 'ag-grid/main';
 
@@ -15,8 +19,8 @@ import {InvoicesService} from '../../services/Invoices/Invoices.service';
     selector: 'ledger-accounts',
     templateUrl: 'src/app/components/Invoices/Invoices.component.html',
     pipes: [],
-    providers: [InvoicesService],
-    directives: [(<any>window).ag.grid.AgGridNg2]
+    providers: [InvoicesService, LedgerAccountsService, DebtorsService],
+    directives: [(<any>window).ag.grid.AgGridNg2, InvoiceComponent]
     //directives: [AgGridNg2]
 })
 
@@ -25,8 +29,14 @@ export class InvoicesComponent {
     public Invoices: SolsofSpa.Api.DataContext.spGetInvoices_Result[] = [];
     public excludeInactive: boolean = true;
     getInvoicesSuccess: boolean = true;
+    getDebtorsSuccess: boolean = true;
+    getLedgerAccountsSuccess: boolean = true;
+    @ViewChild(InvoiceComponent) invoiceComponent: InvoiceComponent;
+    ledgerAccounts: SolsofSpa.Api.DataContext.tblLedgerAccount[];
+    debtors: SolsofSpa.Api.DataContext.tblDebtor[];
+    editInvoice: boolean = false;
 
-    constructor(private InvoicesService: InvoicesService, public router: Router) {
+    constructor(private InvoicesService: InvoicesService, public router: Router, private ledgerAccountsService: LedgerAccountsService, private debtorsService: DebtorsService) {
         console.log('constructor InvoicesComponent');
         window.onresize = () => {
             //this.gridOptions.api.sizeColumnsToFit();
@@ -34,6 +44,8 @@ export class InvoicesComponent {
     }
     ngOnInit() {
         this.loadInvoices();
+        this.loadLedgerAccounts();
+        this.loadDebtors();
     }
     selectedInvoice: SolsofSpa.Api.DataContext.spGetInvoices_Result;
 
@@ -42,9 +54,56 @@ export class InvoicesComponent {
         this.loadInvoices();
     }
 
+    loadDebtors = () => {
+        var loadDebtorsThis = this;
+        if (HelperService.tokenIsValid()) {
+            var EntityId = GetEntityService.getInstance().getEntityId();
+            if (EntityId === -1) {
+                this.router.navigate(['Entities']);
+            } else {
+                this.debtorsService.getDebtors(EntityId).subscribe(onGetDebtorsSuccess, logDebtorsError, complete);
+            }
+        } else {
+            this.router.navigate(['Login']);
+        }
+        function logDebtorsError() {
+            console.log('getDebtors Error');
+            loadDebtorsThis.getDebtorsSuccess = false;
+        }
+        function onGetDebtorsSuccess(debtors: SolsofSpa.Api.DataContext.tblDebtor[]) {
+            loadDebtorsThis.debtors = debtors;
+        }
+        function complete() {
+            console.log('loadDebtors complete');
+        }
+    };
+
+    loadLedgerAccounts = () => {
+        var loadLedgerAccountsThis = this;
+        if (HelperService.tokenIsValid()) {
+            var EntityId = GetEntityService.getInstance().getEntityId();
+            if (EntityId === -1) {
+                this.router.navigate(['Entities']);
+            } else {
+                this.ledgerAccountsService.getLedgerAccounts(true, EntityId).subscribe(onGetLedgerAccountsSuccess, logLedgerAccountsError, complete);
+            }
+        } else {
+            this.router.navigate(['Login']);
+        }
+        function logLedgerAccountsError() {
+            console.log('getLedgerAccounts Error');
+            loadLedgerAccountsThis.getLedgerAccountsSuccess = false;
+        }
+        function onGetLedgerAccountsSuccess(ledgerAccounts: SolsofSpa.Api.DataContext.tblLedgerAccount[]) {
+            loadLedgerAccountsThis.ledgerAccounts = ledgerAccounts;
+        }
+        function complete() {
+            console.log('loadLedgerAccounts complete');
+        }
+    };
+
     //////////////////////////////////////////////////////////////
     //get data
-
     loadInvoices = () => {
         var loadInvoicesThis = this;
 
@@ -58,16 +117,16 @@ export class InvoicesComponent {
         } else {
             this.router.navigate(['Login']);
         }
-        function  logError  (e: any)  {
+        function logError(e: any) {
             console.log('getInvoices Error');
             loadInvoicesThis.getInvoicesSuccess = false;
         }
 
-        function  complete  ()  {
+        function complete() {
             console.log('getInvoices complete');
         }
 
-        function  onGetInvoicesSuccess  (data: SolsofSpa.Api.DataContext.spGetInvoices_Result[])  {
+        function onGetInvoicesSuccess(data: SolsofSpa.Api.DataContext.spGetInvoices_Result[]) {
             loadInvoicesThis.Invoices = data;
             loadInvoicesThis.gridOptions.api.setRowData(data);
             loadInvoicesThis.gridOptions.api.sizeColumnsToFit();
@@ -115,14 +174,15 @@ export class InvoicesComponent {
         },
     ];
 
-    onRowClicked = (params: any) =>{
+    onRowClicked = (params: any) => {
         this.selectedInvoice = <SolsofSpa.Api.DataContext.spGetInvoices_Result>params.data;
         console.log('Invoice onRowClicked');
     }
 
     onRowDoubleClicked = (params: any) => {
-        this.onRowClicked(params);
-        this.router.navigate(['Transactions', { transactionID: this.selectedInvoice.transactionID }]);
+        var selectedInvoice = <SolsofSpa.Api.DataContext.tblTransaction>params.data;
+        this.invoiceComponent.getInvoice(selectedInvoice.transactionID, this.ledgerAccounts, this.debtors);
+        this.editInvoice = true;
     }
 
     gridOptions: any = HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);

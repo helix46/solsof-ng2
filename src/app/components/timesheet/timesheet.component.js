@@ -202,6 +202,7 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                             }
                         };
                         var TimesheetLineDate = getTimesheetLineDate();
+                        _this.bEditTimesheetLine = false;
                         _this.timesheetLineComponent.newTimesheetLine(TimesheetLineDate);
                     };
                     ////////////////////////////////////
@@ -224,6 +225,7 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                     };
                     this.onRowDoubleClicked = function (params) {
                         var selectedTimesheetLine = params.data;
+                        _this.bEditTimesheetLine = true;
                         _this.timesheetLineComponent.displayTimesheetline(selectedTimesheetLine);
                     };
                     this.gridOptions = helper_service_1.HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);

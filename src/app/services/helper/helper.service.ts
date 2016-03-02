@@ -30,7 +30,6 @@ export class HelperService {
 
     static getServiceBase(): string {
         return 'https://solsofoz.azurewebsites.net/';
-
         //return 'http://localhost:10614/';
     }
 
@@ -66,7 +65,7 @@ export class HelperService {
         if (value === null) {
             '';
         } else {
-            return value.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ","); //thanks http://stackoverflow.com/users/28324/elias-zamaria
+            return value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","); //thanks http://stackoverflow.com/users/28324/elias-zamaria
         }
     }
 
@@ -334,6 +333,18 @@ export class HelperService {
             return hour.toString() + ":0" + minute.toString();
         } else {
             return hour.toString() + ":" + minute.toString();
+        }
+    }
+
+    static getLedgerAccountName = (ledgerAccountID: number, ledgerAccounts: SolsofSpa.Api.DataContext.tblLedgerAccount[]): string => {
+        var ledgerAccountArray: SolsofSpa.Api.DataContext.tblLedgerAccount[] = ledgerAccounts.filter(filterLedgerAccounts);
+        if (ledgerAccountArray[0] !== undefined) {
+            return ledgerAccountArray[0].name;
+        } else {
+            return '';
+        }
+        function filterLedgerAccounts(tblLedgerAccount: SolsofSpa.Api.DataContext.tblLedgerAccount): boolean {
+            return tblLedgerAccount.ledgerAccountID === ledgerAccountID;
         }
     }
 

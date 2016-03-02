@@ -64,7 +64,7 @@ System.register([], function(exports_1) {
                         '';
                     }
                     else {
-                        return value.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ","); //thanks http://stackoverflow.com/users/28324/elias-zamaria
+                        return value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","); //thanks http://stackoverflow.com/users/28324/elias-zamaria
                     }
                 };
                 HelperService.translateJavascriptDateAndTime = function (s) {
@@ -328,6 +328,18 @@ System.register([], function(exports_1) {
                     }
                     else {
                         return hour.toString() + ":" + minute.toString();
+                    }
+                };
+                HelperService.getLedgerAccountName = function (ledgerAccountID, ledgerAccounts) {
+                    var ledgerAccountArray = ledgerAccounts.filter(filterLedgerAccounts);
+                    if (ledgerAccountArray[0] !== undefined) {
+                        return ledgerAccountArray[0].name;
+                    }
+                    else {
+                        return '';
+                    }
+                    function filterLedgerAccounts(tblLedgerAccount) {
+                        return tblLedgerAccount.ledgerAccountID === ledgerAccountID;
                     }
                 };
                 return HelperService;

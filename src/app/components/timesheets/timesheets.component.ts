@@ -59,7 +59,6 @@ export class TimesheetsComponent {
         this.loadTimesheets();
     }
 
-    //loadDebtors
     loadDebtors = () => {
         var loadDebtorsThis = this;
         if (HelperService.tokenIsValid()) {

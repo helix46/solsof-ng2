@@ -77,6 +77,11 @@
     width: 100%;
 }
 
+.clsInvoiceLine {
+    height: 180px;
+    width: 100%;
+}
+
 .clsInvoices {
     height: 500px;
     width: 100%;

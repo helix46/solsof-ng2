@@ -1,4 +1,4 @@
-System.register(['angular2/router', '../../services/helper/helper.service', '../../services/GetEntity/GetEntity.service', 'angular2/core', '../../services/Invoices/Invoices.service'], function(exports_1) {
+System.register(['angular2/router', '../../services/helper/helper.service', '../../services/GetEntity/GetEntity.service', 'angular2/core', '../../services/Invoices/Invoices.service', '../invoice/invoice.component', '../../services/ledgeraccounts/ledgeraccounts.service', '../../services/debtors/debtors.service'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['angular2/router', '../../services/helper/helper.service', '../
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var router_1, helper_service_1, GetEntity_service_1, core_1, Invoices_service_1;
+    var router_1, helper_service_1, GetEntity_service_1, core_1, Invoices_service_1, invoice_component_1, ledgeraccounts_service_1, debtors_service_1;
     var InvoicesComponent;
     return {
         setters:[
@@ -26,19 +26,83 @@ System.register(['angular2/router', '../../services/helper/helper.service', '../
             },
             function (Invoices_service_1_1) {
                 Invoices_service_1 = Invoices_service_1_1;
+            },
+            function (invoice_component_1_1) {
+                invoice_component_1 = invoice_component_1_1;
+            },
+            function (ledgeraccounts_service_1_1) {
+                ledgeraccounts_service_1 = ledgeraccounts_service_1_1;
+            },
+            function (debtors_service_1_1) {
+                debtors_service_1 = debtors_service_1_1;
             }],
         execute: function() {
             //import {AgGridNg2} from 'ag-grid-ng2/main';
             //import {GridOptions} from 'ag-grid/main';
             //import 'rxjs/Rx'; //for map
             InvoicesComponent = (function () {
-                function InvoicesComponent(InvoicesService, router) {
+                function InvoicesComponent(InvoicesService, router, ledgerAccountsService, debtorsService) {
                     var _this = this;
                     this.InvoicesService = InvoicesService;
                     this.router = router;
+                    this.ledgerAccountsService = ledgerAccountsService;
+                    this.debtorsService = debtorsService;
                     this.Invoices = [];
                     this.excludeInactive = true;
                     this.getInvoicesSuccess = true;
+                    this.getDebtorsSuccess = true;
+                    this.getLedgerAccountsSuccess = true;
+                    this.editInvoice = false;
+                    this.loadDebtors = function () {
+                        var loadDebtorsThis = _this;
+                        if (helper_service_1.HelperService.tokenIsValid()) {
+                            var EntityId = GetEntity_service_1.GetEntityService.getInstance().getEntityId();
+                            if (EntityId === -1) {
+                                _this.router.navigate(['Entities']);
+                            }
+                            else {
+                                _this.debtorsService.getDebtors(EntityId).subscribe(onGetDebtorsSuccess, logDebtorsError, complete);
+                            }
+                        }
+                        else {
+                            _this.router.navigate(['Login']);
+                        }
+                        function logDebtorsError() {
+                            console.log('getDebtors Error');
+                            loadDebtorsThis.getDebtorsSuccess = false;
+                        }
+                        function onGetDebtorsSuccess(debtors) {
+                            loadDebtorsThis.debtors = debtors;
+                        }
+                        function complete() {
+                            console.log('loadDebtors complete');
+                        }
+                    };
+                    this.loadLedgerAccounts = function () {
+                        var loadLedgerAccountsThis = _this;
+                        if (helper_service_1.HelperService.tokenIsValid()) {
+                            var EntityId = GetEntity_service_1.GetEntityService.getInstance().getEntityId();
+                            if (EntityId === -1) {
+                                _this.router.navigate(['Entities']);
+                            }
+                            else {
+                                _this.ledgerAccountsService.getLedgerAccounts(true, EntityId).subscribe(onGetLedgerAccountsSuccess, logLedgerAccountsError, complete);
+                            }
+                        }
+                        else {
+                            _this.router.navigate(['Login']);
+                        }
+                        function logLedgerAccountsError() {
+                            console.log('getLedgerAccounts Error');
+                            loadLedgerAccountsThis.getLedgerAccountsSuccess = false;
+                        }
+                        function onGetLedgerAccountsSuccess(ledgerAccounts) {
+                            loadLedgerAccountsThis.ledgerAccounts = ledgerAccounts;
+                        }
+                        function complete() {
+                            console.log('loadLedgerAccounts complete');
+                        }
+                    };
                     //////////////////////////////////////////////////////////////
                     //get data
                     this.loadInvoices = function () {
@@ -113,8 +177,9 @@ System.register(['angular2/router', '../../services/helper/helper.service', '../
                         console.log('Invoice onRowClicked');
                     };
                     this.onRowDoubleClicked = function (params) {
-                        _this.onRowClicked(params);
-                        _this.router.navigate(['Transactions', { transactionID: _this.selectedInvoice.transactionID }]);
+                        var selectedInvoice = params.data;
+                        _this.invoiceComponent.getInvoice(selectedInvoice.transactionID, _this.ledgerAccounts, _this.debtors);
+                        _this.editInvoice = true;
                     };
                     this.gridOptions = helper_service_1.HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
                     console.log('constructor InvoicesComponent');
@@ -124,20 +189,26 @@ System.register(['angular2/router', '../../services/helper/helper.service', '../
                 }
                 InvoicesComponent.prototype.ngOnInit = function () {
                     this.loadInvoices();
+                    this.loadLedgerAccounts();
+                    this.loadDebtors();
                 };
                 InvoicesComponent.prototype.chkExcludeInactiveClicked = function (chkExcludeInactive) {
                     this.excludeInactive = chkExcludeInactive.checked;
                     this.loadInvoices();
                 };
+                __decorate([
+                    core_1.ViewChild(invoice_component_1.InvoiceComponent), 
+                    __metadata('design:type', invoice_component_1.InvoiceComponent)
+                ], InvoicesComponent.prototype, "invoiceComponent", void 0);
                 InvoicesComponent = __decorate([
                     core_1.Component({
                         selector: 'ledger-accounts',
                         templateUrl: 'src/app/components/Invoices/Invoices.component.html',
                         pipes: [],
-                        providers: [Invoices_service_1.InvoicesService],
-                        directives: [window.ag.grid.AgGridNg2]
+                        providers: [Invoices_service_1.InvoicesService, ledgeraccounts_service_1.LedgerAccountsService, debtors_service_1.DebtorsService],
+                        directives: [window.ag.grid.AgGridNg2, invoice_component_1.InvoiceComponent]
                     }), 
-                    __metadata('design:paramtypes', [Invoices_service_1.InvoicesService, router_1.Router])
+                    __metadata('design:paramtypes', [Invoices_service_1.InvoicesService, router_1.Router, ledgeraccounts_service_1.LedgerAccountsService, debtors_service_1.DebtorsService])
                 ], InvoicesComponent);
                 return InvoicesComponent;
             })();
