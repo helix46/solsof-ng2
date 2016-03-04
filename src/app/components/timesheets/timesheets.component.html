@@ -13,6 +13,9 @@
 
 <div [hidden]="getTimesheetsSuccess" class="alert alert-danger">Error getting Timesheets</div>
 <div [hidden]="getDebtorsSuccess" class="alert alert-danger">Error getting Debtors</div>
-<timesheetModal (ok)="loadTimesheets()"></timesheetModal>
+
+<timesheetModal (ok)="loadTimesheets()" (okCreateInvoice)="createInvoice($event)"></timesheetModal>
+
+<invoiceModal (ok)="goToInvoices()"></invoiceModal>
 
 <dialog-box></dialog-box>

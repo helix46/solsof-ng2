@@ -53,9 +53,10 @@ export class InvoiceLineComponent {
     }
 
     saveInvoiceLine() {
+        var ledgerAccountID = Number(this.sLledgerAccountID);
         var selectedInvoiceLine: SolsofSpa.Helper.structTransactionLine = {
-            ledgerAccountID: Number(this.sLledgerAccountID),
-            ledgerAccountName: '',
+            ledgerAccountID: ledgerAccountID,
+            ledgerAccountName: HelperService.getLedgerAccountName(ledgerAccountID, this.ledgerAccounts),
             debitOrCredit: '',
             amount: this.amount,
             debit: false,

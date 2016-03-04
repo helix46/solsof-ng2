@@ -23,7 +23,7 @@ export class ChangePasswordService {
 
     changePassword(changePasswordModel: IChangePasswordModel): Observable<Response> {
         var httpHandlerService = new HttpHandlerService(this.http);
-        return httpHandlerService.postObject<string>(changePasswordModel, 'api/account/changePassword');
+        return httpHandlerService.postObject(changePasswordModel, 'api/account/changePassword');
     }
 }
 

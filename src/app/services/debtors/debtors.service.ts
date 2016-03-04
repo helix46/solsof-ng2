@@ -26,7 +26,7 @@ export class DebtorsService {
         };
 
         var httpHandlerService = new HttpHandlerService(this.http);
-        return httpHandlerService.getObject<SolsofSpa.Api.DataContext.tblDebtor[]>(parameters, 'api/debtors');
+        return httpHandlerService.getObject(parameters, 'api/debtors');
     }
 }
 

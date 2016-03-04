@@ -1,4 +1,6 @@
-System.register(['angular2/core', '../../services/helper/helper.service', '../../services/invoice/invoice.service', 'angular2/router', '../../services/GetEntity/GetEntity.service', '../invoiceline/invoiceline.component'], function(exports_1) {
+System.register(['angular2/core', '../../services/helper/helper.service', '../../services/invoice/invoice.service', 'angular2/router', '../../services/GetEntity/GetEntity.service', '../invoiceline/invoiceline.component'], function(exports_1, context_1) {
+    "use strict";
+    var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -89,6 +91,69 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                         }
                         else {
                             _this.router.navigate(['Login']);
+                        }
+                    };
+                    this.newInvoiceFromTimesheet = function (timesheetID, ledgerAccounts, debtors) {
+                        var getInvoiceThis = _this;
+                        if (helper_service_1.HelperService.tokenIsValid()) {
+                            getInvoiceThis.ledgerAccounts = ledgerAccounts;
+                            getInvoiceThis.debtors = debtors;
+                            var EntityId = GetEntity_service_1.GetEntityService.getInstance().getEntityId();
+                            getInvoiceThis.titleInvoice = 'Invoice created from Timesheet';
+                            getInvoiceThis.invoiceService.getInvoiceFromTimesheet(timesheetID, EntityId).subscribe(onGetInvoiceFromTimesheet, logInvoiceFromTimesheetError);
+                        }
+                        else {
+                            getInvoiceThis.router.navigate(['Login']);
+                        }
+                        function onGetInvoiceFromTimesheet(timesheetInvoiceLine) {
+                            //add invoice line from timesheet
+                            var EntityId = GetEntity_service_1.GetEntityService.getInstance().getEntityId();
+                            if (EntityId === -1) {
+                                this.router.navigate(['Entities']);
+                            }
+                            else {
+                                getInvoiceThis.invoice.debtorID = timesheetInvoiceLine.debtorID;
+                                getInvoiceThis.invoice.transactionType = timesheetInvoiceLine.transactionType;
+                                getInvoiceThis.invoice.sTransactionDate = helper_service_1.HelperService.formatDateForJSon(new Date());
+                                getInvoiceThis.invoice.entityID = EntityId;
+                                //get debtor for invoice
+                                var tempInvoiceLine;
+                                tempInvoiceLine = {
+                                    ledgerAccountID: timesheetInvoiceLine.incomeLedgerAccountID,
+                                    ledgerAccountName: timesheetInvoiceLine.incomeLedgerAccountName,
+                                    amount: timesheetInvoiceLine.amount,
+                                    comment: timesheetInvoiceLine.comment,
+                                    timesheetID: timesheetInvoiceLine.timesheetID,
+                                    hidden: false,
+                                    debit: false,
+                                    debitOrCredit: '',
+                                    invoiceID: -1
+                                };
+                                getInvoiceThis.invoice.transactionLineArray.push(tempInvoiceLine);
+                                tempInvoiceLine = {
+                                    ledgerAccountID: timesheetInvoiceLine.gstIncomeLedgerAccountID,
+                                    ledgerAccountName: timesheetInvoiceLine.gstIncomeLedgerAccountName,
+                                    amount: timesheetInvoiceLine.amount / 10,
+                                    comment: 'GST',
+                                    timesheetID: -1,
+                                    hidden: false,
+                                    debit: false,
+                                    debitOrCredit: '',
+                                    invoiceID: -1
+                                };
+                                getInvoiceThis.invoice.transactionLineArray.push(tempInvoiceLine);
+                                getInvoiceThis.calculateInvoiceTotal();
+                                getInvoiceThis.editInvoice = false;
+                                getInvoiceThis.gridOptions.api.setRowData(getInvoiceThis.invoice.transactionLineArray);
+                                getInvoiceThis.gridOptions.api.sizeColumnsToFit();
+                                getInvoiceThis.getInvoiceSuccess = true;
+                                getInvoiceThis.calculateInvoiceTotal();
+                                getInvoiceThis.invoiceVisible = true;
+                            }
+                        }
+                        function logInvoiceFromTimesheetError() {
+                            console.log('getInvoiceFromTimesheetError');
+                            getInvoiceThis.getInvoiceSuccess = false;
                         }
                     };
                     this.getInvoice = function (invoiceID, ledgerAccounts, debtors) {
@@ -221,7 +286,7 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                     __metadata('design:paramtypes', [invoice_service_1.InvoiceService, router_1.Router])
                 ], InvoiceComponent);
                 return InvoiceComponent;
-            })();
+            }());
             exports_1("InvoiceComponent", InvoiceComponent);
         }
     }

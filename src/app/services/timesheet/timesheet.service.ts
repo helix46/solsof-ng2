@@ -20,17 +20,17 @@ export class TimesheetService {
             name: 'entityID',
             value: EntityId.toString()
         };
-        return httpHandlerService.getObject<string>(parameters, 'api/timesheet/getMostRecentTimesheet');
+        return httpHandlerService.getObject<SolsofSpa.Helper.structTimesheet>(parameters, 'api/timesheet/getMostRecentTimesheet');
     }
 
     saveNewTimesheet(structTimesheet: SolsofSpa.Helper.structTimesheet): Observable<Response> {
         var httpHandlerService = new HttpHandlerService(this.http);
-        return httpHandlerService.postObject<string>(structTimesheet, 'api/timesheet');
+        return httpHandlerService.postObject(structTimesheet, 'api/timesheet');
     }
 
     updateTimesheet(timesheet: SolsofSpa.Helper.structTimesheet) {
         var httpHandlerService = new HttpHandlerService(this.http);
-        return httpHandlerService.putObject<string>(timesheet, 'api/timesheet');
+        return httpHandlerService.putObject(timesheet, 'api/timesheet');
     }
 
     deleteTimesheet(timesheetID: number) {
@@ -40,7 +40,7 @@ export class TimesheetService {
             name: 'timesheetID',
             value: timesheetID.toString()
         };
-        return httpHandlerService.deleteObject<any>(parameters, 'api/timesheet');
+        return httpHandlerService.deleteObject(parameters, 'api/timesheet');
     }
 
 
@@ -58,8 +58,5 @@ export class TimesheetService {
         var httpHandlerService = new HttpHandlerService(this.http);
         return httpHandlerService.getObject<SolsofSpa.Helper.structTimesheet>(parameters, 'api/timesheet');
     }
-
-
-
 }
 

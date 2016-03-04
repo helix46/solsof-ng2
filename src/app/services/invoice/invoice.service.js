@@ -1,4 +1,6 @@
-System.register(['angular2/router', 'angular2/src/core/di', 'angular2/http', '../http-handler/http-handler.service'], function(exports_1) {
+System.register(['angular2/router', 'angular2/src/core/di', 'angular2/http', '../http-handler/http-handler.service'], function(exports_1, context_1) {
+    "use strict";
+    var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -27,8 +29,22 @@ System.register(['angular2/router', 'angular2/src/core/di', 'angular2/http', '..
         execute: function() {
             InvoiceService = (function () {
                 function InvoiceService(http, router) {
+                    var _this = this;
                     this.http = http;
                     this.router = router;
+                    this.getInvoiceFromTimesheet = function (timesheetId, entityID) {
+                        var parameters = [];
+                        parameters[0] = {
+                            name: 'timesheetId',
+                            value: timesheetId.toString()
+                        };
+                        parameters[1] = {
+                            name: 'entityID',
+                            value: entityID.toString()
+                        };
+                        var httpHandlerService = new http_handler_service_1.HttpHandlerService(_this.http);
+                        return httpHandlerService.getObject(parameters, 'api/timesheetInvoiceLineController');
+                    };
                     console.log('constructor invoiceService');
                 }
                 InvoiceService.prototype.saveNewInvoice = function (structTransaction) {
@@ -66,7 +82,7 @@ System.register(['angular2/router', 'angular2/src/core/di', 'angular2/http', '..
                     __metadata('design:paramtypes', [http_1.Http, router_1.Router])
                 ], InvoiceService);
                 return InvoiceService;
-            })();
+            }());
             exports_1("InvoiceService", InvoiceService);
         }
     }

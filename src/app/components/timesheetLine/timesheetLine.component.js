@@ -1,4 +1,6 @@
-System.register(['angular2/core', '../../services/helper/helper.service'], function(exports_1) {
+System.register(['angular2/core', '../../services/helper/helper.service'], function(exports_1, context_1) {
+    "use strict";
+    var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -55,13 +57,13 @@ System.register(['angular2/core', '../../services/helper/helper.service'], funct
                 TimesheetLineComponent.prototype.modalOnKeyup = function () {
                 };
                 TimesheetLineComponent.prototype.saveTimeSheetLine = function () {
-                    var selectedTimesheetLine = {
+                    var timesheetLine = {
                         sTimesheetLineDate: this.timesheetLineDate,
                         startTimeMinutes: this.startHours * 60 + this.startMinutes,
                         finishTimeMinutes: this.finishHours * 60 + this.finishMinutes,
                         timeoutMinutes: this.timeoutHours * 60 + this.timeoutMinutes
                     };
-                    this.saver.emit(selectedTimesheetLine);
+                    this.saver.emit(timesheetLine);
                     this.timesheetLineVisible = false;
                 };
                 __decorate([
@@ -77,7 +79,7 @@ System.register(['angular2/core', '../../services/helper/helper.service'], funct
                     __metadata('design:paramtypes', [])
                 ], TimesheetLineComponent);
                 return TimesheetLineComponent;
-            })();
+            }());
             exports_1("TimesheetLineComponent", TimesheetLineComponent);
         }
     }

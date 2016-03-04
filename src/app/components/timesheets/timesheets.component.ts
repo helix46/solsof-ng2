@@ -5,22 +5,24 @@ import {Response} from 'angular2/http';
 import {Component, ViewChild} from 'angular2/core';
 import {TimesheetsService} from '../../services/Timesheets/Timesheets.service';
 import {TimesheetComponent} from '../timesheet/timesheet.component';
+import {InvoiceComponent} from '../invoice/invoice.component';
 import {DebtorsService} from '../../services/debtors/debtors.service';
 import {TimesheetService} from '../../services/timesheet/timesheet.service';
 import {DialogBoxComponent} from '../utilities/dialogBox/dialogBox.component';
+import {LedgerAccountsService} from '../../services/LedgerAccounts/LedgerAccounts.service';
 //import {AgGridNg2} from 'ag-grid-ng2/main';
 //import {GridOptions} from 'ag-grid/main';
 
 @Component({
     templateUrl: 'src/app/components/Timesheets/Timesheets.component.html',
     pipes: [],
-    providers: [TimesheetsService, DebtorsService, TimesheetService],
-    directives: [(<any>window).ag.grid.AgGridNg2, TimesheetComponent, DialogBoxComponent]
+    providers: [TimesheetsService, DebtorsService, TimesheetService, LedgerAccountsService],
+    directives: [(<any>window).ag.grid.AgGridNg2, TimesheetComponent, DialogBoxComponent, InvoiceComponent]
     //directives: [AgGridNg2, TimesheetComponent]
 })
 
 export class TimesheetsComponent {
-    constructor(private timesheetsService: TimesheetsService, public router: Router, private debtorsService: DebtorsService, private timesheetService: TimesheetService) {
+    constructor(private timesheetsService: TimesheetsService, public router: Router, private debtorsService: DebtorsService, private timesheetService: TimesheetService, private ledgerAccountsService: LedgerAccountsService) {
         console.log('constructor TimesheetsComponent');
         this.getTimesheetsSuccess = true;
         //window.onresize = () => {
@@ -35,13 +37,16 @@ export class TimesheetsComponent {
     //////////////////////////////////////////////////////////
     //properties
     debtors: SolsofSpa.Api.DataContext.tblDebtor[];
+    ledgerAccounts: SolsofSpa.Api.DataContext.tblLedgerAccount[];
     public Timesheets: SolsofSpa.Api.DataContext.spListTimesheets_Result[] = [];
     public excludeInactive: boolean = true;
     getTimesheetsSuccess: boolean = true;
     getDebtorsSuccess: boolean = true;
     editTimesheet: boolean;
     @ViewChild(TimesheetComponent) timesheetComponent: TimesheetComponent;
+    @ViewChild(InvoiceComponent) invoiceComponent: InvoiceComponent;
     @ViewChild(DialogBoxComponent) dialogBoxComponent: DialogBoxComponent;
+    onGetLedgerAccountsSuccess: boolean;
     //selectedTimesheetID: number;
     //selectedTimesheetIndex: number;
 
@@ -54,11 +59,45 @@ export class TimesheetsComponent {
         this.editTimesheet = false;
     }
 
+    goToInvoices = () => {
+        this.router.navigate(['Invoices']);
+    }
+
+    createInvoice = (timesheetID: number) => {
+        this.invoiceComponent.newInvoiceFromTimesheet(timesheetID, this.ledgerAccounts, this.debtors);
+    }
+
     chkExcludeInactiveClicked = (chkExcludeInactive: HTMLInputElement) => {
         this.excludeInactive = chkExcludeInactive.checked;
         this.loadTimesheets();
     }
 
+    //ledgerAccounts
+
+    loadLedgerAccounts = () => {
+        var loadLedgerAccountsThis = this;
+        if (HelperService.tokenIsValid()) {
+            var EntityId = GetEntityService.getInstance().getEntityId();
+            if (EntityId === -1) {
+                this.router.navigate(['Entities']);
+            } else {
+                this.ledgerAccountsService.getLedgerAccounts(true, EntityId).subscribe(onGetLedgerAccountsSuccess, logLedgerAccountsError, complete);
+            }
+        } else {
+            this.router.navigate(['Login']);
+        }
+        function logLedgerAccountsError() {
+            console.log('getLedgerAccounts Error');
+            loadLedgerAccountsThis.onGetLedgerAccountsSuccess = false;
+        }
+
+        function onGetLedgerAccountsSuccess(LedgerAccounts: SolsofSpa.Api.DataContext.tblLedgerAccount[]) {
+            loadLedgerAccountsThis.ledgerAccounts = LedgerAccounts;
+        }
+        function complete() {
+            console.log('loadDebtors complete');
+        }
+    };
     loadDebtors = () => {
         var loadDebtorsThis = this;
         if (HelperService.tokenIsValid()) {

@@ -63,13 +63,13 @@ export class TimesheetLineComponent {
     }
 
     saveTimeSheetLine() {
-        var selectedTimesheetLine: SolsofSpa.Helper.structTimesheetLine = {
+        var timesheetLine: SolsofSpa.Helper.structTimesheetLine = {
             sTimesheetLineDate: this.timesheetLineDate,
             startTimeMinutes: this.startHours * 60 + this.startMinutes,
             finishTimeMinutes: this.finishHours * 60 + this.finishMinutes,
             timeoutMinutes: this.timeoutHours * 60 + this.timeoutMinutes
         }
-        this.saver.emit(selectedTimesheetLine);
+        this.saver.emit(timesheetLine);
         this.timesheetLineVisible = false;
     }
 }

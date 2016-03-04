@@ -21,19 +21,21 @@ export class HttpHandlerService {
         return this.http.get(this.serviceBase + url, options).map(res=> res.json());
     }
 
-    deleteObject<T>(parameters: modSharedTypes.IHttpParameter[], url: string): Observable<any> {
+    deleteObject(parameters: modSharedTypes.IHttpParameter[], url: string): Observable<Response> {
+        //deleteObject<T>(parameters: modSharedTypes.IHttpParameter[], url: string): Observable < any > {
         var options: RequestOptionsArgs = this.getOptions(parameters, true);
         return this.http.delete(this.serviceBase + url, options);
     }
 
     //use http post to send an object 
-    postObject<T>(parameterObj: Object, url: string, includeToken: boolean = true): Observable<Response> {
+    postObject(parameterObj: Object, url: string, includeToken: boolean = true): Observable<Response> {
+        //postObject<T>(parameterObj: Object, url: string, includeToken: boolean = true): Observable < Response > {
         var options: RequestOptionsArgs = this.postOptions(includeToken);
         var s = JSON.stringify(parameterObj);
         return this.http.post(this.serviceBase + url, s, options);
     }
     //use http put to send an object 
-    putObject<T>(parameterObj: Object, url: string, includeToken: boolean = true): Observable<Response> {
+    putObject(parameterObj: Object, url: string, includeToken: boolean = true): Observable<Response> {
         var options: RequestOptionsArgs = this.postOptions(includeToken);
         var s = JSON.stringify(parameterObj);
         return this.http.put(this.serviceBase + url, s, options);

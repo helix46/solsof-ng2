@@ -1,4 +1,6 @@
-System.register(['angular2/src/core/di', 'angular2/http', '../helper/helper.service', 'rxjs/Rx'], function(exports_1) {
+System.register(['angular2/src/core/di', 'angular2/http', '../helper/helper.service', 'rxjs/Rx'], function(exports_1, context_1) {
+    "use strict";
+    var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -36,12 +38,14 @@ System.register(['angular2/src/core/di', 'angular2/http', '../helper/helper.serv
                     return this.http.get(this.serviceBase + url, options).map(function (res) { return res.json(); });
                 };
                 HttpHandlerService.prototype.deleteObject = function (parameters, url) {
+                    //deleteObject<T>(parameters: modSharedTypes.IHttpParameter[], url: string): Observable < any > {
                     var options = this.getOptions(parameters, true);
                     return this.http.delete(this.serviceBase + url, options);
                 };
                 //use http post to send an object 
                 HttpHandlerService.prototype.postObject = function (parameterObj, url, includeToken) {
                     if (includeToken === void 0) { includeToken = true; }
+                    //postObject<T>(parameterObj: Object, url: string, includeToken: boolean = true): Observable < Response > {
                     var options = this.postOptions(includeToken);
                     var s = JSON.stringify(parameterObj);
                     return this.http.post(this.serviceBase + url, s, options);
@@ -100,7 +104,7 @@ System.register(['angular2/src/core/di', 'angular2/http', '../helper/helper.serv
                     __metadata('design:paramtypes', [http_1.Http])
                 ], HttpHandlerService);
                 return HttpHandlerService;
-            })();
+            }());
             exports_1("HttpHandlerService", HttpHandlerService);
         }
     }

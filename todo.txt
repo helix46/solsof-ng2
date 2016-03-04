@@ -37,7 +37,13 @@ forms:
 
 timesheet:
 	style nav bar
-	create invoice
+	create invoice from timesheet
+		invoice calls service
+		when service gets back, close timesheet and pass timesheetId to invoice
+		checkbox on save timesheet: create invoice
+		if yes then when time sheet saved, call service to get invoice
+		invoice is pass back to timesheetS in event and timesheetS refreshes the list then opens the invoice
+		if no then different event is called, and timesheetS just refreshes the list
 
 			
 	re-structure folders

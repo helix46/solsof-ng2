@@ -100,6 +100,70 @@ export class InvoiceComponent {
         }
     }
 
+    newInvoiceFromTimesheet = (timesheetID: number, ledgerAccounts: SolsofSpa.Api.DataContext.tblLedgerAccount[], debtors: SolsofSpa.Api.DataContext.tblDebtor[]) => {
+        var getInvoiceThis = this;
+        if (HelperService.tokenIsValid()) {
+            getInvoiceThis.ledgerAccounts = ledgerAccounts;
+            getInvoiceThis.debtors = debtors
+            var EntityId = GetEntityService.getInstance().getEntityId();
+            getInvoiceThis.titleInvoice = 'Invoice created from Timesheet';
+            getInvoiceThis.invoiceService.getInvoiceFromTimesheet(timesheetID, EntityId).subscribe(onGetInvoiceFromTimesheet, logInvoiceFromTimesheetError);
+        } else {
+            getInvoiceThis.router.navigate(['Login']);
+        }
+        function onGetInvoiceFromTimesheet(timesheetInvoiceLine: SolsofSpa.Helper.structTimesheetInvoiceLine) {
+            //add invoice line from timesheet
+
+            var EntityId = GetEntityService.getInstance().getEntityId();
+            if (EntityId === -1) {
+                this.router.navigate(['Entities']);
+            } else {
+                getInvoiceThis.invoice.debtorID = timesheetInvoiceLine.debtorID;
+                getInvoiceThis.invoice.transactionType = timesheetInvoiceLine.transactionType;
+                getInvoiceThis.invoice.sTransactionDate = HelperService.formatDateForJSon(new Date());
+                getInvoiceThis.invoice.entityID = EntityId;
+                //get debtor for invoice
+                var tempInvoiceLine: SolsofSpa.Helper.structTransactionLine;
+                tempInvoiceLine = {
+                    ledgerAccountID: timesheetInvoiceLine.incomeLedgerAccountID,
+                    ledgerAccountName: timesheetInvoiceLine.incomeLedgerAccountName,
+                    amount: timesheetInvoiceLine.amount,
+                    comment: timesheetInvoiceLine.comment,
+                    timesheetID: timesheetInvoiceLine.timesheetID,
+                    hidden: false,
+                    debit: false,
+                    debitOrCredit: '',
+                    invoiceID: -1
+                };
+                getInvoiceThis.invoice.transactionLineArray.push(tempInvoiceLine);
+                tempInvoiceLine = {
+                    ledgerAccountID: timesheetInvoiceLine.gstIncomeLedgerAccountID,
+                    ledgerAccountName: timesheetInvoiceLine.gstIncomeLedgerAccountName,
+                    amount: timesheetInvoiceLine.amount / 10,
+                    comment: 'GST',
+                    timesheetID: -1,
+                    hidden: false,
+                    debit: false,
+                    debitOrCredit: '',
+                    invoiceID: -1
+                };
+                getInvoiceThis.invoice.transactionLineArray.push(tempInvoiceLine);
+                getInvoiceThis.calculateInvoiceTotal();
+
+                getInvoiceThis.editInvoice = false;
+                getInvoiceThis.gridOptions.api.setRowData(getInvoiceThis.invoice.transactionLineArray);
+                getInvoiceThis.gridOptions.api.sizeColumnsToFit();
+                getInvoiceThis.getInvoiceSuccess = true;
+                getInvoiceThis.calculateInvoiceTotal();
+                getInvoiceThis.invoiceVisible = true;
+            }
+        }
+        function logInvoiceFromTimesheetError() {
+            console.log('getInvoiceFromTimesheetError');
+            getInvoiceThis.getInvoiceSuccess = false;
+        }
+    }
+
     getInvoice = (invoiceID: number, ledgerAccounts: SolsofSpa.Api.DataContext.tblLedgerAccount[], debtors: SolsofSpa.Api.DataContext.tblDebtor[]) => {
         var getInvoiceThis = this;
         if (HelperService.tokenIsValid()) {

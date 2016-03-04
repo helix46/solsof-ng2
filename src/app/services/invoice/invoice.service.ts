@@ -13,14 +13,29 @@ export class InvoiceService {
         console.log('constructor invoiceService');
     }
 
+    getInvoiceFromTimesheet = (timesheetId: number, entityID: number) => {
+        var parameters: modSharedTypes.IHttpParameter[] = [];
+        parameters[0] = {
+            name: 'timesheetId',
+            value: timesheetId.toString()
+        };
+        parameters[1] = {
+            name: 'entityID',
+            value: entityID.toString()
+        };
+
+        var httpHandlerService = new HttpHandlerService(this.http);
+        return httpHandlerService.getObject<SolsofSpa.Helper.structTimesheetInvoiceLine>(parameters, 'api/timesheetInvoiceLineController');
+    }
+
     saveNewInvoice(structTransaction: SolsofSpa.Helper.structTransaction): Observable<Response> {
         var httpHandlerService = new HttpHandlerService(this.http);
-        return httpHandlerService.postObject<string>(structTransaction, 'api/invoice');
+        return httpHandlerService.postObject(structTransaction, 'api/invoice');
     }
 
     updateInvoice(invoice: SolsofSpa.Helper.structTransaction) {
         var httpHandlerService = new HttpHandlerService(this.http);
-        return httpHandlerService.putObject<string>(invoice, 'api/invoice');
+        return httpHandlerService.putObject(invoice, 'api/invoice');
     }
 
     deleteInvoice(transactionID: number) {
@@ -30,7 +45,7 @@ export class InvoiceService {
             name: 'transactionID',
             value: transactionID.toString()
         };
-        return httpHandlerService.deleteObject<any>(parameters, 'api/invoice');
+        return httpHandlerService.deleteObject(parameters, 'api/invoice');
     }
 
 

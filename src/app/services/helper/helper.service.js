@@ -1,6 +1,8 @@
 //import {AgGridNg2} from 'ag-grid-ng2/main';
 //import {GridOptions} from 'ag-grid/main';
-System.register([], function(exports_1) {
+System.register([], function(exports_1, context_1) {
+    "use strict";
+    var __moduleName = context_1 && context_1.id;
     var HelperService;
     return {
         setters:[],
@@ -29,8 +31,8 @@ System.register([], function(exports_1) {
                     return false;
                 };
                 HelperService.getServiceBase = function () {
-                    return 'https://solsofoz.azurewebsites.net/';
-                    //return 'http://localhost:10614/';
+                    //return 'https://solsofoz.azurewebsites.net/';
+                    return 'http://localhost:10614/';
                 };
                 HelperService.getTokenName = function () {
                     return 'id_token';
@@ -343,7 +345,7 @@ System.register([], function(exports_1) {
                     }
                 };
                 return HelperService;
-            })();
+            }());
             exports_1("HelperService", HelperService);
         }
     }

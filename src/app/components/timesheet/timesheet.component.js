@@ -1,4 +1,6 @@
-System.register(['angular2/core', '../../services/helper/helper.service', '../../services/timesheet/timesheet.service', 'angular2/router', '../../services/GetEntity/GetEntity.service', '../timesheetline/timesheetline.component'], function(exports_1) {
+System.register(['angular2/core', '../../services/helper/helper.service', '../../services/timesheet/timesheet.service', 'angular2/router', '../../services/GetEntity/GetEntity.service', '../timesheetline/timesheetline.component'], function(exports_1, context_1) {
+    "use strict";
+    var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -40,6 +42,7 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                     this.router = router;
                     this.getTimesheetSuccess = true;
                     this.ok = new core_1.EventEmitter();
+                    this.okCreateInvoice = new core_1.EventEmitter();
                     this.timesheet = {
                         comment: '',
                         debtorID: -1,
@@ -49,6 +52,7 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                         timesheetLineArray: []
                     };
                     this.timesheetVisible = false;
+                    this.createInvoice = true;
                     this.calculateTimesheetTotal = function () {
                         var totalMinutes = 0, startTimeMinutes, finishTimeMinutes, timeoutMinutes, i;
                         for (i = 0; i < _this.timesheet.timesheetLineArray.length; i = i + 1) {
@@ -148,7 +152,6 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                         else {
                             if (helper_service_1.HelperService.tokenIsValid()) {
                                 _this.timesheetService.saveNewTimesheet(_this.timesheet).subscribe(updateTimesheetSuccess, logError, complete);
-                                _this.timesheetVisible = false;
                             }
                             else {
                                 _this.router.navigate(['Login']);
@@ -161,8 +164,15 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                         function complete() {
                             console.log('timesheet complete');
                         }
-                        function updateTimesheetSuccess() {
-                            okClickedThis.ok.emit('');
+                        function updateTimesheetSuccess(response) {
+                            var timesheetID = response.json();
+                            okClickedThis.timesheetVisible = false;
+                            if (okClickedThis.createInvoice) {
+                                okClickedThis.okCreateInvoice.emit(timesheetID);
+                            }
+                            else {
+                                okClickedThis.ok.emit('');
+                            }
                         }
                     };
                     this.deleteTimesheetLine = function () {
@@ -241,6 +251,10 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                     __metadata('design:type', core_1.EventEmitter)
                 ], TimesheetComponent.prototype, "ok", void 0);
                 __decorate([
+                    core_1.Output(), 
+                    __metadata('design:type', core_1.EventEmitter)
+                ], TimesheetComponent.prototype, "okCreateInvoice", void 0);
+                __decorate([
                     core_1.ViewChild(timesheetline_component_1.TimesheetLineComponent), 
                     __metadata('design:type', timesheetline_component_1.TimesheetLineComponent)
                 ], TimesheetComponent.prototype, "timesheetLineComponent", void 0);
@@ -255,7 +269,7 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                     __metadata('design:paramtypes', [timesheet_service_1.TimesheetService, router_1.Router])
                 ], TimesheetComponent);
                 return TimesheetComponent;
-            })();
+            }());
             exports_1("TimesheetComponent", TimesheetComponent);
         }
     }

@@ -1,4 +1,6 @@
-System.register(['angular2/core'], function(exports_1) {
+System.register(['angular2/core', '../../services/helper/helper.service'], function(exports_1, context_1) {
+    "use strict";
+    var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,12 +10,15 @@ System.register(['angular2/core'], function(exports_1) {
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1;
+    var core_1, helper_service_1;
     var InvoiceLineComponent;
     return {
         setters:[
             function (core_1_1) {
                 core_1 = core_1_1;
+            },
+            function (helper_service_1_1) {
+                helper_service_1 = helper_service_1_1;
             }],
         execute: function() {
             InvoiceLineComponent = (function () {
@@ -49,9 +54,10 @@ System.register(['angular2/core'], function(exports_1) {
                     this.clearInvoiceLine();
                 };
                 InvoiceLineComponent.prototype.saveInvoiceLine = function () {
+                    var ledgerAccountID = Number(this.sLledgerAccountID);
                     var selectedInvoiceLine = {
-                        ledgerAccountID: Number(this.sLledgerAccountID),
-                        ledgerAccountName: '',
+                        ledgerAccountID: ledgerAccountID,
+                        ledgerAccountName: helper_service_1.HelperService.getLedgerAccountName(ledgerAccountID, this.ledgerAccounts),
                         debitOrCredit: '',
                         amount: this.amount,
                         debit: false,
@@ -76,7 +82,7 @@ System.register(['angular2/core'], function(exports_1) {
                     __metadata('design:paramtypes', [])
                 ], InvoiceLineComponent);
                 return InvoiceLineComponent;
-            })();
+            }());
             exports_1("InvoiceLineComponent", InvoiceLineComponent);
         }
     }

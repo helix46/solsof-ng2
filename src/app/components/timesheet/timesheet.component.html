@@ -8,10 +8,10 @@
             <!--buttons-->
             <div class="col-md-2">
                 <div class="buttonGroup">
-                    <button type="button"class="btn btn-primary separatedButton" (click)="newTimesheetLine()"> New Line</button>
-                    <button type="button"class="btn btn-primary separatedButton deleteButton" (click)="deleteTimesheetLine()"> Delete Line</button>
+                    <button type="button" class="btn btn-primary separatedButton" (click)="newTimesheetLine()"> New Line</button>
+                    <button type="button" class="btn btn-primary separatedButton deleteButton" (click)="deleteTimesheetLine()"> Delete Line</button>
                     <button type="submit" class="btn btn-primary separatedButton okButton"> OK</button>
-                    <button type="button"class="btn btn-primary separatedButton" (click)="cancelTimesheet()"> Cancel</button>
+                    <button type="button" class="btn btn-primary separatedButton" (click)="cancelTimesheet()"> Cancel</button>
                 </div>
             </div>
             <!--inputs-->
@@ -43,6 +43,10 @@
                     <input type="text" [(ngModel)]="timesheetTotal" class="form-control" disabled="disabled" #inputTotal="ngForm">
                 </div>
                 <div [hidden]="getTimesheetSuccess" class="alert alert-danger">Error getting Timesheet</div>
+                <div class="form-group">
+                    <label for="inputCreateInvoice">Create invoice</label>
+                    <input type="checkbox" [(ngModel)]="createInvoice" class="form-control" #inputCreateInvoice="ngForm" ngControl="ngcCreateInvoice">
+                </div>
             </div>
         </form>
     </div>
