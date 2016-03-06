@@ -14,8 +14,10 @@ a:hover {
   background-color: #CFD8DC;
 }
 a.router-link-active {
-  color: #039be5;
+  color: orange;
 }
+/*color: #039be5;*/
+
 /*h1 {
   font-size: 1.2em;
   color: #999;

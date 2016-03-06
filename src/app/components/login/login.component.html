@@ -22,7 +22,7 @@
             <div [hidden]="inpPassword.valid || inpPassword.pristine" class="alert alert-danger">Password is required</div>
         </div>
         <!--submit button fires (ngSubmit)="login()" event on form-->
-        <button type="submit" class="btn btn-primary" [disabled]="!loginForm.form.valid">
+        <button type="submit" class="sidebar-menu-button" [disabled]="!loginForm.form.valid">
             Login
         </button>
     </form>

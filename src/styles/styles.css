@@ -1,10 +1,49 @@
-/*.btn {
-    padding: 14px 24px;
-    border: 0 none;
-    font-weight: 700;
-    letter-spacing: 1px;
-    /*text-transform: uppercase;*/
-/*}*/
+
+body {
+    background-color: #4A5157;
+}
+
+.white-background {
+    background-color: white;
+    height: 100vh;
+}
+
+.sidebar-menu-button, .menu-button {
+    background-color: #286060;
+    height: 40px;
+    min-width: 100px;
+    color: #f6d3af;
+    border: none;
+    box-shadow: 0 0 2px black;
+}
+
+    .sidebar-menu-button:hover, .menu-button:hover {
+        background-color: #b0c6d0;
+        color: #5e3b02;
+        border: none;
+    }
+
+.sidebar-menu-button {
+    height: 40px;
+    min-width: 160px;
+    color: #f0e1d2;
+    background-color: #4b8d8d;
+    margin: 5px 0;
+}
+
+.okButton {
+    font-size: xx-large;
+    height: 60px;
+    border: 2px solid;
+    border-color: lightgray;
+}
+
+.ag-fresh .ag-row-selected {
+    background-color: #b0c6d0 !important;
+}
+
+
+
 
 .btn:focus, .btn:active:focus, .btn.active:focus {
     outline: 0 none;
@@ -27,11 +66,11 @@
 
 
 .ng-valid[required] {
-    border-left: 5px solid #42A948; /* green */
+    border-left: 5px solid #a8d06f; /* green */
 }
 
 .ng-invalid {
-    border-left: 5px solid #a94442; /* red */
+    border-left: 5px solid #f4285e; /* red */
 }
 
 
@@ -87,9 +126,6 @@
     width: 100%;
 }
 
-.okButton {
-    font-size: x-large;
-}
 
 .buttonGroup {
     position: relative;
@@ -172,12 +208,12 @@ label {
     border: 1px solid darkgrey;
     min-width: 300px;
     box-shadow: 0 0 50px black;
-    overflow:auto;
+    overflow: auto;
     max-height: 100vh;
 }
 
 
-.navbar-simple .brand {
+/*.navbar-simple .brand {
     padding-top: 15px;
     padding-bottom: 15px;
 }
@@ -217,4 +253,5 @@ label {
 
         .navbar-simple .navbar-inner .nav li.active a {
             color: #bf3604;
-        }
+        }*/
+

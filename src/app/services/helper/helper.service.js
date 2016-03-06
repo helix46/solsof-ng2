@@ -1,5 +1,6 @@
 //import {AgGridNg2} from 'ag-grid-ng2/main';
 //import {GridOptions} from 'ag-grid/main';
+//import {ISCEisService} from 'angular2/core';
 System.register([], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;

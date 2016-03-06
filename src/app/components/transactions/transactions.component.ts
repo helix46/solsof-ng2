@@ -4,7 +4,7 @@ import {GetEntityService} from '../../services/GetEntity/GetEntity.service';
 import {Router, RouteParams} from 'angular2/router';
 import {HelperService} from '../../services/helper/helper.service';
 import {Response} from 'angular2/http';
-import {Component} from 'angular2/core';
+import {Component, ViewChild} from 'angular2/core';
 import {TransactionsService} from '../../services/Transactions/Transactions.service';
 
 
@@ -21,7 +21,6 @@ import {TransactionsService} from '../../services/Transactions/Transactions.serv
 
 export class TransactionsComponent {
 
-    public Transactions: SolsofSpa.Api.DataContext.tblTransaction[] = [];
 
     constructor(private TransactionsService: TransactionsService, private router: Router, private routeParams: RouteParams) {
         console.log('constructor TransactionsComponent');
@@ -30,7 +29,12 @@ export class TransactionsComponent {
             //this.gridOptions.api.sizeColumnsToFit();
         };
     }
+
+    public Transactions: SolsofSpa.Api.DataContext.tblTransaction[] = [];
+    getTransactionsError: boolean = false;
     ledgerAccountID: number;
+    @ViewChild(TransactionsComponent) transactionsComponent: TransactionsComponent;
+
     ngOnInit() {
         this.ledgerAccountID = Number(this.routeParams.get('ledgerAccountID'));
         this.loadTransactions();
@@ -72,6 +76,7 @@ export class TransactionsComponent {
             loadTransactionsThis.Transactions = data;
             loadTransactionsThis.gridOptions.api.setRowData(data);
             loadTransactionsThis.gridOptions.api.sizeColumnsToFit();
+            loadTransactionsThis.getTransactionsError = false;
         }
     };
      
@@ -116,7 +121,8 @@ export class TransactionsComponent {
 
     onRowDoubleClicked(params: any) {
         this.onRowClicked(params);
-        alert('this.router.navigate([]);')
+        //alert('this.router.navigate([]);')
+        //TransactionComponentthis.
     }
 
     gridOptions: any = HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);

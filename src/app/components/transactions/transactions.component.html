@@ -1,7 +1,22 @@
 ﻿<h1>Transactions</h1>
-<label>
-    <input [ngModel]="listDateDescending" #chkListDateDescending type="checkbox" (change)="chkListDateDescendingClicked(chkListDateDescending)"> <big>List Date Descending</big>
-</label>
-<div>
-    <ag-grid-ng2 class="ag-fresh clsGridTransactions" [gridOptions]="gridOptions"></ag-grid-ng2>
+
+<div class="col-md-2">
+    <label>
+        <input [ngModel]="listDateDescending" #chkListDateDescending type="checkbox" (change)="chkListDateDescendingClicked(chkListDateDescending)"> <big>List Date Descending</big>
+    </label>
+    <div class="buttonGroup">
+        <button class="sidebar-menu-button" (click)="addTimesheet()">Add</button>
+        <button class="sidebar-menu-button">Create Invoice</button>
+        <button class="sidebar-menu-button deleteButton" (click)="deleteTimesheet()">Delete</button>
+    </div>
 </div>
+
+<div class="col-md-10">
+    <ag-grid-ng2 class="ag-fresh clsGridTransactions" [gridOptions]="gridOptions"></ag-grid-ng2>
+    <div [hidden]="!getTransactionsError" class="alert alert-danger">Error getting Transactions</div>
+    <div [hidden]="!getDebtorsError" class="alert alert-danger">Error getting Debtors</div>
+</div>
+
+
+<transactionModal (ok)="loadTransactions()"></transactionModal>
+<dialog-box></dialog-box>

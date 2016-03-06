@@ -1,16 +1,16 @@
-﻿<div class="modalSolsof modalSolsof200" [class.modalSolsofVisible]="invoiceLineVisible" (keyup.esc)="cancelInvoiceLine()">
+﻿<div class="modalSolsof modalSolsof200" [class.modalSolsofVisible]="transactionLineVisible" (keyup.esc)="cancelTransactionLine()">
     <!-- Modal content -->
     <div class="modal-contentSolsof modalSolsof-narrow" (keyup.esc)="modalOnKeyup()">
         <!--contents-->
-        <form novalidate name="formInvoice" class="form-horizontal" (keyup.esc)="modalOnKeyup()">
-            <h1> {{titleInvoiceLine}}</h1>
+        <form novalidate name="formTransaction" class="form-horizontal" (keyup.esc)="modalOnKeyup()">
+            <h1> {{titleTransactionLine}}</h1>
             <br />
             <!--master inputs-->
             <div class="form-group">
                 <div class="col-md-2">
                     <div class="buttonGroup">
-                        <button class="sidebar-menu-button okButton" (click)="saveInvoiceLine()"> OK</button>
-                        <button class="sidebar-menu-button" (click)="cancelInvoiceLine()"> Cancel</button>
+                        <button class="sidebar-menu-button okButton" (click)="saveTransactionLine()"> OK</button>
+                        <button class="sidebar-menu-button" (click)="cancelTransactionLine()"> Cancel</button>
                     </div>
                 </div>
                 <div class="col-md-10">
@@ -25,6 +25,14 @@
                     <div class="form-group">
                         <label for="inputAmount">Amount</label>
                         <input type="number" [(ngModel)]="amount" class="form-control" #inputAmount="ngForm" placeholder="Amount" ngControl="ngcAmount">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputDebit">Debit</label>
+                        <input type="radio" [(ngModel)]="debit" class="form-control" #inputDebit="ngForm" placeholder="Debit" ngControl="ngcDebit">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputCredit">Credit</label>
+                        <input type="radio" [(ngModel)]="!debit" class="form-control" #inputCredit="ngForm" placeholder="Credit" ngControl="ngcCredit">
                     </div>
                     <div class="form-group">
                         <label for="inputComment">Comment</label>

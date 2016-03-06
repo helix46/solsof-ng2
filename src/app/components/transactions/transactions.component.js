@@ -36,6 +36,7 @@ System.register(['../../services/GetEntity/GetEntity.service', 'angular2/router'
                     this.router = router;
                     this.routeParams = routeParams;
                     this.Transactions = [];
+                    this.getTransactionsError = false;
                     /////////////////////////////////////////////////////////////
                     //grid
                     this.columnDefs = [
@@ -111,6 +112,7 @@ System.register(['../../services/GetEntity/GetEntity.service', 'angular2/router'
                         loadTransactionsThis.Transactions = data;
                         loadTransactionsThis.gridOptions.api.setRowData(data);
                         loadTransactionsThis.gridOptions.api.sizeColumnsToFit();
+                        loadTransactionsThis.getTransactionsError = false;
                     }
                 };
                 ;
@@ -120,8 +122,13 @@ System.register(['../../services/GetEntity/GetEntity.service', 'angular2/router'
                 };
                 TransactionsComponent.prototype.onRowDoubleClicked = function (params) {
                     this.onRowClicked(params);
-                    alert('this.router.navigate([]);');
+                    //alert('this.router.navigate([]);')
+                    //TransactionComponentthis.
                 };
+                __decorate([
+                    core_1.ViewChild(TransactionsComponent), 
+                    __metadata('design:type', TransactionsComponent)
+                ], TransactionsComponent.prototype, "transactionsComponent", void 0);
                 TransactionsComponent = __decorate([
                     core_1.Component({
                         selector: 'transaction',

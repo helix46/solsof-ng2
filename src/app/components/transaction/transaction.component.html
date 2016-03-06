@@ -1,0 +1,55 @@
+﻿<div class="modalSolsof modalSolsof100" [class.modalSolsofVisible]="transactionVisible" (keyup.esc)="cancelTransaction()">
+    <!-- Modal content -->
+    <div class="modal-contentSolsof modalSolsof-wide container-fluid" (keyup.esc)="cancelTransaction()">
+        <!--contents-->
+        <form (ngSubmit)="okClicked()" #transactionForm="ngForm">
+            <h1>{{titleTransaction}}</h1>
+            <br />
+            <!--buttons-->
+            <div class="col-md-2">
+                <div class="buttonGroup">
+                    <button type="button" class="sidebar-menu-button" (click)="newTransactionLine()"> New Line</button>
+                    <button type="button" class="sidebar-menu-button deleteButton" (click)="deleteTransactionLine()"> Delete Line</button>
+                    <button type="submit" class="sidebar-menu-button okButton"> OK</button>
+                    <button type="button" class="sidebar-menu-button" (click)="cancelTransaction()"> Cancel</button>
+                </div>
+            </div>
+            <!--inputs-->
+            <div class="col-md-10">
+                <div class="form-group">
+                    <label for="cmbLedgerAccounts">Ledger Account</label>
+                    <select class="form-control" required #cmbLedgerAccounts ngControl="ngcLedgerAccounts" [(ngModel)]="transaction.ledgerAccountID">
+                        <option *ngFor="#ledgerAccount of ledgerAccounts" [value]="ledgerAccount.ledgerAccountID">
+                            {{ ledgerAccount.ledgerAccountName }}
+                        </option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="inputTransactionDate">Week Ending</label>
+                    <input type="date" [(ngModel)]="transaction.sTransactionDate" class="form-control" placeholder="Comment" #inputTransactionDate="ngForm" required ngControl="ngcTransactionDate">
+                    <div [hidden]="inputTransactionDate.valid || inputTransactionDate.pristine" class="alert alert-danger">Week Ending is required</div>
+                </div>
+                <div class="form-group">
+                    <label for="inputComment">Comment</label>
+                    <input type="text" [(ngModel)]="transaction.comment" class="form-control" #inputComment="ngForm" placeholder="Comment" ngControl="ngcComment">
+                </div>
+                <!--detail grid-->
+                <div class="form-group">
+                    <ag-grid-ng2 class="ag-fresh clsTransactionLine form-control" [gridOptions]="gridOptions"></ag-grid-ng2>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputTotal">Total</label>
+                    <input type="text" [(ngModel)]="transactionTotal" class="form-control" disabled="disabled" #inputTotal="ngForm">
+                </div>
+                <div [hidden]="getTransactionSuccess" class="alert alert-danger">Error getting Transaction</div>
+                <div class="form-group">
+                    <label for="inputCreateInvoice">Create invoice</label>
+                    <input type="checkbox" [(ngModel)]="createInvoice" class="form-control" #inputCreateInvoice="ngForm" ngControl="ngcCreateInvoice">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<transaction-line (saver)="saveTransactionLine($event);"></transaction-line>

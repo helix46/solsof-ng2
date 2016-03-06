@@ -1,5 +1,6 @@
 ﻿//import {AgGridNg2} from 'ag-grid-ng2/main';
 //import {GridOptions} from 'ag-grid/main';
+//import {ISCEisService} from 'angular2/core';
 
 
 export class HelperService {
@@ -347,6 +348,24 @@ export class HelperService {
             return tblLedgerAccount.ledgerAccountID === ledgerAccountID;
         }
     }
+
+    //static displayPdf = (response: ArrayBuffer, $sce: ISCEService) => {
+    //    var file: Blob;
+
+    //    file = new Blob([response], { type: 'application/pdf' });
+
+    //    var fileURL = URL.createObjectURL(file);
+    //    var reportContent: any = $sce.trustAsResourceUrl(fileURL);
+    //    return reportContent;
+
+    //    //$modal.open({
+    //    //    templateUrl: 'app/views/reportDisplay.html?preventCache=' + new Date().toString(),
+    //    //    controller: 'reportDisplayController',
+    //    //    //backdrop: 'static',
+    //    //    size: 'lg',
+    //    //    resolve: { reportDisplayParameterObject: function () { return { reportContent: reportContent }; } }
+    //    //});
+    //};
 
 }
 
