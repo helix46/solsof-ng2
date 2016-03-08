@@ -1,6 +1,6 @@
 ﻿<div class="modalSolsof modalSolsof200" [class.modalSolsofVisible]="transactionLineVisible" (keyup.esc)="cancelTransactionLine()">
     <!-- Modal content -->
-    <div class="modal-contentSolsof modalSolsof-narrow" (keyup.esc)="modalOnKeyup()">
+    <div class="modal-contentSolsof modalSolsof-wide" (keyup.esc)="modalOnKeyup()">
         <!--contents-->
         <form novalidate name="formTransaction" class="form-horizontal" (keyup.esc)="modalOnKeyup()">
             <h1> {{titleTransactionLine}}</h1>
@@ -28,11 +28,8 @@
                     </div>
                     <div class="form-group">
                         <label for="inputDebit">Debit</label>
-                        <input type="radio" [(ngModel)]="debit" class="form-control" #inputDebit="ngForm" placeholder="Debit" ngControl="ngcDebit">
-                    </div>
-                    <div class="form-group">
-                        <label for="inputCredit">Credit</label>
-                        <input type="radio" [(ngModel)]="!debit" class="form-control" #inputCredit="ngForm" placeholder="Credit" ngControl="ngcCredit">
+                        <input type="checkbox" [(ngModel)]="debit" #inputDebit="ngForm" class="form-control solsof-checkbox" ngControl="ngcDebit">
+                        <!--<input type="checkbox" [(ngModel)]="debit" class="form-control checkbox" #inputDebit="ngForm" ngControl="ngcDebit">-->
                     </div>
                     <div class="form-group">
                         <label for="inputComment">Comment</label>

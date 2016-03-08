@@ -17,10 +17,10 @@
             <!--inputs-->
             <div class="col-md-10">
                 <div class="form-group">
-                    <label for="cmbLedgerAccounts">Ledger Account</label>
-                    <select class="form-control" required #cmbLedgerAccounts ngControl="ngcLedgerAccounts" [(ngModel)]="transaction.ledgerAccountID">
-                        <option *ngFor="#ledgerAccount of ledgerAccounts" [value]="ledgerAccount.ledgerAccountID">
-                            {{ ledgerAccount.ledgerAccountName }}
+                    <label for="cmbBankAccounts">Bank Account</label>
+                    <select class="form-control" required #cmbBankAccounts ngControl="ngcBankAccounts" [(ngModel)]="transaction.bankAccountID">
+                        <option *ngFor="#bankAccount of bankAccounts" [value]="bankAccount.bankAccountID">
+                            {{ bankAccount.name }}
                         </option>
                     </select>
                 </div>
@@ -43,10 +43,6 @@
                     <input type="text" [(ngModel)]="transactionTotal" class="form-control" disabled="disabled" #inputTotal="ngForm">
                 </div>
                 <div [hidden]="getTransactionSuccess" class="alert alert-danger">Error getting Transaction</div>
-                <div class="form-group">
-                    <label for="inputCreateInvoice">Create invoice</label>
-                    <input type="checkbox" [(ngModel)]="createInvoice" class="form-control" #inputCreateInvoice="ngForm" ngControl="ngcCreateInvoice">
-                </div>
             </div>
         </form>
     </div>

@@ -6,6 +6,9 @@ import {HelperService} from '../../services/helper/helper.service';
 import {Response} from 'angular2/http';
 import {Component, ViewChild} from 'angular2/core';
 import {TransactionsService} from '../../services/Transactions/Transactions.service';
+import {TransactionComponent} from '../Transaction/Transaction.component';
+import {LedgerAccountsService} from '../../services/LedgerAccounts/LedgerAccounts.service';
+import {BankAccountsService} from '../../services/bankAccounts/bankAccounts.service';
 
 
 
@@ -14,15 +17,15 @@ import {TransactionsService} from '../../services/Transactions/Transactions.serv
     selector: 'transaction',
     templateUrl: 'src/app/components/transactions/transactions.component.html',
     pipes: [],
-    providers: [TransactionsService],
-    directives: [(<any>window).ag.grid.AgGridNg2]
+    providers: [TransactionsService, LedgerAccountsService, BankAccountsService],
+    directives: [(<any>window).ag.grid.AgGridNg2, TransactionComponent]
     //directives: [AgGridNg2]
 })
 
 export class TransactionsComponent {
 
 
-    constructor(private TransactionsService: TransactionsService, private router: Router, private routeParams: RouteParams) {
+    constructor(private TransactionsService: TransactionsService, private router: Router, private routeParams: RouteParams, private ledgerAccountsService: LedgerAccountsService, private bankAccountsService: BankAccountsService) {
         console.log('constructor TransactionsComponent');
         this.listDateDescending = true;
         window.onresize = () => {
@@ -33,11 +36,32 @@ export class TransactionsComponent {
     public Transactions: SolsofSpa.Api.DataContext.tblTransaction[] = [];
     getTransactionsError: boolean = false;
     ledgerAccountID: number;
-    @ViewChild(TransactionsComponent) transactionsComponent: TransactionsComponent;
+    editTransaction: boolean;
+    ledgerAccounts: SolsofSpa.Api.DataContext.tblLedgerAccount[];
+    bankAccounts: SolsofSpa.Helper.tblBankAccountLite[];
+    @ViewChild(TransactionComponent) transactionComponent: TransactionComponent;
 
     ngOnInit() {
         this.ledgerAccountID = Number(this.routeParams.get('ledgerAccountID'));
         this.loadTransactions();
+        HelperService.loadLedgerAccounts(this.router, this.ledgerAccountsService, this.onLoadLedgerAccountsError, this.onLoadLedgerAccountsSuccess);
+        HelperService.loadBankAccounts(this.router, this.bankAccountsService, this.onLoadBankAccountsError, this.onLoadBankAccountsSuccess);
+    }
+
+    onLoadBankAccountsError = () => {
+        console.log('onLoadBankAccountsError');
+    }
+
+    onLoadLedgerAccountsError = () => {
+        console.log('onLoadLedgerAccountsError ');
+    }
+
+    onLoadLedgerAccountsSuccess = (ledgerAccounts: SolsofSpa.Api.DataContext.tblLedgerAccount[]) => {
+        this.ledgerAccounts = ledgerAccounts;
+    }
+
+    onLoadBankAccountsSuccess = (structLoadTransactionForm: SolsofSpa.Helper.structLoadTransactionForm) => {
+        this.bankAccounts = structLoadTransactionForm.bankAccounts;
     }
 
     selectedTransaction: SolsofSpa.Api.DataContext.tblTransaction;
@@ -72,7 +96,7 @@ export class TransactionsComponent {
             console.log('getTransactions complete');
         }
 
-        function onGetTransactionsSuccess  (data: SolsofSpa.Api.DataContext.tblTransaction[])  {
+        function onGetTransactionsSuccess(data: SolsofSpa.Api.DataContext.tblTransaction[]) {
             loadTransactionsThis.Transactions = data;
             loadTransactionsThis.gridOptions.api.setRowData(data);
             loadTransactionsThis.gridOptions.api.sizeColumnsToFit();
@@ -115,14 +139,13 @@ export class TransactionsComponent {
     ];
 
     onRowClicked(params: any) {
-        this.selectedTransaction = <SolsofSpa.Api.DataContext.tblTransaction>params.data;
-        console.log('Transaction onRowClicked');
+        //do nothing
     }
 
-    onRowDoubleClicked(params: any) {
-        this.onRowClicked(params);
-        //alert('this.router.navigate([]);')
-        //TransactionComponentthis.
+    onRowDoubleClicked = (params: any) => {
+        var selectedTransaction = <SolsofSpa.Api.DataContext.spGetTransactionList_Result>params.data;
+        this.transactionComponent.getTransaction(selectedTransaction.transactionID, this.ledgerAccounts, this.bankAccounts);
+        this.editTransaction = true;
     }
 
     gridOptions: any = HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);

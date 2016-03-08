@@ -94,10 +94,11 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                             _this.router.navigate(['Login']);
                         }
                     };
-                    this.getTransaction = function (transactionID, ledgerAccounts) {
+                    this.getTransaction = function (transactionID, ledgerAccounts, bankAccounts) {
                         var getTransactionThis = _this;
                         if (helper_service_1.HelperService.tokenIsValid()) {
                             _this.ledgerAccounts = ledgerAccounts;
+                            _this.bankAccounts = bankAccounts;
                             var EntityId = GetEntity_service_1.GetEntityService.getInstance().getEntityId();
                             _this.titleTransaction = 'Edit Transaction';
                             _this.transactionService.getTransaction(transactionID, EntityId).subscribe(onGetTransaction, logTransactionError);
@@ -182,12 +183,6 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                     //grid
                     ////////////////////////////////////
                     this.columnDefs = [
-                        {
-                            headerName: 'Date', field: 'sTransactionLineDate', cellRenderer: function (params) {
-                                var d = helper_service_1.HelperService.translateJavascriptDate(params.value);
-                                return helper_service_1.HelperService.formatDateForDisplay(d, false, false, false);
-                            }
-                        },
                         { headerName: 'Ledger Account', field: 'ledgerAccountName' },
                         { headerName: 'Amount', field: 'amount', cellClass: 'rightJustify', cellRenderer: function (params) { return helper_service_1.HelperService.formatMoney(Number(params.value)); } },
                         { headerName: 'Comment', field: 'comment' }
@@ -233,4 +228,4 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
         }
     }
 });
-//# sourceMappingURL=transaction.component.js.map
+//# sourceMappingURL=Transaction.component.js.map

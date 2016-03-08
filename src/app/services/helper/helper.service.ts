@@ -1,6 +1,10 @@
 ﻿//import {AgGridNg2} from 'ag-grid-ng2/main';
 //import {GridOptions} from 'ag-grid/main';
 //import {ISCEisService} from 'angular2/core';
+import {GetEntityService} from '../../services/GetEntity/GetEntity.service';
+import {Router} from 'angular2/router';
+import {LedgerAccountsService} from '../../services/LedgerAccounts/LedgerAccounts.service';
+import {BankAccountsService} from '../../services/bankAccounts/bankAccounts.service';
 
 
 export class HelperService {
@@ -348,6 +352,57 @@ export class HelperService {
             return tblLedgerAccount.ledgerAccountID === ledgerAccountID;
         }
     }
+
+
+
+
+    static loadLedgerAccounts = (router: Router, ledgerAccountsService: LedgerAccountsService, onError: () => void, onSuccess: (LedgerAccounts: SolsofSpa.Api.DataContext.tblLedgerAccount[]) => void) => {
+        if (HelperService.tokenIsValid()) {
+            var EntityId = GetEntityService.getInstance().getEntityId();
+            if (EntityId === -1) {
+                router.navigate(['Entities']);
+            } else {
+                ledgerAccountsService.getLedgerAccounts(true, EntityId).subscribe(onGetLedgerAccountsSuccess, logLedgerAccountsError, complete);
+            }
+        } else {
+            router.navigate(['Login']);
+        }
+        function logLedgerAccountsError() {
+            console.log('getLedgerAccounts Error');
+            onError();
+        }
+
+        function onGetLedgerAccountsSuccess(ledgerAccounts: SolsofSpa.Api.DataContext.tblLedgerAccount[]) {
+            onSuccess(ledgerAccounts);
+        }
+        function complete() {
+            console.log('loadDebtors complete');
+        }
+    };
+
+    static loadBankAccounts = (router: Router, bankAccountsService: BankAccountsService, onError: () => void, onSuccess: (structLoadTransactionForm: SolsofSpa.Helper.structLoadTransactionForm) => void) => {
+        if (HelperService.tokenIsValid()) {
+            var EntityId = GetEntityService.getInstance().getEntityId();
+            if (EntityId === -1) {
+                router.navigate(['Entities']);
+            } else {
+                bankAccountsService.getBankAccounts(true, EntityId).subscribe(onGetBankAccountsSuccess, logBankAccountsError, complete);
+            }
+        } else {
+            router.navigate(['Login']);
+        }
+        function logBankAccountsError() {
+            console.log('getBankAccounts Error');
+            onError();
+        }
+
+        function onGetBankAccountsSuccess(structLoadTransactionForm: SolsofSpa.Helper.structLoadTransactionForm) {
+            onSuccess(structLoadTransactionForm);
+        }
+        function complete() {
+            console.log('loadDebtors complete');
+        }
+    };
 
     //static displayPdf = (response: ArrayBuffer, $sce: ISCEService) => {
     //    var file: Blob;

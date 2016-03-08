@@ -1,12 +1,13 @@
-//import {AgGridNg2} from 'ag-grid-ng2/main';
-//import {GridOptions} from 'ag-grid/main';
-//import {ISCEisService} from 'angular2/core';
-System.register([], function(exports_1, context_1) {
+System.register(['../../services/GetEntity/GetEntity.service'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
+    var GetEntity_service_1;
     var HelperService;
     return {
-        setters:[],
+        setters:[
+            function (GetEntity_service_1_1) {
+                GetEntity_service_1 = GetEntity_service_1_1;
+            }],
         execute: function() {
             HelperService = (function () {
                 function HelperService() {
@@ -343,6 +344,54 @@ System.register([], function(exports_1, context_1) {
                     }
                     function filterLedgerAccounts(tblLedgerAccount) {
                         return tblLedgerAccount.ledgerAccountID === ledgerAccountID;
+                    }
+                };
+                HelperService.loadLedgerAccounts = function (router, ledgerAccountsService, onError, onSuccess) {
+                    if (HelperService.tokenIsValid()) {
+                        var EntityId = GetEntity_service_1.GetEntityService.getInstance().getEntityId();
+                        if (EntityId === -1) {
+                            router.navigate(['Entities']);
+                        }
+                        else {
+                            ledgerAccountsService.getLedgerAccounts(true, EntityId).subscribe(onGetLedgerAccountsSuccess, logLedgerAccountsError, complete);
+                        }
+                    }
+                    else {
+                        router.navigate(['Login']);
+                    }
+                    function logLedgerAccountsError() {
+                        console.log('getLedgerAccounts Error');
+                        onError();
+                    }
+                    function onGetLedgerAccountsSuccess(ledgerAccounts) {
+                        onSuccess(ledgerAccounts);
+                    }
+                    function complete() {
+                        console.log('loadDebtors complete');
+                    }
+                };
+                HelperService.loadBankAccounts = function (router, bankAccountsService, onError, onSuccess) {
+                    if (HelperService.tokenIsValid()) {
+                        var EntityId = GetEntity_service_1.GetEntityService.getInstance().getEntityId();
+                        if (EntityId === -1) {
+                            router.navigate(['Entities']);
+                        }
+                        else {
+                            bankAccountsService.getBankAccounts(true, EntityId).subscribe(onGetBankAccountsSuccess, logBankAccountsError, complete);
+                        }
+                    }
+                    else {
+                        router.navigate(['Login']);
+                    }
+                    function logBankAccountsError() {
+                        console.log('getBankAccounts Error');
+                        onError();
+                    }
+                    function onGetBankAccountsSuccess(structLoadTransactionForm) {
+                        onSuccess(structLoadTransactionForm);
+                    }
+                    function complete() {
+                        console.log('loadDebtors complete');
                     }
                 };
                 return HelperService;

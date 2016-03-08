@@ -27,6 +27,7 @@ export class TransactionComponent {
     transactionTotal: string;
     getTransactionSuccess: boolean = true;
     ledgerAccounts: SolsofSpa.Api.DataContext.tblLedgerAccount[];
+    bankAccounts: SolsofSpa.Helper.tblBankAccountLite[];
     @Output() ok: EventEmitter<string> = new EventEmitter();
 
     transaction: SolsofSpa.Helper.structTransaction = {
@@ -89,10 +90,11 @@ export class TransactionComponent {
         }
     }
 
-    getTransaction = (transactionID: number, ledgerAccounts: SolsofSpa.Api.DataContext.tblLedgerAccount[]) => {
+    getTransaction = (transactionID: number, ledgerAccounts: SolsofSpa.Api.DataContext.tblLedgerAccount[], bankAccounts: SolsofSpa.Helper.tblBankAccountLite[]) => {
         var getTransactionThis = this;
         if (HelperService.tokenIsValid()) {
             this.ledgerAccounts = ledgerAccounts;
+            this.bankAccounts = bankAccounts;
             var EntityId = GetEntityService.getInstance().getEntityId();
             this.titleTransaction = 'Edit Transaction';
             this.transactionService.getTransaction(transactionID, EntityId).subscribe(onGetTransaction, logTransactionError);
@@ -187,12 +189,6 @@ export class TransactionComponent {
     //grid
     ////////////////////////////////////
     columnDefs: any[] = [
-        {
-            headerName: 'Date', field: 'sTransactionLineDate', cellRenderer: (params: any) => {
-                var d: Date = HelperService.translateJavascriptDate(params.value);
-                return HelperService.formatDateForDisplay(d, false, false, false);
-            }
-        },
         { headerName: 'Ledger Account', field: 'ledgerAccountName' },
         { headerName: 'Amount', field: 'amount', cellClass: 'rightJustify', cellRenderer: (params: any) => { return HelperService.formatMoney(Number(params.value)); } },
         { headerName: 'Comment', field: 'comment' }

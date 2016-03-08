@@ -8,10 +8,13 @@ body {
     height: 100vh;
 }
 
+.menu-button {
+    min-width: 100px;
+}
+
 .sidebar-menu-button, .menu-button {
     background-color: #286060;
     height: 40px;
-    min-width: 100px;
     color: #f6d3af;
     border: none;
     box-shadow: 0 0 2px black;
@@ -25,7 +28,7 @@ body {
 
 .sidebar-menu-button {
     height: 40px;
-    min-width: 160px;
+    width: 100%;
     color: #f0e1d2;
     background-color: #4b8d8d;
     margin: 5px 0;
@@ -43,7 +46,9 @@ body {
 }
 
 
-
+.solsof-checkbox {
+width: 50px!important;
+}
 
 .btn:focus, .btn:active:focus, .btn.active:focus {
     outline: 0 none;
@@ -117,6 +122,11 @@ body {
 }
 
 .clsInvoiceLine {
+    height: 180px;
+    width: 100%;
+}
+
+.clsTransactionLine {
     height: 180px;
     width: 100%;
 }
