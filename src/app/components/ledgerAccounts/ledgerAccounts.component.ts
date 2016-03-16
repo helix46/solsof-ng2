@@ -4,9 +4,10 @@ import {GetEntityService} from '../../services/GetEntity/GetEntity.service';
 import {Response} from 'angular2/http';
 import {Component} from 'angular2/core';
 import {LedgerAccountsService} from '../../services/LedgerAccounts/LedgerAccounts.service';
-//import {AgGridNg2} from 'ag-grid-ng2/main';
-//import {GridOptions} from 'ag-grid/main';
+import {AgGridNg2} from 'ag-grid-ng2/main';
+import {GridOptions} from 'ag-grid/main';
 
+//import 'ag-grid-enterprise/main';
 
 
 @Component({
@@ -14,8 +15,8 @@ import {LedgerAccountsService} from '../../services/LedgerAccounts/LedgerAccount
     templateUrl: 'src/app/components/LedgerAccounts/LedgerAccounts.component.html',
     pipes: [],
     providers: [LedgerAccountsService],
-    directives: [(<any>window).ag.grid.AgGridNg2]
-    //directives: [AgGridNg2]
+    //directives: [(<any>window).ag.grid.AgGridNg2]
+    directives: [AgGridNg2]
 })
 
 export class LedgerAccountsComponent {

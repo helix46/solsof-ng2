@@ -1,4 +1,4 @@
-System.register(['angular2/core', '../../services/helper/helper.service', '../../services/timesheet/timesheet.service', 'angular2/router', '../../services/GetEntity/GetEntity.service', '../timesheetline/timesheetline.component'], function(exports_1, context_1) {
+System.register(['angular2/core', '../../services/helper/helper.service', '../../services/timesheet/timesheet.service', 'angular2/router', '../../services/GetEntity/GetEntity.service', '../timesheetline/timesheetline.component', 'ag-grid-ng2/main'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, helper_service_1, timesheet_service_1, router_1, GetEntity_service_1, timesheetline_component_1;
+    var core_1, helper_service_1, timesheet_service_1, router_1, GetEntity_service_1, timesheetline_component_1, main_1;
     var TimesheetComponent;
     return {
         setters:[
@@ -31,10 +31,11 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
             },
             function (timesheetline_component_1_1) {
                 timesheetline_component_1 = timesheetline_component_1_1;
+            },
+            function (main_1_1) {
+                main_1 = main_1_1;
             }],
         execute: function() {
-            //import {AgGridNg2} from 'ag-grid-ng2/main';
-            //import {GridOptions} from 'ag-grid/main';
             TimesheetComponent = (function () {
                 function TimesheetComponent(timesheetService, router) {
                     var _this = this;
@@ -264,7 +265,8 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                         templateUrl: 'src/app/components/timesheet/timesheet.component.html',
                         styles: ['.modalSolsofVisible {display: block;}'],
                         providers: [timesheet_service_1.TimesheetService],
-                        directives: [window.ag.grid.AgGridNg2, timesheetline_component_1.TimesheetLineComponent]
+                        //directives: [(<any>window).ag.grid.AgGridNg2, TimesheetLineComponent]
+                        directives: [main_1.AgGridNg2, timesheetline_component_1.TimesheetLineComponent]
                     }), 
                     __metadata('design:paramtypes', [timesheet_service_1.TimesheetService, router_1.Router])
                 ], TimesheetComponent);

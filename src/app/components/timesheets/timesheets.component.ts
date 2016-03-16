@@ -10,15 +10,15 @@ import {DebtorsService} from '../../services/debtors/debtors.service';
 import {TimesheetService} from '../../services/timesheet/timesheet.service';
 import {DialogBoxComponent} from '../utilities/dialogBox/dialogBox.component';
 import {LedgerAccountsService} from '../../services/LedgerAccounts/LedgerAccounts.service';
-//import {AgGridNg2} from 'ag-grid-ng2/main';
-//import {GridOptions} from 'ag-grid/main';
+import {AgGridNg2} from 'ag-grid-ng2/main';
+import {GridOptions} from 'ag-grid/main';
 
 @Component({
     templateUrl: 'src/app/components/Timesheets/Timesheets.component.html',
     pipes: [],
     providers: [TimesheetsService, DebtorsService, TimesheetService, LedgerAccountsService],
-    directives: [(<any>window).ag.grid.AgGridNg2, TimesheetComponent, DialogBoxComponent, InvoiceComponent]
-    //directives: [AgGridNg2, TimesheetComponent]
+    //directives: [(<any>window).ag.grid.AgGridNg2, TimesheetComponent, DialogBoxComponent, InvoiceComponent]
+    directives: [AgGridNg2, TimesheetComponent, DialogBoxComponent, InvoiceComponent]
 })
 
 export class TimesheetsComponent {

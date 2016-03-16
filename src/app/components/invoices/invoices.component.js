@@ -1,4 +1,4 @@
-System.register(['angular2/router', '../../services/helper/helper.service', '../../services/GetEntity/GetEntity.service', 'angular2/core', '../../services/Invoices/Invoices.service', '../invoice/invoice.component', '../../services/ledgeraccounts/ledgeraccounts.service', '../../services/debtors/debtors.service'], function(exports_1, context_1) {
+System.register(['angular2/router', '../../services/helper/helper.service', '../../services/GetEntity/GetEntity.service', 'angular2/core', '../../services/Invoices/Invoices.service', '../invoice/invoice.component', '../../services/ledgeraccounts/ledgeraccounts.service', '../../services/debtors/debtors.service', 'ag-grid-ng2/main'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/router', '../../services/helper/helper.service', '../
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var router_1, helper_service_1, GetEntity_service_1, core_1, Invoices_service_1, invoice_component_1, ledgeraccounts_service_1, debtors_service_1;
+    var router_1, helper_service_1, GetEntity_service_1, core_1, Invoices_service_1, invoice_component_1, ledgeraccounts_service_1, debtors_service_1, main_1;
     var InvoicesComponent;
     return {
         setters:[
@@ -37,10 +37,11 @@ System.register(['angular2/router', '../../services/helper/helper.service', '../
             },
             function (debtors_service_1_1) {
                 debtors_service_1 = debtors_service_1_1;
+            },
+            function (main_1_1) {
+                main_1 = main_1_1;
             }],
         execute: function() {
-            //import {AgGridNg2} from 'ag-grid-ng2/main';
-            //import {GridOptions} from 'ag-grid/main';
             //import 'rxjs/Rx'; //for map
             InvoicesComponent = (function () {
                 function InvoicesComponent(InvoicesService, router, ledgerAccountsService, debtorsService) {
@@ -208,7 +209,8 @@ System.register(['angular2/router', '../../services/helper/helper.service', '../
                         templateUrl: 'src/app/components/Invoices/Invoices.component.html',
                         pipes: [],
                         providers: [Invoices_service_1.InvoicesService, ledgeraccounts_service_1.LedgerAccountsService, debtors_service_1.DebtorsService],
-                        directives: [window.ag.grid.AgGridNg2, invoice_component_1.InvoiceComponent]
+                        //directives: [(<any>window).ag.grid.AgGridNg2, InvoiceComponent]
+                        directives: [main_1.AgGridNg2, invoice_component_1.InvoiceComponent]
                     }), 
                     __metadata('design:paramtypes', [Invoices_service_1.InvoicesService, router_1.Router, ledgeraccounts_service_1.LedgerAccountsService, debtors_service_1.DebtorsService])
                 ], InvoicesComponent);

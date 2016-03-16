@@ -1,4 +1,4 @@
-System.register(['../../services/GetEntity/GetEntity.service', 'angular2/core', '../../services/entities/entities.service', '../../services/helper/helper.service', 'angular2/router'], function(exports_1, context_1) {
+System.register(['../../services/GetEntity/GetEntity.service', 'angular2/core', '../../services/entities/entities.service', '../../services/helper/helper.service', 'angular2/router', 'ag-grid-ng2/main'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['../../services/GetEntity/GetEntity.service', 'angular2/core', 
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var GetEntity_service_1, core_1, entities_service_1, helper_service_1, router_1;
+    var GetEntity_service_1, core_1, entities_service_1, helper_service_1, router_1, main_1;
     var EntitiesComponent;
     return {
         setters:[
@@ -28,10 +28,11 @@ System.register(['../../services/GetEntity/GetEntity.service', 'angular2/core', 
             },
             function (router_1_1) {
                 router_1 = router_1_1;
+            },
+            function (main_1_1) {
+                main_1 = main_1_1;
             }],
         execute: function() {
-            //import {AgGridNg2} from 'ag-grid-ng2/main';
-            //import {GridOptions} from 'ag-grid/main';
             EntitiesComponent = (function () {
                 function EntitiesComponent(router, entitiesService) {
                     var _this = this;
@@ -99,7 +100,7 @@ System.register(['../../services/GetEntity/GetEntity.service', 'angular2/core', 
                         templateUrl: 'src/app/components/entities/entities.component.html',
                         pipes: [],
                         providers: [entities_service_1.EntitiesService],
-                        directives: [window.ag.grid.AgGridNg2]
+                        directives: [main_1.AgGridNg2]
                     }), 
                     __metadata('design:paramtypes', [router_1.Router, entities_service_1.EntitiesService])
                 ], EntitiesComponent);

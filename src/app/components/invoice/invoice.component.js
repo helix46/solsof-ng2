@@ -1,4 +1,4 @@
-System.register(['angular2/core', '../../services/helper/helper.service', '../../services/invoice/invoice.service', 'angular2/router', '../../services/GetEntity/GetEntity.service', '../invoiceline/invoiceline.component'], function(exports_1, context_1) {
+System.register(['angular2/core', '../../services/helper/helper.service', '../../services/invoice/invoice.service', 'angular2/router', '../../services/GetEntity/GetEntity.service', '../invoiceline/invoiceline.component', 'ag-grid-ng2/main'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, helper_service_1, invoice_service_1, router_1, GetEntity_service_1, invoiceline_component_1;
+    var core_1, helper_service_1, invoice_service_1, router_1, GetEntity_service_1, invoiceline_component_1, main_1;
     var InvoiceComponent;
     return {
         setters:[
@@ -31,10 +31,11 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
             },
             function (invoiceline_component_1_1) {
                 invoiceline_component_1 = invoiceline_component_1_1;
+            },
+            function (main_1_1) {
+                main_1 = main_1_1;
             }],
         execute: function() {
-            //import {AgGridNg2} from 'ag-grid-ng2/main';
-            //import {GridOptions} from 'ag-grid/main';
             InvoiceComponent = (function () {
                 function InvoiceComponent(invoiceService, router) {
                     var _this = this;
@@ -281,7 +282,8 @@ System.register(['angular2/core', '../../services/helper/helper.service', '../..
                         templateUrl: 'src/app/components/invoice/invoice.component.html',
                         styles: ['.modalSolsofVisible {display: block;}'],
                         providers: [invoice_service_1.InvoiceService],
-                        directives: [window.ag.grid.AgGridNg2, invoiceline_component_1.InvoiceLineComponent]
+                        //directives: [(<any>window).ag.grid.AgGridNg2, InvoiceLineComponent]
+                        directives: [main_1.AgGridNg2, invoiceline_component_1.InvoiceLineComponent]
                     }), 
                     __metadata('design:paramtypes', [invoice_service_1.InvoiceService, router_1.Router])
                 ], InvoiceComponent);

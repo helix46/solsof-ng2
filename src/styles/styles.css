@@ -34,6 +34,10 @@ body {
     margin: 5px 0;
 }
 
+.button-disabled, .button-disabled:hover {
+    background-color: #999999;
+}
+
 .okButton {
     font-size: xx-large;
     height: 60px;
@@ -47,7 +51,7 @@ body {
 
 
 .solsof-checkbox {
-width: 50px!important;
+    width: 50px !important;
 }
 
 .btn:focus, .btn:active:focus, .btn.active:focus {
@@ -220,6 +224,10 @@ label {
     box-shadow: 0 0 50px black;
     overflow: auto;
     max-height: 100vh;
+}
+
+.hidden {
+    display: none;
 }
 
 

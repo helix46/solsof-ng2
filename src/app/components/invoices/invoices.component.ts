@@ -8,8 +8,8 @@ import {InvoiceComponent} from '../invoice/invoice.component';
 import {LedgerAccountsService} from '../../services/ledgeraccounts/ledgeraccounts.service';
 import {DebtorsService} from '../../services/debtors/debtors.service';
 
-//import {AgGridNg2} from 'ag-grid-ng2/main';
-//import {GridOptions} from 'ag-grid/main';
+import {AgGridNg2} from 'ag-grid-ng2/main';
+import {GridOptions} from 'ag-grid/main';
 
 //import 'rxjs/Rx'; //for map
 
@@ -20,8 +20,8 @@ import {DebtorsService} from '../../services/debtors/debtors.service';
     templateUrl: 'src/app/components/Invoices/Invoices.component.html',
     pipes: [],
     providers: [InvoicesService, LedgerAccountsService, DebtorsService],
-    directives: [(<any>window).ag.grid.AgGridNg2, InvoiceComponent]
-    //directives: [AgGridNg2]
+    //directives: [(<any>window).ag.grid.AgGridNg2, InvoiceComponent]
+    directives: [AgGridNg2, InvoiceComponent]
 })
 
 export class InvoicesComponent {

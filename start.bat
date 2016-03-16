@@ -1,1 +1,1 @@
-npm run lite
+npm run start

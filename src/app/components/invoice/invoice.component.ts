@@ -5,16 +5,16 @@ import {InvoiceService} from '../../services/invoice/invoice.service';
 import { Router, RouterLink} from 'angular2/router';
 import {GetEntityService} from '../../services/GetEntity/GetEntity.service';
 import {InvoiceLineComponent} from '../invoiceline/invoiceline.component';
-//import {AgGridNg2} from 'ag-grid-ng2/main';
-//import {GridOptions} from 'ag-grid/main';
+import {AgGridNg2} from 'ag-grid-ng2/main';
+import {GridOptions} from 'ag-grid/main';
 
 @Component({
     selector: 'invoiceModal',
     templateUrl: 'src/app/components/invoice/invoice.component.html',
     styles: ['.modalSolsofVisible {display: block;}'],
     providers: [InvoiceService],
-    directives: [(<any>window).ag.grid.AgGridNg2, InvoiceLineComponent]
-    //directives: [AgGridNg2, InvoiceLineComponent]
+    //directives: [(<any>window).ag.grid.AgGridNg2, InvoiceLineComponent]
+    directives: [AgGridNg2, InvoiceLineComponent]
 })
 
 //interface structTransaction {

@@ -36,6 +36,8 @@ export class HelperService {
     static getServiceBase(): string {
         return 'https://solsofoz.azurewebsites.net/';
         //return 'http://localhost:10614/';
+
+
     }
 
     static getTokenName(): string {
@@ -206,7 +208,12 @@ export class HelperService {
             groupUseEntireRow: true,
             enableColResize: true,            rowSelection: "single",
             onRowClicked: onRowClicked,
-            onRowDoubleClicked: onRowDoubleClicked
+            onRowDoubleClicked: onRowDoubleClicked,
+            rowGroupPanelShow: 'always',
+            groupKeys: 'undefined',
+            groupHideGroupColumns: true,
+            groupSelectsChildren: true,
+            groupColumnDef: 'groupColumn'
         }
         return gridOptions;
     }
@@ -386,7 +393,7 @@ export class HelperService {
             if (EntityId === -1) {
                 router.navigate(['Entities']);
             } else {
-                bankAccountsService.getBankAccounts(true, EntityId).subscribe(onGetBankAccountsSuccess, logBankAccountsError, complete);
+                bankAccountsService.getBankAccounts(false, EntityId).subscribe(onGetBankAccountsSuccess, logBankAccountsError, complete);
             }
         } else {
             router.navigate(['Login']);
@@ -403,6 +410,30 @@ export class HelperService {
             console.log('loadDebtors complete');
         }
     };
+
+    //static loadBankAccounts = (router: Router, bankAccountsService: BankAccountsService, onError: () => void, onSuccess: (structLoadTransactionForm: SolsofSpa.Helper.structLoadTransactionForm) => void) => {
+    //    if (HelperService.tokenIsValid()) {
+    //        var EntityId = GetEntityService.getInstance().getEntityId();
+    //        if (EntityId === -1) {
+    //            router.navigate(['Entities']);
+    //        } else {
+    //            bankAccountsService.getBankAccounts(true, EntityId).subscribe(onGetBankAccountsSuccess, logBankAccountsError, complete);
+    //        }
+    //    } else {
+    //        router.navigate(['Login']);
+    //    }
+    //    function logBankAccountsError() {
+    //        console.log('getBankAccounts Error');
+    //        onError();
+    //    }
+
+    //    function onGetBankAccountsSuccess(structLoadTransactionForm: SolsofSpa.Helper.structLoadTransactionForm) {
+    //        onSuccess(structLoadTransactionForm);
+    //    }
+    //    function complete() {
+    //        console.log('loadDebtors complete');
+    //    }
+    //};
 
     //static displayPdf = (response: ArrayBuffer, $sce: ISCEService) => {
     //    var file: Blob;

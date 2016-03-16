@@ -218,6 +218,7 @@ declare module SolsofSpa.Helper {
         bankAccountID: number;
         name: string;
         ledgerAccountID: number;
+        active: boolean;
     }
     interface structLoadTransactionForm {
         bankAccounts: SolsofSpa.Helper.tblBankAccountLite[];

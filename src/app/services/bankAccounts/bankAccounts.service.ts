@@ -17,7 +17,7 @@ export class BankAccountsService {
         return res.json();
     }
 
-    getBankAccounts(excludeInactive: boolean, EntityId: number): Observable<SolsofSpa.Helper.structLoadTransactionForm[]> {
+    getBankAccounts(excludeInactive: boolean, EntityId: number): Observable<SolsofSpa.Helper.structLoadTransactionForm> {
 
         var parameters: modSharedTypes.IHttpParameter[] = [];
         parameters[0] = {
@@ -30,7 +30,7 @@ export class BankAccountsService {
         };
 
         var httpHandlerService = new HttpHandlerService(this.http);
-        return httpHandlerService.getObject<SolsofSpa.Helper.structLoadTransactionForm[]>(parameters, 'api/bankAccounts');
+        return httpHandlerService.getObject<SolsofSpa.Helper.structLoadTransactionForm>(parameters, 'api/bankAccounts');
     }
 }
 

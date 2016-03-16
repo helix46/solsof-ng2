@@ -16,7 +16,7 @@
                 <div class="col-md-10">
                     <div class="form-group">
                         <label for="cmbLedgerAccounts">Ledger Account</label>
-                        <select class="form-control" required #cmbLedgerAccounts ngControl="ngcLedgerAccounts" [(ngModel)]="sLledgerAccountID">
+                        <select class="form-control" required #cmbLedgerAccounts ngControl="ngcLedgerAccounts" [(ngModel)]="sLedgerAccountID">
                             <option *ngFor="#ledgerAccount of ledgerAccounts" [value]="ledgerAccount.ledgerAccountID">
                                 {{ ledgerAccount.name }}
                             </option>
@@ -28,7 +28,7 @@
                     </div>
                     <div class="form-group">
                         <label for="inputDebit">Debit</label>
-                        <input type="checkbox" [(ngModel)]="debit" #inputDebit="ngForm" class="form-control solsof-checkbox" ngControl="ngcDebit">
+                        <input type="checkbox" [(ngModel)]="debit" #inputDebit="ngForm" class="form-control solsof-checkbox" ngControl="ngcDebit" [disabled]="debitCreditDisabled">
                         <!--<input type="checkbox" [(ngModel)]="debit" class="form-control checkbox" #inputDebit="ngForm" ngControl="ngcDebit">-->
                     </div>
                     <div class="form-group">

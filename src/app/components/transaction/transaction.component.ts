@@ -5,16 +5,16 @@ import {TransactionService} from '../../services/transaction/transaction.service
 import { Router, RouterLink} from 'angular2/router';
 import {GetEntityService} from '../../services/GetEntity/GetEntity.service';
 import {TransactionLineComponent} from '../transactionline/transactionline.component';
-//import {AgGridNg2} from 'ag-grid-ng2/main';
-//import {GridOptions} from 'ag-grid/main';
+import {AgGridNg2} from 'ag-grid-ng2/main';
+import {GridOptions} from 'ag-grid/main';
 
 @Component({
     selector: 'transactionModal',
     templateUrl: 'src/app/components/transaction/transaction.component.html',
     styles: ['.modalSolsofVisible {display: block;}'],
     providers: [TransactionService],
-    directives: [(<any>window).ag.grid.AgGridNg2, TransactionLineComponent]
-    //directives: [AgGridNg2, TransactionLineComponent]
+    //directives: [(<any>window).ag.grid.AgGridNg2, TransactionLineComponent]
+    directives: [AgGridNg2, TransactionLineComponent]
 })
 
 export class TransactionComponent {
@@ -25,6 +25,7 @@ export class TransactionComponent {
     editTransaction: boolean;
     titleTransaction: string;
     transactionTotal: string;
+    bankAccountDisabled: boolean;
     getTransactionSuccess: boolean = true;
     ledgerAccounts: SolsofSpa.Api.DataContext.tblLedgerAccount[];
     bankAccounts: SolsofSpa.Helper.tblBankAccountLite[];
@@ -54,16 +55,36 @@ export class TransactionComponent {
         var i: number;
         var total = 0;
         for (i = 0; i < this.transaction.transactionLineArray.length; i = i + 1) {
-            total += this.transaction.transactionLineArray[i].amount
+            if (this.transaction.transactionLineArray[i].debit) {
+                total += this.transaction.transactionLineArray[i].amount
+            } else {
+                total -= this.transaction.transactionLineArray[i].amount
+            }
         }
         this.transactionTotal = HelperService.formatMoney(total);
     };
 
-    newTransaction = (ledgerAccounts: SolsofSpa.Api.DataContext.tblLedgerAccount[], transactionType: SolsofSpa.Helper.enumTransactionType) => {
+    newTransaction = (ledgerAccounts: SolsofSpa.Api.DataContext.tblLedgerAccount[], transactionType: SolsofSpa.Helper.enumTransactionType,  bankAccounts: SolsofSpa.Helper.tblBankAccountLite[]) => {
+        this.selectedTransactionLineIndex = -1;
         var newTransactionThis = this;
         if (HelperService.tokenIsValid()) {
             this.ledgerAccounts = ledgerAccounts;
-            this.titleTransaction = 'Add Transaction';
+            this.bankAccounts = bankAccounts;
+            switch (transactionType) {
+                case SolsofSpa.Helper.enumTransactionType.Cheque:
+                    this.titleTransaction = 'Add Cheque';
+                    this.bankAccountDisabled = false;
+                    break;
+                case SolsofSpa.Helper.enumTransactionType.Deposit:
+                    this.titleTransaction = 'Add Deposit';
+                    this.bankAccountDisabled = false;
+                    break;
+                case SolsofSpa.Helper.enumTransactionType.GeneralJournal:
+                    this.titleTransaction = 'Add General Journal';
+                    this.bankAccountDisabled = true;
+                    break;
+
+            }
             var EntityId = GetEntityService.getInstance().getEntityId();
             if (EntityId === -1) {
                 this.router.navigate(['Entities']);
@@ -71,15 +92,16 @@ export class TransactionComponent {
                 this.transaction = {
                     comment: '',
                     debtorID: -1,
-                    entityID: -1,
+                    entityID: EntityId,
                     transactionID: -1,
                     transactionLineArray: [],
                     bankAccountID: -1,
                     chequeNumber: -1,
-                    sTransactionDate: '',
+                    sTransactionDate: HelperService.formatDateForJSon(new Date()),
                     transactionType: transactionType
                 }
                 this.gridOptions.api.setRowData(this.transaction.transactionLineArray);
+                this.selectedTransactionLineIndex = -1;
             }
             this.editTransaction = false;
             this.getTransactionSuccess = true;
@@ -90,25 +112,48 @@ export class TransactionComponent {
         }
     }
 
-    getTransaction = (transactionID: number, ledgerAccounts: SolsofSpa.Api.DataContext.tblLedgerAccount[], bankAccounts: SolsofSpa.Helper.tblBankAccountLite[]) => {
+    getTransaction = (transactionID: number, ledgerAccounts: SolsofSpa.Api.DataContext.tblLedgerAccount[], bankAccounts: SolsofSpa.Helper.tblBankAccountLite[], copyTransaction: boolean) => {
         var getTransactionThis = this;
+        getTransactionThis.editTransaction = !copyTransaction;
         if (HelperService.tokenIsValid()) {
             this.ledgerAccounts = ledgerAccounts;
             this.bankAccounts = bankAccounts;
             var EntityId = GetEntityService.getInstance().getEntityId();
-            this.titleTransaction = 'Edit Transaction';
             this.transactionService.getTransaction(transactionID, EntityId).subscribe(onGetTransaction, logTransactionError);
         } else {
             this.router.navigate(['Login']);
         }
         function onGetTransaction(transaction: SolsofSpa.Helper.structTransaction) {
-            getTransactionThis.editTransaction = true;
             getTransactionThis.transaction = transaction;
             getTransactionThis.gridOptions.api.setRowData(transaction.transactionLineArray);
             getTransactionThis.gridOptions.api.sizeColumnsToFit();
+            this.selectedTransactionLineIndex = -1;
             getTransactionThis.getTransactionSuccess = true;
             getTransactionThis.calculateTransactionTotal();
             getTransactionThis.transactionVisible = true;
+            switch (transaction.transactionType) {
+                case SolsofSpa.Helper.enumTransactionType.Cheque:
+                    getTransactionThis.titleTransaction = 'Edit Cheque';
+                    getTransactionThis.bankAccountDisabled = false;
+                    break;
+                case SolsofSpa.Helper.enumTransactionType.Deposit:
+                    getTransactionThis.titleTransaction = 'Edit Deposit';
+                    getTransactionThis.bankAccountDisabled = false;
+                    break;
+                case SolsofSpa.Helper.enumTransactionType.GeneralJournal:
+                    getTransactionThis.titleTransaction = 'Edit General Journal';
+                    getTransactionThis.bankAccountDisabled = true;
+                    break;
+                case SolsofSpa.Helper.enumTransactionType.Invoice:
+                    getTransactionThis.titleTransaction = 'Edit Invoice';
+                    getTransactionThis.bankAccountDisabled = true;
+                    break;
+                case SolsofSpa.Helper.enumTransactionType.PayInvoice:
+                    getTransactionThis.titleTransaction = 'Edit Pay Invoice';
+                    getTransactionThis.bankAccountDisabled = true;
+                    break;
+
+            }
         }
         function logTransactionError() {
             console.log('getTransaction Error');
@@ -144,14 +189,14 @@ export class TransactionComponent {
         }
 
         function logError(obj: any) {
+            console.log(obj);
             console.log(JSON.stringify(obj));
-            alert(JSON.stringify(obj));
         }
         function complete() {
             console.log('transaction complete');
         }
         function updateTransactionSuccess(response: Response) {
-            var transactionID: number = <number>response.json()
+            console.log('updateTransactionSuccess');
             okClickedThis.transactionVisible = false;
             okClickedThis.ok.emit('');
         }
@@ -161,13 +206,18 @@ export class TransactionComponent {
     ////////////////////////////////////
     //transactionLine
     ////////////////////////////////////
-    selectedTransactionLineIndex: number;
+    selectedTransactionLineIndex: number = -1;
     @ViewChild(TransactionLineComponent) transactionLineComponent: TransactionLineComponent;
     bEditTransactionLine: boolean;
 
     deleteTransactionLine = () => {
-        this.transaction.transactionLineArray.splice(this.selectedTransactionLineIndex, 1);
-        this.gridOptions.api.setRowData(this.transaction.transactionLineArray);
+        if (this.selectedTransactionLineIndex === -1) {
+            alert('Please choose a line to delete');
+        } else {
+            this.transaction.transactionLineArray.splice(this.selectedTransactionLineIndex, 1);
+            this.gridOptions.api.setRowData(this.transaction.transactionLineArray);
+            this.selectedTransactionLineIndex = -1;
+        }
     }
 
     saveTransactionLine = (savededTransactionLine: SolsofSpa.Helper.structTransactionLine) => {
@@ -177,12 +227,13 @@ export class TransactionComponent {
             this.transaction.transactionLineArray.push(savededTransactionLine);
         };
         this.gridOptions.api.setRowData(this.transaction.transactionLineArray);
+        this.selectedTransactionLineIndex = -1;
         this.calculateTransactionTotal();
     }
 
     newTransactionLine = () => {
         this.bEditTransactionLine = false;
-        this.transactionLineComponent.newTransactionLine(this.ledgerAccounts);
+        this.transactionLineComponent.newTransactionLine(this.ledgerAccounts, this.transaction.transactionType);
     }
 
     ////////////////////////////////////
@@ -191,6 +242,7 @@ export class TransactionComponent {
     columnDefs: any[] = [
         { headerName: 'Ledger Account', field: 'ledgerAccountName' },
         { headerName: 'Amount', field: 'amount', cellClass: 'rightJustify', cellRenderer: (params: any) => { return HelperService.formatMoney(Number(params.value)); } },
+        { headerName: 'Debit', field: 'debit' },
         { headerName: 'Comment', field: 'comment' }
     ];
     onRowClicked = (params: any) => {
@@ -200,7 +252,7 @@ export class TransactionComponent {
     onRowDoubleClicked = (params: any) => {
         var selectedTransactionLine = <SolsofSpa.Helper.structTransactionLine>params.data;
         this.bEditTransactionLine = true;
-        this.transactionLineComponent.displayTransactionline(selectedTransactionLine, this.ledgerAccounts);
+        this.transactionLineComponent.displayTransactionline(selectedTransactionLine, this.ledgerAccounts, this.transaction.transactionType);
     }
     gridOptions: any = HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
 }

@@ -22,11 +22,15 @@ export class TransactionLineComponent {
     debit: boolean;
     Comment: string;
     titleTransactionLine: string;
+    transactionType: SolsofSpa.Helper.enumTransactionType;
+    debitCreditDisabled: boolean;
 
     ngOnInit() {
     }
 
-    displayTransactionline = (selectedTransactionLine: SolsofSpa.Helper.structTransactionLine, ledgerAccounts: SolsofSpa.Api.DataContext.tblLedgerAccount[]) => {
+    displayTransactionline = (selectedTransactionLine: SolsofSpa.Helper.structTransactionLine, ledgerAccounts: SolsofSpa.Api.DataContext.tblLedgerAccount[], transactionType: SolsofSpa.Helper.enumTransactionType) => {
+        this.transactionType = transactionType;
+        this.configureTransactionType(transactionType);
         this.titleTransactionLine = 'Edit Transaction Line';
         this.amount = selectedTransactionLine.amount;
         this.comment = selectedTransactionLine.comment;
@@ -36,11 +40,29 @@ export class TransactionLineComponent {
         this.ledgerAccounts = ledgerAccounts;
     }
 
-    newTransactionLine = (ledgerAccounts: SolsofSpa.Api.DataContext.tblLedgerAccount[]) => {
+    configureTransactionType = (transactionType: SolsofSpa.Helper.enumTransactionType) => {
+        switch (transactionType) {
+            case SolsofSpa.Helper.enumTransactionType.Cheque:
+                this.debit = true;
+                this.debitCreditDisabled = true;
+                break;
+            case SolsofSpa.Helper.enumTransactionType.Deposit:
+                this.debit = false;
+                this.debitCreditDisabled = true;
+                break;
+            case SolsofSpa.Helper.enumTransactionType.GeneralJournal:
+                this.debit = true;
+                this.debitCreditDisabled = false;
+                break;
+        }
+    }
+
+    newTransactionLine = (ledgerAccounts: SolsofSpa.Api.DataContext.tblLedgerAccount[], transactionType: SolsofSpa.Helper.enumTransactionType) => {
+        this.transactionType = transactionType;
+        this.configureTransactionType(transactionType);
         this.titleTransactionLine = 'Add Transaction Line';
         this.amount = 0;
         this.comment = '';
-        this.debit = true;
         this.sLedgerAccountID = '';
         this.transactionLineVisible = true;
         this.ledgerAccounts = ledgerAccounts;

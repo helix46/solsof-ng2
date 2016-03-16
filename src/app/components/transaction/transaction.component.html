@@ -9,23 +9,24 @@
             <div class="col-md-2">
                 <div class="buttonGroup">
                     <button type="button" class="sidebar-menu-button" (click)="newTransactionLine()"> New Line</button>
-                    <button type="button" class="sidebar-menu-button deleteButton" (click)="deleteTransactionLine()"> Delete Line</button>
+                    <button type="button" class="sidebar-menu-button deleteButton" (click)="deleteTransactionLine()" [class.button-disabled]="selectedTransactionLineIndex === -1" [disabled]="selectedTransactionLineIndex === -1"> Delete Line</button>
                     <button type="submit" class="sidebar-menu-button okButton"> OK</button>
                     <button type="button" class="sidebar-menu-button" (click)="cancelTransaction()"> Cancel</button>
                 </div>
             </div>
             <!--inputs-->
             <div class="col-md-10">
-                <div class="form-group">
-                    <label for="cmbBankAccounts">Bank Account</label>
-                    <select class="form-control" required #cmbBankAccounts ngControl="ngcBankAccounts" [(ngModel)]="transaction.bankAccountID">
+                <div class="form-group" >
+                    <label for="cmbBankAccounts" [hidden]="bankAccountDisabled">Bank Account</label>
+                    <select [required]="!bankAccountDisabled" [hidden]="bankAccountDisabled" [disabled]="bankAccountDisabled" class="form-control" #cmbBankAccounts ngControl="ngcBankAccounts" [(ngModel)]="transaction.bankAccountID">
                         <option *ngFor="#bankAccount of bankAccounts" [value]="bankAccount.bankAccountID">
                             {{ bankAccount.name }}
                         </option>
                     </select>
+
                 </div>
                 <div class="form-group">
-                    <label for="inputTransactionDate">Week Ending</label>
+                    <label for="inputTransactionDate">Transaction Date</label>
                     <input type="date" [(ngModel)]="transaction.sTransactionDate" class="form-control" placeholder="Comment" #inputTransactionDate="ngForm" required ngControl="ngcTransactionDate">
                     <div [hidden]="inputTransactionDate.valid || inputTransactionDate.pristine" class="alert alert-danger">Week Ending is required</div>
                 </div>

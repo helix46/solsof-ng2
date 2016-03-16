@@ -25,7 +25,9 @@ System.register(['angular2/core', '../../services/helper/helper.service'], funct
                 function TransactionLineComponent() {
                     var _this = this;
                     this.saver = new core_1.EventEmitter();
-                    this.displayTransactionline = function (selectedTransactionLine, ledgerAccounts) {
+                    this.displayTransactionline = function (selectedTransactionLine, ledgerAccounts, transactionType) {
+                        _this.transactionType = transactionType;
+                        _this.configureTransactionType(transactionType);
                         _this.titleTransactionLine = 'Edit Transaction Line';
                         _this.amount = selectedTransactionLine.amount;
                         _this.comment = selectedTransactionLine.comment;
@@ -34,11 +36,28 @@ System.register(['angular2/core', '../../services/helper/helper.service'], funct
                         _this.transactionLineVisible = true;
                         _this.ledgerAccounts = ledgerAccounts;
                     };
-                    this.newTransactionLine = function (ledgerAccounts) {
+                    this.configureTransactionType = function (transactionType) {
+                        switch (transactionType) {
+                            case 0 /* Cheque */:
+                                _this.debit = true;
+                                _this.debitCreditDisabled = true;
+                                break;
+                            case 1 /* Deposit */:
+                                _this.debit = false;
+                                _this.debitCreditDisabled = true;
+                                break;
+                            case 4 /* GeneralJournal */:
+                                _this.debit = true;
+                                _this.debitCreditDisabled = false;
+                                break;
+                        }
+                    };
+                    this.newTransactionLine = function (ledgerAccounts, transactionType) {
+                        _this.transactionType = transactionType;
+                        _this.configureTransactionType(transactionType);
                         _this.titleTransactionLine = 'Add Transaction Line';
                         _this.amount = 0;
                         _this.comment = '';
-                        _this.debit = true;
                         _this.sLedgerAccountID = '';
                         _this.transactionLineVisible = true;
                         _this.ledgerAccounts = ledgerAccounts;

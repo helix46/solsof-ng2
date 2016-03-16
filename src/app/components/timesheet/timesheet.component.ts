@@ -5,16 +5,16 @@ import {TimesheetService} from '../../services/timesheet/timesheet.service';
 import { Router, RouterLink} from 'angular2/router';
 import {GetEntityService} from '../../services/GetEntity/GetEntity.service';
 import {TimesheetLineComponent} from '../timesheetline/timesheetline.component';
-//import {AgGridNg2} from 'ag-grid-ng2/main';
-//import {GridOptions} from 'ag-grid/main';
+import {AgGridNg2} from 'ag-grid-ng2/main';
+import {GridOptions} from 'ag-grid/main';
 
 @Component({
     selector: 'timesheetModal',
     templateUrl: 'src/app/components/timesheet/timesheet.component.html',
     styles: ['.modalSolsofVisible {display: block;}'],
     providers: [TimesheetService],
-    directives: [(<any>window).ag.grid.AgGridNg2, TimesheetLineComponent]
-    //directives: [AgGridNg2, TimesheetLineComponent]
+    //directives: [(<any>window).ag.grid.AgGridNg2, TimesheetLineComponent]
+    directives: [AgGridNg2, TimesheetLineComponent]
 })
 
 export class TimesheetComponent {

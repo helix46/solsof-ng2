@@ -1,4 +1,4 @@
-System.register(['../../services/GetEntity/GetEntity.service', 'angular2/router', '../../services/helper/helper.service', 'angular2/core', '../../services/Transactions/Transactions.service', '../Transaction/Transaction.component', '../../services/LedgerAccounts/LedgerAccounts.service', '../../services/bankAccounts/bankAccounts.service'], function(exports_1, context_1) {
+System.register(['ag-grid-ng2/main', '../../services/GetEntity/GetEntity.service', 'angular2/router', '../../services/helper/helper.service', 'angular2/core', '../../services/Transactions/Transactions.service', '../../services/transaction/transaction.service', '../Transaction/Transaction.component', '../../services/LedgerAccounts/LedgerAccounts.service', '../../services/bankAccounts/bankAccounts.service', '../utilities/dialogBox/dialogBox.component'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,10 +10,13 @@ System.register(['../../services/GetEntity/GetEntity.service', 'angular2/router'
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var GetEntity_service_1, router_1, helper_service_1, core_1, Transactions_service_1, Transaction_component_1, LedgerAccounts_service_1, bankAccounts_service_1;
+    var main_1, GetEntity_service_1, router_1, helper_service_1, core_1, Transactions_service_1, transaction_service_1, Transaction_component_1, LedgerAccounts_service_1, bankAccounts_service_1, dialogBox_component_1;
     var TransactionsComponent;
     return {
         setters:[
+            function (main_1_1) {
+                main_1 = main_1_1;
+            },
             function (GetEntity_service_1_1) {
                 GetEntity_service_1 = GetEntity_service_1_1;
             },
@@ -29,6 +32,9 @@ System.register(['../../services/GetEntity/GetEntity.service', 'angular2/router'
             function (Transactions_service_1_1) {
                 Transactions_service_1 = Transactions_service_1_1;
             },
+            function (transaction_service_1_1) {
+                transaction_service_1 = transaction_service_1_1;
+            },
             function (Transaction_component_1_1) {
                 Transaction_component_1 = Transaction_component_1_1;
             },
@@ -37,16 +43,20 @@ System.register(['../../services/GetEntity/GetEntity.service', 'angular2/router'
             },
             function (bankAccounts_service_1_1) {
                 bankAccounts_service_1 = bankAccounts_service_1_1;
+            },
+            function (dialogBox_component_1_1) {
+                dialogBox_component_1 = dialogBox_component_1_1;
             }],
         execute: function() {
             TransactionsComponent = (function () {
-                function TransactionsComponent(TransactionsService, router, routeParams, ledgerAccountsService, bankAccountsService) {
+                function TransactionsComponent(TransactionsService, router, routeParams, ledgerAccountsService, bankAccountsService, transactionService) {
                     var _this = this;
                     this.TransactionsService = TransactionsService;
                     this.router = router;
                     this.routeParams = routeParams;
                     this.ledgerAccountsService = ledgerAccountsService;
                     this.bankAccountsService = bankAccountsService;
+                    this.transactionService = transactionService;
                     this.Transactions = [];
                     this.getTransactionsError = false;
                     this.onLoadBankAccountsError = function () {
@@ -57,9 +67,59 @@ System.register(['../../services/GetEntity/GetEntity.service', 'angular2/router'
                     };
                     this.onLoadLedgerAccountsSuccess = function (ledgerAccounts) {
                         _this.ledgerAccounts = ledgerAccounts;
+                        _this.transactionsTitle = 'Transactions - ' + helper_service_1.HelperService.getLedgerAccountName(_this.ledgerAccountID, _this.ledgerAccounts);
                     };
                     this.onLoadBankAccountsSuccess = function (structLoadTransactionForm) {
                         _this.bankAccounts = structLoadTransactionForm.bankAccounts;
+                    };
+                    this.addCheque = function () {
+                        _this.transactionComponent.newTransaction(_this.ledgerAccounts, 0 /* Cheque */, _this.bankAccounts);
+                        _this.editTransaction = true;
+                    };
+                    this.addDeposit = function () {
+                        _this.transactionComponent.newTransaction(_this.ledgerAccounts, 1 /* Deposit */, _this.bankAccounts);
+                        _this.editTransaction = true;
+                    };
+                    this.addGeneralJournal = function () {
+                        _this.transactionComponent.newTransaction(_this.ledgerAccounts, 4 /* GeneralJournal */, _this.bankAccounts);
+                        _this.editTransaction = true;
+                    };
+                    this.copyTransaction = function () {
+                        if (_this.selectedTransaction === undefined) {
+                            alert('Please chooose a transaction to copy');
+                        }
+                        else {
+                            _this.transactionComponent.getTransaction(_this.selectedTransaction.transactionID, _this.ledgerAccounts, _this.bankAccounts, true);
+                            _this.editTransaction = false;
+                        }
+                    };
+                    this.deleteTransaction = function () {
+                        var deleteTransactionThis = _this;
+                        var selectedRows = deleteTransactionThis.gridOptions.api.getSelectedRows();
+                        if (selectedRows.length > 0) {
+                            _this.dialogBoxComponent.displayDialogBox('Are you sure you want to delete this Transaction?', deleteTransactionConfirmed);
+                        }
+                        else {
+                            _this.dialogBoxComponent.alert('Please select a Transaction to delete');
+                        }
+                        function deleteTransactionConfirmed() {
+                            if (helper_service_1.HelperService.tokenIsValid()) {
+                                var obs = deleteTransactionThis.transactionService.deleteTransaction(selectedRows[0].transactionID);
+                                obs.subscribe(onDeleteTransactionSuccess, function (err) { return logTransactionsError(err); }, complete);
+                            }
+                            else {
+                                deleteTransactionThis.router.navigate(['Login']);
+                            }
+                            function onDeleteTransactionSuccess() {
+                                deleteTransactionThis.loadTransactions();
+                            }
+                            function logTransactionsError(err) {
+                                console.log('deleteTransaction Error');
+                            }
+                            function complete() {
+                                console.log('loadTransactions complete');
+                            }
+                        }
                     };
                     /////////////////////////////////////////////////////////////
                     //grid
@@ -94,16 +154,20 @@ System.register(['../../services/GetEntity/GetEntity.service', 'angular2/router'
                             minWidth: 80
                         }
                     ];
+                    this.onRowClicked = function (params) {
+                        _this.selectedTransaction = params.data;
+                        //do nothing
+                    };
                     this.onRowDoubleClicked = function (params) {
                         var selectedTransaction = params.data;
-                        _this.transactionComponent.getTransaction(selectedTransaction.transactionID, _this.ledgerAccounts, _this.bankAccounts);
+                        _this.transactionComponent.getTransaction(selectedTransaction.transactionID, _this.ledgerAccounts, _this.bankAccounts, false);
                         _this.editTransaction = true;
                     };
                     this.gridOptions = helper_service_1.HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
                     console.log('constructor TransactionsComponent');
                     this.listDateDescending = true;
                     window.onresize = function () {
-                        //this.gridOptions.api.sizeColumnsToFit();
+                        _this.gridOptions.api.sizeColumnsToFit();
                     };
                 }
                 TransactionsComponent.prototype.ngOnInit = function () {
@@ -147,22 +211,24 @@ System.register(['../../services/GetEntity/GetEntity.service', 'angular2/router'
                     }
                 };
                 ;
-                TransactionsComponent.prototype.onRowClicked = function (params) {
-                    //do nothing
-                };
                 __decorate([
                     core_1.ViewChild(Transaction_component_1.TransactionComponent), 
                     __metadata('design:type', Transaction_component_1.TransactionComponent)
                 ], TransactionsComponent.prototype, "transactionComponent", void 0);
+                __decorate([
+                    core_1.ViewChild(dialogBox_component_1.DialogBoxComponent), 
+                    __metadata('design:type', dialogBox_component_1.DialogBoxComponent)
+                ], TransactionsComponent.prototype, "dialogBoxComponent", void 0);
                 TransactionsComponent = __decorate([
                     core_1.Component({
                         selector: 'transaction',
                         templateUrl: 'src/app/components/transactions/transactions.component.html',
                         pipes: [],
-                        providers: [Transactions_service_1.TransactionsService, LedgerAccounts_service_1.LedgerAccountsService, bankAccounts_service_1.BankAccountsService],
-                        directives: [window.ag.grid.AgGridNg2, Transaction_component_1.TransactionComponent]
+                        providers: [Transactions_service_1.TransactionsService, LedgerAccounts_service_1.LedgerAccountsService, bankAccounts_service_1.BankAccountsService, transaction_service_1.TransactionService],
+                        //directives: [(<any>window).ag.grid.AgGridNg2, TransactionComponent, DialogBoxComponent]
+                        directives: [main_1.AgGridNg2, Transaction_component_1.TransactionComponent, dialogBox_component_1.DialogBoxComponent]
                     }), 
-                    __metadata('design:paramtypes', [Transactions_service_1.TransactionsService, router_1.Router, router_1.RouteParams, LedgerAccounts_service_1.LedgerAccountsService, bankAccounts_service_1.BankAccountsService])
+                    __metadata('design:paramtypes', [Transactions_service_1.TransactionsService, router_1.Router, router_1.RouteParams, LedgerAccounts_service_1.LedgerAccountsService, bankAccounts_service_1.BankAccountsService, transaction_service_1.TransactionService])
                 ], TransactionsComponent);
                 return TransactionsComponent;
             }());

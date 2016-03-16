@@ -1,14 +1,16 @@
-﻿//import {AgGridNg2} from 'ag-grid-ng2/main';
-//import {GridOptions} from 'ag-grid/main';
+﻿import {AgGridNg2} from 'ag-grid-ng2/main';
+import {GridOptions} from 'ag-grid/main';
 import {GetEntityService} from '../../services/GetEntity/GetEntity.service';
 import {Router, RouteParams} from 'angular2/router';
 import {HelperService} from '../../services/helper/helper.service';
 import {Response} from 'angular2/http';
 import {Component, ViewChild} from 'angular2/core';
 import {TransactionsService} from '../../services/Transactions/Transactions.service';
+import {TransactionService} from '../../services/transaction/transaction.service';
 import {TransactionComponent} from '../Transaction/Transaction.component';
 import {LedgerAccountsService} from '../../services/LedgerAccounts/LedgerAccounts.service';
 import {BankAccountsService} from '../../services/bankAccounts/bankAccounts.service';
+import {DialogBoxComponent} from '../utilities/dialogBox/dialogBox.component';
 
 
 
@@ -17,19 +19,19 @@ import {BankAccountsService} from '../../services/bankAccounts/bankAccounts.serv
     selector: 'transaction',
     templateUrl: 'src/app/components/transactions/transactions.component.html',
     pipes: [],
-    providers: [TransactionsService, LedgerAccountsService, BankAccountsService],
-    directives: [(<any>window).ag.grid.AgGridNg2, TransactionComponent]
-    //directives: [AgGridNg2]
+    providers: [TransactionsService, LedgerAccountsService, BankAccountsService, TransactionService],
+    //directives: [(<any>window).ag.grid.AgGridNg2, TransactionComponent, DialogBoxComponent]
+    directives: [AgGridNg2, TransactionComponent, DialogBoxComponent]
 })
 
 export class TransactionsComponent {
 
 
-    constructor(private TransactionsService: TransactionsService, private router: Router, private routeParams: RouteParams, private ledgerAccountsService: LedgerAccountsService, private bankAccountsService: BankAccountsService) {
+    constructor(private TransactionsService: TransactionsService, private router: Router, private routeParams: RouteParams, private ledgerAccountsService: LedgerAccountsService, private bankAccountsService: BankAccountsService, private transactionService: TransactionService) {
         console.log('constructor TransactionsComponent');
         this.listDateDescending = true;
         window.onresize = () => {
-            //this.gridOptions.api.sizeColumnsToFit();
+            this.gridOptions.api.sizeColumnsToFit();
         };
     }
 
@@ -39,7 +41,10 @@ export class TransactionsComponent {
     editTransaction: boolean;
     ledgerAccounts: SolsofSpa.Api.DataContext.tblLedgerAccount[];
     bankAccounts: SolsofSpa.Helper.tblBankAccountLite[];
+    transactionsTitle: string;
+    selectedTransaction: SolsofSpa.Api.DataContext.spGetTransactionList_Result;
     @ViewChild(TransactionComponent) transactionComponent: TransactionComponent;
+    @ViewChild(DialogBoxComponent) dialogBoxComponent: DialogBoxComponent;
 
     ngOnInit() {
         this.ledgerAccountID = Number(this.routeParams.get('ledgerAccountID'));
@@ -58,13 +63,13 @@ export class TransactionsComponent {
 
     onLoadLedgerAccountsSuccess = (ledgerAccounts: SolsofSpa.Api.DataContext.tblLedgerAccount[]) => {
         this.ledgerAccounts = ledgerAccounts;
+        this.transactionsTitle = 'Transactions - ' + HelperService.getLedgerAccountName(this.ledgerAccountID, this.ledgerAccounts);
     }
 
     onLoadBankAccountsSuccess = (structLoadTransactionForm: SolsofSpa.Helper.structLoadTransactionForm) => {
         this.bankAccounts = structLoadTransactionForm.bankAccounts;
     }
 
-    selectedTransaction: SolsofSpa.Api.DataContext.tblTransaction;
     listDateDescending: boolean;
     chkListDateDescendingClicked(chkListDateDescending: HTMLInputElement) {
         this.listDateDescending = chkListDateDescending.checked;
@@ -103,7 +108,56 @@ export class TransactionsComponent {
             loadTransactionsThis.getTransactionsError = false;
         }
     };
-     
+
+    addCheque = () => {
+        this.transactionComponent.newTransaction(this.ledgerAccounts, SolsofSpa.Helper.enumTransactionType.Cheque, this.bankAccounts);
+        this.editTransaction = true;
+    }
+    addDeposit = () => {
+        this.transactionComponent.newTransaction(this.ledgerAccounts, SolsofSpa.Helper.enumTransactionType.Deposit, this.bankAccounts);
+        this.editTransaction = true;
+    }
+    addGeneralJournal = () => {
+        this.transactionComponent.newTransaction(this.ledgerAccounts, SolsofSpa.Helper.enumTransactionType.GeneralJournal, this.bankAccounts);
+        this.editTransaction = true;
+    }
+
+    copyTransaction = () => {
+        if (this.selectedTransaction === undefined) {
+            alert('Please chooose a transaction to copy');
+        } else {
+            this.transactionComponent.getTransaction(this.selectedTransaction.transactionID, this.ledgerAccounts, this.bankAccounts, true);
+            this.editTransaction = false;
+        }
+    }
+
+    deleteTransaction = () => {
+        var deleteTransactionThis = this;
+        var selectedRows: SolsofSpa.Api.DataContext.spGetTransactionList_Result[] = deleteTransactionThis.gridOptions.api.getSelectedRows();
+        if (selectedRows.length > 0) {
+            this.dialogBoxComponent.displayDialogBox('Are you sure you want to delete this Transaction?', deleteTransactionConfirmed);
+        } else {
+            this.dialogBoxComponent.alert('Please select a Transaction to delete');
+        }
+        function deleteTransactionConfirmed() {
+            if (HelperService.tokenIsValid()) {
+                var obs = deleteTransactionThis.transactionService.deleteTransaction(selectedRows[0].transactionID);
+                obs.subscribe(onDeleteTransactionSuccess, err=> logTransactionsError(err), complete)
+            } else {
+                deleteTransactionThis.router.navigate(['Login']);
+            }
+            function onDeleteTransactionSuccess() {
+                deleteTransactionThis.loadTransactions()
+            }
+            function logTransactionsError(err: any) {
+                console.log('deleteTransaction Error');
+            }
+            function complete() {
+                console.log('loadTransactions complete');
+            }
+        }
+    }
+
     /////////////////////////////////////////////////////////////
     //grid
     columnDefs: any[] = [
@@ -138,15 +192,17 @@ export class TransactionsComponent {
         }
     ];
 
-    onRowClicked(params: any) {
+    onRowClicked = (params: any) => {
+        this.selectedTransaction = <SolsofSpa.Api.DataContext.spGetTransactionList_Result>params.data;
         //do nothing
     }
 
     onRowDoubleClicked = (params: any) => {
         var selectedTransaction = <SolsofSpa.Api.DataContext.spGetTransactionList_Result>params.data;
-        this.transactionComponent.getTransaction(selectedTransaction.transactionID, this.ledgerAccounts, this.bankAccounts);
+        this.transactionComponent.getTransaction(selectedTransaction.transactionID, this.ledgerAccounts, this.bankAccounts, false);
         this.editTransaction = true;
     }
+
 
     gridOptions: any = HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);
 }

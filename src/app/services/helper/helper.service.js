@@ -198,7 +198,12 @@ System.register(['../../services/GetEntity/GetEntity.service'], function(exports
                         enableColResize: true,
                         rowSelection: "single",
                         onRowClicked: onRowClicked,
-                        onRowDoubleClicked: onRowDoubleClicked
+                        onRowDoubleClicked: onRowDoubleClicked,
+                        rowGroupPanelShow: 'always',
+                        groupKeys: 'undefined',
+                        groupHideGroupColumns: true,
+                        groupSelectsChildren: true,
+                        groupColumnDef: 'groupColumn'
                     };
                     return gridOptions;
                 };
@@ -377,7 +382,7 @@ System.register(['../../services/GetEntity/GetEntity.service'], function(exports
                             router.navigate(['Entities']);
                         }
                         else {
-                            bankAccountsService.getBankAccounts(true, EntityId).subscribe(onGetBankAccountsSuccess, logBankAccountsError, complete);
+                            bankAccountsService.getBankAccounts(false, EntityId).subscribe(onGetBankAccountsSuccess, logBankAccountsError, complete);
                         }
                     }
                     else {

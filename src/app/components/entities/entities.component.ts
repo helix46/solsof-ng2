@@ -4,17 +4,15 @@ import {Component} from 'angular2/core';
 import {EntitiesService} from '../../services/entities/entities.service';
 import {HelperService} from '../../services/helper/helper.service';
 import { Router, RouterLink } from 'angular2/router';
-//import {AgGridNg2} from 'ag-grid-ng2/main';
-//import {GridOptions} from 'ag-grid/main';
-
+import {AgGridNg2} from 'ag-grid-ng2/main';
+import {GridOptions} from 'ag-grid/main';
 
 @Component({
     selector: 'entities',
     templateUrl: 'src/app/components/entities/entities.component.html',
     pipes: [],
     providers: [EntitiesService],
-    directives: [(<any>window).ag.grid.AgGridNg2]
-    //directives: [AgGridNg2]
+    directives: [AgGridNg2]
 })
 
 export class EntitiesComponent {
@@ -22,7 +20,6 @@ export class EntitiesComponent {
     public entities: SolsofSpa.Api.DataContext.tblEntity[] = [];
     public excludeInactive: boolean = true;
     selectedEntity: SolsofSpa.Api.DataContext.tblEntity;
-    //getEntitiesSuccess: boolean;
     getEntitiesError: boolean;
 
     constructor(public router: Router, private entitiesService: EntitiesService) {
