@@ -10,7 +10,7 @@ import {HttpHandlerService} from  '../http-handler/http-handler.service';
 @Injectable()
 export class TransactionsService {
     constructor(private http: Http, private router: Router) {
-        HelperService.logError('constructor TransactionsService');
+        HelperService.log('constructor TransactionsService');
     }
 
     parseResponse(res: Response) {

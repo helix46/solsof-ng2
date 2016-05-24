@@ -18,7 +18,7 @@ import {GridOptions} from 'ag-grid/main';
 
 export class TimesheetComponent {
     constructor(private timesheetService: TimesheetService, private router: Router) {
-        HelperService.logError('constructor timesheetComponent');
+        HelperService.log('constructor timesheetComponent');
     }
 
     editTimesheet: boolean;
@@ -94,7 +94,7 @@ export class TimesheetComponent {
             }
         }
         function logGetMostRecentTimesheet() {
-            HelperService.logError('GetMostRecentTimesheet Error');
+            HelperService.log('GetMostRecentTimesheet Error');
         }
     }
 
@@ -118,7 +118,7 @@ export class TimesheetComponent {
             getTimesheetThis.timesheetVisible = true;
         }
         function logTimesheetError() {
-            HelperService.logError('getTimesheet Error');
+            HelperService.log('getTimesheet Error');
             getTimesheetThis.getTimesheetSuccess = false;
         }
     }
@@ -151,11 +151,11 @@ export class TimesheetComponent {
         }
 
         function logError(obj: any) {
-            HelperService.logError(JSON.stringify(obj));
+            HelperService.log(JSON.stringify(obj));
             alert(JSON.stringify(obj));
         }
         function complete() {
-            HelperService.logError('timesheet complete');
+            HelperService.log('timesheet complete');
         }
         function updateTimesheetSuccess(response: Response) {
             var timesheetID: number = <number>response.json()

@@ -16,7 +16,7 @@ export class LoginComponent {
     password: string;
 
     constructor(private router: Router, private http: Http) {
-        HelperService.logError('constructor LoginComponent');
+        HelperService.log('constructor LoginComponent');
         if (HelperService.tokenIsValid()) {
             router.navigate(['Entities'])
         }

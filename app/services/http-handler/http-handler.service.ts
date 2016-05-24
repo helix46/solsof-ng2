@@ -8,7 +8,7 @@ import 'rxjs/Rx'; //for map
 @Injectable()
 export class HttpHandlerService {
     constructor(private http: Http) {
-        HelperService.logError('constructor HttpHandlerService');
+        HelperService.log('constructor HttpHandlerService');
         this.serviceBase = HelperService.getServiceBase()
     }
 
@@ -43,7 +43,7 @@ export class HttpHandlerService {
 
 
     private logError() {
-        HelperService.logError('get Entities failed');
+        HelperService.log('get Entities failed');
 
     };
 

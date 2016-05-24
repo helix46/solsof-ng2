@@ -10,7 +10,7 @@ import {HttpHandlerService} from  '../http-handler/http-handler.service';
 @Injectable()
 export class LoginService {
     constructor(private http: Http, private router: Router, private callback: () => void) {
-        HelperService.logError('constructor LoginService');
+        HelperService.log('constructor LoginService');
     }
 
     storeToken(response: Response, userName: string) {
@@ -37,7 +37,7 @@ export class LoginService {
             .subscribe(
             response => this.storeToken(response, username),
             this.logError,
-            () => HelperService.logError('Authentication Complete')
+            () => HelperService.log('Authentication Complete')
             );
     }
 }

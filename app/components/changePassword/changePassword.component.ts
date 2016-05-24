@@ -20,7 +20,7 @@ export class ChangePasswordComponent {
 
     constructor(private changePasswordService: ChangePasswordService, private router: Router) {
         this.userId = HelperService.getUsername();
-        HelperService.logError('constructor ChangePasswordComponent');
+        HelperService.log('constructor ChangePasswordComponent');
         this.getChangePasswordSuccess = true;
     }
 
@@ -54,16 +54,16 @@ export class ChangePasswordComponent {
         }
         function logError(resp: any) {
             alert('Password may be changed even though an error has been thrown');
-            HelperService.logError('changePassword error');
+            HelperService.log('changePassword error');
             onSubmitThis.getChangePasswordSuccess = false;
         }
         function complete() {
-            HelperService.logError('changePassword complete');
+            HelperService.log('changePassword complete');
             setTimeout(() => this.router.navigate(['Entities']), 2000)
         }
 
         function onSuccess() {
-            HelperService.logError('changePassword success');
+            HelperService.log('changePassword success');
             onSubmitThis.getChangePasswordSuccess = true;
         }
     }

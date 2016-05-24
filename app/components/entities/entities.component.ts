@@ -24,7 +24,7 @@ export class EntitiesComponent {
     getEntitiesError: boolean;
 
     constructor(public router: Router, private entitiesService: EntitiesService) {
-        HelperService.logError('constructor EntitiesComponent');
+        HelperService.log('constructor EntitiesComponent');
         this.getEntitiesError = false;
     }
 
@@ -53,11 +53,11 @@ export class EntitiesComponent {
             this.router.navigate(['Login']);
         }
         function logError(e: any) {
-            HelperService.logError('getEntities Error');
+            HelperService.log('getEntities Error');
             loadEntitiesThis.getEntitiesError = true;
         }
         function complete() {
-            HelperService.logError('getEntities complete');
+            HelperService.log('getEntities complete');
         }
 
         function onGetEntitiesSuccess(data: any) {
@@ -83,7 +83,7 @@ export class EntitiesComponent {
     onRowClicked = (params: any) => {
         var entity: SolsofSpa.Api.DataContext.tblEntity = <SolsofSpa.Api.DataContext.tblEntity>params.data;
         GetEntityService.getInstance().setEntityId(entity.entityID);
-        HelperService.logError('onRowClicked');
+        HelperService.log('onRowClicked');
     }
 
     gridOptions: any = HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);

@@ -28,7 +28,7 @@ export class TransactionsComponent {
 
 
     constructor(private TransactionsService: TransactionsService, private router: Router, private routeParams: RouteParams, private ledgerAccountsService: LedgerAccountsService, private bankAccountsService: BankAccountsService, private transactionService: TransactionService) {
-        HelperService.logError('constructor TransactionsComponent');
+        HelperService.log('constructor TransactionsComponent');
         this.listDateDescending = true;
         window.onresize = () => {
             this.gridOptions.api.sizeColumnsToFit();
@@ -54,11 +54,11 @@ export class TransactionsComponent {
     }
 
     onLoadBankAccountsError = () => {
-        HelperService.logError('onLoadBankAccountsError');
+        HelperService.log('onLoadBankAccountsError');
     }
 
     onLoadLedgerAccountsError = () => {
-        HelperService.logError('onLoadLedgerAccountsError ');
+        HelperService.log('onLoadLedgerAccountsError ');
     }
 
     onLoadLedgerAccountsSuccess = (ledgerAccounts: SolsofSpa.Api.DataContext.tblLedgerAccount[]) => {
@@ -94,11 +94,11 @@ export class TransactionsComponent {
             this.router.navigate(['Login']);
         }
         function logError(e: any) {
-            HelperService.logError('getTransactions Error');
+            HelperService.log('getTransactions Error');
         }
 
         function complete() {
-            HelperService.logError('getTransactions complete');
+            HelperService.log('getTransactions complete');
         }
 
         function onGetTransactionsSuccess(data: SolsofSpa.Api.DataContext.tblTransaction[]) {
@@ -150,10 +150,10 @@ export class TransactionsComponent {
                 deleteTransactionThis.loadTransactions()
             }
             function logTransactionsError(err: any) {
-                HelperService.logError('deleteTransaction Error');
+                HelperService.log('deleteTransaction Error');
             }
             function complete() {
-                HelperService.logError('loadTransactions complete');
+                HelperService.log('loadTransactions complete');
             }
         }
     }

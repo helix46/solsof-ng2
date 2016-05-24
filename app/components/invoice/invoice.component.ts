@@ -31,7 +31,7 @@ import {GridOptions} from 'ag-grid/main';
 
 export class InvoiceComponent {
     constructor(private invoiceService: InvoiceService, private router: Router) {
-        HelperService.logError('constructor invoiceComponent');
+        HelperService.log('constructor invoiceComponent');
     }
 
     editInvoice: boolean;
@@ -159,7 +159,7 @@ export class InvoiceComponent {
             }
         }
         function logInvoiceFromTimesheetError() {
-            HelperService.logError('getInvoiceFromTimesheetError');
+            HelperService.log('getInvoiceFromTimesheetError');
             getInvoiceThis.getInvoiceSuccess = false;
         }
     }
@@ -185,7 +185,7 @@ export class InvoiceComponent {
             getInvoiceThis.invoiceVisible = true;
         }
         function logInvoiceError() {
-            HelperService.logError('getInvoice Error');
+            HelperService.log('getInvoice Error');
             getInvoiceThis.getInvoiceSuccess = false;
         }
     }
@@ -219,11 +219,11 @@ export class InvoiceComponent {
         }
 
         function logError(obj: any) {
-            HelperService.logError(JSON.stringify(obj));
+            HelperService.log(JSON.stringify(obj));
             alert(JSON.stringify(obj));
         }
         function complete() {
-            HelperService.logError('invoice complete');
+            HelperService.log('invoice complete');
         }
         function updateInvoiceSuccess() {
             okClickedThis.ok.emit('');

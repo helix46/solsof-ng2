@@ -10,7 +10,7 @@ import {HttpHandlerService} from  '../http-handler/http-handler.service';
 @Injectable()
 export class TransactionService {
     constructor(private http: Http, private router: Router) {
-        HelperService.logError('constructor transactionService');
+        HelperService.log('constructor transactionService');
     }
 
     saveNewTransaction(structTransaction: SolsofSpa.Helper.structTransaction): Observable<Response> {

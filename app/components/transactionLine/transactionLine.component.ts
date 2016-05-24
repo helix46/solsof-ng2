@@ -10,7 +10,7 @@ import {HelperService} from '../../services/helper/helper.service';
 
 export class TransactionLineComponent {
     constructor() {
-        HelperService.logError('constructor TransactionLineComponent');
+        HelperService.log('constructor TransactionLineComponent');
     }
 
     @Output() saver: EventEmitter<SolsofSpa.Helper.structTransactionLine> = new EventEmitter<SolsofSpa.Helper.structTransactionLine>();

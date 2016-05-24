@@ -27,7 +27,7 @@ export class LedgerAccountsComponent {
     getLedgerAccountsSuccess: boolean = true;
 
     constructor(private ledgerAccountsService: LedgerAccountsService, public router: Router) {
-        HelperService.logError('constructor LedgerAccountsComponent');
+        HelperService.log('constructor LedgerAccountsComponent');
         this.getLedgerAccountsSuccess = true;
         window.onresize = () => {
             //this.gridOptions.api.sizeColumnsToFit();
@@ -58,12 +58,12 @@ export class LedgerAccountsComponent {
             this.router.navigate(['Login']);
         }
         function logError(e: any) {
-            HelperService.logError('getLedgerAccounts Error');
+            HelperService.log('getLedgerAccounts Error');
             loadLedgerAccountsThis.getLedgerAccountsSuccess = false;
         }
 
         function complete() {
-            HelperService.logError('getLedgerAccounts complete');
+            HelperService.log('getLedgerAccounts complete');
         }
 
         function onGetLedgerAccountsSuccess(data: SolsofSpa.Api.DataContext.tblLedgerAccount[]) {
@@ -94,7 +94,7 @@ export class LedgerAccountsComponent {
 
     onRowClicked = (params: any) => {
         this.selectedLedgerAccount = <SolsofSpa.Api.DataContext.tblLedgerAccount>params.data;
-        HelperService.logError('LedgerAccount onRowClicked');
+        HelperService.log('LedgerAccount onRowClicked');
     }
 
     onRowDoubleClicked = (params: any) => {

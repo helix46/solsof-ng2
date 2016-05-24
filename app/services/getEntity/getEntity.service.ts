@@ -8,7 +8,7 @@ export class GetEntityService {
 
     constructor() {
         this.EntityId = -1;
-        HelperService.logError('constructor HelperService');
+        HelperService.log('constructor HelperService');
         if (!GetEntityService.isCreating) {
             throw new Error("You can't call new in Singleton instances! Call HelperService.getInstance() instead.");
         }

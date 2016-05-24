@@ -9,7 +9,7 @@ import {HelperService} from '../../services/helper/helper.service';
 
 export class InvoiceLineComponent {
     constructor() {
-        HelperService.logError('constructor InvoiceLineComponent');
+        HelperService.log('constructor InvoiceLineComponent');
     }
 
     @Output() returnInvoiceLine: EventEmitter<SolsofSpa.Helper.structTransactionLine> = new EventEmitter<SolsofSpa.Helper.structTransactionLine>();

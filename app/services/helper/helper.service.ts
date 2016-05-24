@@ -132,7 +132,7 @@ export class HelperService {
 
     static deleteTokenFromStorage() {
         localStorage.clear();
-        HelperService.logError('localStorage cleared');
+        HelperService.log('localStorage cleared');
     }
 
     static saveTokenToStorage(userName: string, t: ITokenresponse) {
@@ -141,7 +141,7 @@ export class HelperService {
         expiryDate.setSeconds(expiryDate.getSeconds() + t.expires_in);
         localStorage.setItem(this.C_tokenExpiryDate, HelperService.formatDateAndTimeForJSon(expiryDate));
         localStorage.setItem(this.C_userName, userName);
-        HelperService.logError('token added to localStorage');
+        HelperService.log('token added to localStorage');
     }
 
     static getToken(): string {
@@ -373,7 +373,7 @@ export class HelperService {
             router.navigate(['Login']);
         }
         function logLedgerAccountsError() {
-            HelperService.logError('getLedgerAccounts Error');
+            HelperService.log('getLedgerAccounts Error');
             onError();
         }
 
@@ -381,7 +381,7 @@ export class HelperService {
             onSuccess(ledgerAccounts);
         }
         function complete() {
-            HelperService.logError('loadDebtors complete');
+            HelperService.log('loadDebtors complete');
         }
     };
 
@@ -397,7 +397,7 @@ export class HelperService {
             router.navigate(['Login']);
         }
         function logBankAccountsError() {
-            HelperService.logError('getBankAccounts Error');
+            HelperService.log('getBankAccounts Error');
             onError();
         }
 
@@ -405,11 +405,11 @@ export class HelperService {
             onSuccess(structLoadTransactionForm);
         }
         function complete() {
-            HelperService.logError('loadDebtors complete');
+            HelperService.log('loadDebtors complete');
         }
     };
 
-    static logError = (s: string) => {
+    static log = (s: string) => {
         console.log(s);
     }
 
@@ -425,7 +425,7 @@ export class HelperService {
     //        router.navigate(['Login']);
     //    }
     //    function logBankAccountsError() {
-    //        HelperService.logError('getBankAccounts Error');
+    //        HelperService.log('getBankAccounts Error');
     //        onError();
     //    }
 
@@ -433,7 +433,7 @@ export class HelperService {
     //        onSuccess(structLoadTransactionForm);
     //    }
     //    function complete() {
-    //        HelperService.logError('loadDebtors complete');
+    //        HelperService.log('loadDebtors complete');
     //    }
     //};
 

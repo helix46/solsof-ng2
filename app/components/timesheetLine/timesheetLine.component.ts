@@ -10,7 +10,7 @@ import {HelperService} from '../../services/helper/helper.service';
 
 export class TimesheetLineComponent {
     constructor() {
-        HelperService.logError('constructor TimesheetLineComponent');
+        HelperService.log('constructor TimesheetLineComponent');
     }
 
     @Output() saver: EventEmitter<SolsofSpa.Helper.structTimesheetLine> = new EventEmitter<SolsofSpa.Helper.structTimesheetLine>();

@@ -15,7 +15,7 @@ export class DialogBoxComponent {
 
 
     constructor() {
-        HelperService.logError('constructor DialogBoxComponent');
+        HelperService.log('constructor DialogBoxComponent');
     }
 
     @Output() OK: EventEmitter<any> = new EventEmitter<any>();

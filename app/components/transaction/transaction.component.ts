@@ -19,7 +19,7 @@ import {GridOptions} from 'ag-grid/main';
 
 export class TransactionComponent {
     constructor(private transactionService: TransactionService, private router: Router) {
-        HelperService.logError('constructor transactionComponent');
+        HelperService.log('constructor transactionComponent');
     }
 
     editTransaction: boolean;
@@ -162,7 +162,7 @@ export class TransactionComponent {
             }
         }
         function logTransactionError() {
-            HelperService.logError('getTransaction Error');
+            HelperService.log('getTransaction Error');
             getTransactionThis.getTransactionSuccess = false;
         }
     }
@@ -195,14 +195,14 @@ export class TransactionComponent {
         }
 
         function logError(obj: any) {
-            HelperService.logError(obj);
-            HelperService.logError(JSON.stringify(obj));
+            HelperService.log(obj);
+            HelperService.log(JSON.stringify(obj));
         }
         function complete() {
-            HelperService.logError('transaction complete');
+            HelperService.log('transaction complete');
         }
         function updateTransactionSuccess(response: Response) {
-            HelperService.logError('updateTransactionSuccess');
+            HelperService.log('updateTransactionSuccess');
             okClickedThis.transactionVisible = false;
             okClickedThis.ok.emit('');
         }

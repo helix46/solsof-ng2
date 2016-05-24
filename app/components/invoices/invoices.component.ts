@@ -37,7 +37,7 @@ export class InvoicesComponent {
     editInvoice: boolean = false;
 
     constructor(private InvoicesService: InvoicesService, public router: Router, private ledgerAccountsService: LedgerAccountsService, private debtorsService: DebtorsService) {
-        HelperService.logError('constructor InvoicesComponent');
+        HelperService.log('constructor InvoicesComponent');
         window.onresize = () => {
             //this.gridOptions.api.sizeColumnsToFit();
         };
@@ -67,14 +67,14 @@ export class InvoicesComponent {
             this.router.navigate(['Login']);
         }
         function logDebtorsError() {
-            HelperService.logError('getDebtors Error');
+            HelperService.log('getDebtors Error');
             loadDebtorsThis.getDebtorsSuccess = false;
         }
         function onGetDebtorsSuccess(debtors: SolsofSpa.Api.DataContext.tblDebtor[]) {
             loadDebtorsThis.debtors = debtors;
         }
         function complete() {
-            HelperService.logError('loadDebtors complete');
+            HelperService.log('loadDebtors complete');
         }
     };
 
@@ -91,14 +91,14 @@ export class InvoicesComponent {
             this.router.navigate(['Login']);
         }
         function logLedgerAccountsError() {
-            HelperService.logError('getLedgerAccounts Error');
+            HelperService.log('getLedgerAccounts Error');
             loadLedgerAccountsThis.getLedgerAccountsSuccess = false;
         }
         function onGetLedgerAccountsSuccess(ledgerAccounts: SolsofSpa.Api.DataContext.tblLedgerAccount[]) {
             loadLedgerAccountsThis.ledgerAccounts = ledgerAccounts;
         }
         function complete() {
-            HelperService.logError('loadLedgerAccounts complete');
+            HelperService.log('loadLedgerAccounts complete');
         }
     };
 
@@ -118,12 +118,12 @@ export class InvoicesComponent {
             this.router.navigate(['Login']);
         }
         function logError(e: any) {
-            HelperService.logError('getInvoices Error');
+            HelperService.log('getInvoices Error');
             loadInvoicesThis.getInvoicesSuccess = false;
         }
 
         function complete() {
-            HelperService.logError('getInvoices complete');
+            HelperService.log('getInvoices complete');
         }
 
         function onGetInvoicesSuccess(data: SolsofSpa.Api.DataContext.spGetInvoices_Result[]) {
@@ -176,7 +176,7 @@ export class InvoicesComponent {
 
     onRowClicked = (params: any) => {
         this.selectedInvoice = <SolsofSpa.Api.DataContext.spGetInvoices_Result>params.data;
-        HelperService.logError('Invoice onRowClicked');
+        HelperService.log('Invoice onRowClicked');
     }
 
     onRowDoubleClicked = (params: any) => {

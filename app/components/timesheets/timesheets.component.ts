@@ -23,7 +23,7 @@ import {GridOptions} from 'ag-grid/main';
 
 export class TimesheetsComponent {
     constructor(private timesheetsService: TimesheetsService, public router: Router, private debtorsService: DebtorsService, private timesheetService: TimesheetService, private ledgerAccountsService: LedgerAccountsService) {
-        HelperService.logError('constructor TimesheetsComponent');
+        HelperService.log('constructor TimesheetsComponent');
         this.getTimesheetsSuccess = true;
         //window.onresize = () => {
         //    this.gridOptions.api.sizeColumnsToFit();
@@ -87,7 +87,7 @@ export class TimesheetsComponent {
             this.router.navigate(['Login']);
         }
         function logLedgerAccountsError() {
-            HelperService.logError('getLedgerAccounts Error');
+            HelperService.log('getLedgerAccounts Error');
             loadLedgerAccountsThis.onGetLedgerAccountsSuccess = false;
         }
 
@@ -95,7 +95,7 @@ export class TimesheetsComponent {
             loadLedgerAccountsThis.ledgerAccounts = LedgerAccounts;
         }
         function complete() {
-            HelperService.logError('loadDebtors complete');
+            HelperService.log('loadDebtors complete');
         }
     };
     loadDebtors = () => {
@@ -111,14 +111,14 @@ export class TimesheetsComponent {
             this.router.navigate(['Login']);
         }
         function logDebtorsError() {
-            HelperService.logError('getDebtors Error');
+            HelperService.log('getDebtors Error');
             loadDebtorsThis.getDebtorsSuccess = false;
         }
         function onGetDebtorsSuccess(debtors: SolsofSpa.Api.DataContext.tblDebtor[]) {
             loadDebtorsThis.debtors = debtors;
         }
         function complete() {
-            HelperService.logError('loadDebtors complete');
+            HelperService.log('loadDebtors complete');
         }
     };
 
@@ -141,11 +141,11 @@ export class TimesheetsComponent {
             loadTimesheetsThis.getTimesheetsSuccess = true;
         }
         function logTimesheetsError() {
-            HelperService.logError('getTimesheets Error');
+            HelperService.log('getTimesheets Error');
             loadTimesheetsThis.getTimesheetsSuccess = false;
         }
         function complete() {
-            HelperService.logError('loadTimesheets complete');
+            HelperService.log('loadTimesheets complete');
         }
     };
 
@@ -168,10 +168,10 @@ export class TimesheetsComponent {
                 deleteTimesheetThis.loadTimesheets()
             }
             function logTimesheetsError(err: any) {
-                HelperService.logError('deleteTimesheet Error');
+                HelperService.log('deleteTimesheet Error');
             }
             function complete() {
-                HelperService.logError('loadTimesheets complete');
+                HelperService.log('loadTimesheets complete');
             }
         }
     }

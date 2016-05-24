@@ -11,7 +11,7 @@ import {HttpHandlerService} from  '../http-handler/http-handler.service';
 @Injectable()
 export class ChangePasswordService {
     constructor(private http: Http, private router: Router) {
-        HelperService.logError('constructor ChangePasswordService');
+        HelperService.log('constructor ChangePasswordService');
     }
 
     parseResponse(res: Response) {
