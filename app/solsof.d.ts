@@ -39,14 +39,14 @@
     }
     interface spProfitAndLoss_Result {
         ledgerAccountID: number;
-        ledgerAccountType: number;
+        ledgerAccountType: SolsofSpa.Helper.ledgerAccountType;
         ledgerAccountName: string;
         amount: number;
     }
     interface spBalanceSheet_Result {
         name: string;
         sumAmount: number;
-        ledgerAccountType: number;
+        ledgerAccountType: SolsofSpa.Helper.ledgerAccountType;
     }
     interface tblBankAccount {
         bankAccountID: number;
@@ -106,7 +106,7 @@
     interface tblLedgerAccount {
         ledgerAccountID: number;
         name: string;
-        ledgerAccountType: number;
+        ledgerAccountType: SolsofSpa.Helper.ledgerAccountType;
         entityID: number;
         active: boolean;
         oldLedgerAccount: string;
@@ -281,6 +281,14 @@ declare module SolsofSpa.Helper {
         comment: string;
         timesheetLineArray: SolsofSpa.Helper.structTimesheetLine[];
     }
+    interface tblLedgerAccount {
+        ledgerAccountID: number;
+        name: string;
+        ledgerAccountType: SolsofSpa.Helper.ledgerAccountType;
+        entityID: number;
+        active: boolean;
+    }
+
     interface structTimesheetInvoiceLine {
         debtorID: number;
         comment: string;
@@ -338,6 +346,11 @@ interface IChangePasswordModel {
     userName: string;
     currentPassword: string;
     newPassword: string;
+}
+
+interface IledgerAccountType {
+    name: string,
+    ledgerAccountType: SolsofSpa.Helper.ledgerAccountType
 }
 
 //interface StructTimesheetLineJs {

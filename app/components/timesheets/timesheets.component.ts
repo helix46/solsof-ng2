@@ -42,7 +42,7 @@ export class TimesheetsComponent {
     public excludeInactive: boolean = true;
     getTimesheetsSuccess: boolean = true;
     getDebtorsSuccess: boolean = true;
-    editTimesheet: boolean;
+    //editTimesheet: boolean;
     @ViewChild(TimesheetComponent) timesheetComponent: TimesheetComponent;
     @ViewChild(InvoiceComponent) invoiceComponent: InvoiceComponent;
     @ViewChild(DialogBoxComponent) dialogBoxComponent: DialogBoxComponent;
@@ -53,11 +53,11 @@ export class TimesheetsComponent {
     //////////////////////////////////////////////////////////
 
     //events
-    addTimesheet = () => {
-        //this.router.navigate(['Timesheet', { edit: "false" }]);
-        this.timesheetComponent.newTimesheet(this.debtors);
-        this.editTimesheet = false;
-    }
+    //addTimesheet = () => {
+    //    //this.router.navigate(['Timesheet', { edit: "false" }]);
+    //    this.timesheetComponent.newTimesheet(this.debtors);
+    //    this.editTimesheet = false;
+    //}
 
     goToInvoices = () => {
         this.router.navigate(['Invoices']);
@@ -211,7 +211,7 @@ export class TimesheetsComponent {
         //this.onRowClicked(params);
         var selectedTimesheet = <SolsofSpa.Api.DataContext.spListTimesheets_Result>params.data;
         this.timesheetComponent.getTimesheet(selectedTimesheet.timesheetID, this.debtors);
-        this.editTimesheet = true;
+        //this.editTimesheet = true;
     }
 
     gridOptions: any = HelperService.getGridOptions(this.columnDefs, this.onRowClicked, this.onRowDoubleClicked);

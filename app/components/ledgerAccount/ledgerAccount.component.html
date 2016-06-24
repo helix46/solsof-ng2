@@ -1,0 +1,40 @@
+﻿<div class="modalSolsof modalSolsof100" [class.modalSolsofVisible]="ledgerAccountVisible" (keyup.esc)="cancelLedgerAccount()">
+        <!-- Modal content -->
+        <div class="modal-contentSolsof modalSolsof-wide container-fluid" (keyup.esc)="cancelLedgerAccount()">
+            <!--contents-->
+            <form (ngSubmit)="okClicked()" #ledgerAccountForm="ngForm">
+                <h1>{{titleLedgerAccount}}</h1>
+                <br />
+                <!--buttons-->
+                <div class="col-md-2">
+                    <div class="buttonGroup">
+                        <button type="submit" class="sidebar-menu-button okButton"> OK</button>
+                        <button type="button" class="sidebar-menu-button" (click)="cancelLedgerAccount()"> Cancel</button>
+                    </div>
+                </div>
+                <!--inputs-->
+                <div class="col-md-10">
+                    <div class="form-group">
+                        <div class="form-group">
+                            <label for="inputName">Name</label>
+                            <input type="text" [(ngModel)]="ledgerAccount.name" class="form-control" #inputName="ngForm" placeholder="Name" ngControl="ngcName">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="cmbLedgerAccountTypes" [hidden]="ledgerAccountTypeDisabled">Type</label>
+                        <select [required]="!ledgerAccountTypeDisabled" [hidden]="ledgerAccountTypeDisabled" [disabled]="ledgerAccountTypeDisabled" class="form-control" #cmbLedgerAccountTypes ngControl="ngcLedgerAccountTypes" [(ngModel)]="ledgerAccount.ledgerAccountTypeID">
+                            <option *ngFor="let ledgerAccountType of ledgerAccountTypes" [value]="ledgerAccountType.ledgerAccountTypeID">
+                                {{ ledgerAccountType.name }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputLedgerAccountActive">Active</label>
+                        <input type="checkbox" [(ngModel)]="ledgerAccount.active" class="form-control" #inputLedgerAccountActive="ngForm" required ngControl="ngcLedgerAccountActive">
+                    </div>
+                    <div [hidden]="getLedgerAccountSuccess" class="alert alert-danger">Error getting LedgerAccount</div>
+                </div>
+            </form>
+        </div>
+    </div>
+

@@ -5,19 +5,20 @@ import {GetEntityService} from '../../services/GetEntity/GetEntity.service';
 import {Response} from '@angular/http';
 import {Component} from '@angular/core';
 import {LedgerAccountsService} from '../../services/LedgerAccounts/LedgerAccounts.service';
+import {LedgerAccountService} from '../../services/ledgerAccount/ledgerAccount.service';
+import {LedgerAccountComponent} from '../LedgerAccount/LedgerAccount.component';
 import {AgGridNg2} from 'ag-grid-ng2/main';
 import {GridOptions} from 'ag-grid/main';
 
-//import 'ag-grid-enterprise/main';
+import 'ag-grid-enterprise/main';
 
 
 @Component({
     selector: 'ledger-accounts',
     templateUrl: 'app/components/LedgerAccounts/LedgerAccounts.component.html',
     pipes: [],
-    providers: [LedgerAccountsService],
-    //directives: [(<any>window).ag.grid.AgGridNg2]
-    directives: [AgGridNg2]
+    providers: [LedgerAccountsService, LedgerAccountService, LedgerAccountComponent],
+    directives: [LedgerAccountComponent, AgGridNg2]
 })
 
 export class LedgerAccountsComponent {
@@ -25,8 +26,9 @@ export class LedgerAccountsComponent {
     public LedgerAccounts: SolsofSpa.Api.DataContext.tblLedgerAccount[] = [];
     public excludeInactive: boolean = true;
     getLedgerAccountsSuccess: boolean = true;
+    //editledgerAccount: boolean;
 
-    constructor(private ledgerAccountsService: LedgerAccountsService, public router: Router) {
+    constructor(private ledgerAccountComponent: LedgerAccountComponent, private ledgerAccountsService: LedgerAccountsService, public router: Router) {
         HelperService.log('constructor LedgerAccountsComponent');
         this.getLedgerAccountsSuccess = true;
         window.onresize = () => {
@@ -73,7 +75,12 @@ export class LedgerAccountsComponent {
             loadLedgerAccountsThis.gridOptions.api.sizeColumnsToFit();
         }
     };
-     
+
+    //addLedgerAccount = () => {
+    //    this.ledgerAccountComponent.newLedgerAccount();
+    //    this.editledgerAccount = false;
+    //}
+
     /////////////////////////////////////////////////////////////
     //grid
     columnDefs: any[] = [

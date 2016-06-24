@@ -13,21 +13,8 @@ import {GridOptions} from 'ag-grid/main';
     templateUrl: 'app/components/invoice/invoice.component.html',
     styles: ['.modalSolsofVisible {display: block;}'],
     providers: [InvoiceService],
-    //directives: [(<any>window).ag.grid.AgGridNg2, InvoiceLineComponent]
     directives: [AgGridNg2, InvoiceLineComponent]
 })
-
-//interface structTransaction {
-//    transactionID: number;
-//    entityID: number;
-//    bankAccountID: number;
-//    debtorID: number;
-//    transactionType: SolsofSpa.Helper.enumTransactionType;
-//    chequeNumber: number;
-//    comment: string;
-//    sTransactionDate: string;
-//    transactionLineArray: SolsofSpa.Helper.structTransactionLine[];
-//}
 
 export class InvoiceComponent {
     constructor(private invoiceService: InvoiceService, private router: Router) {
@@ -183,10 +170,17 @@ export class InvoiceComponent {
             getInvoiceThis.getInvoiceSuccess = true;
             getInvoiceThis.calculateInvoiceTotal();
             getInvoiceThis.invoiceVisible = true;
+            document.onkeydown = getInvoiceThis.keydown;
         }
         function logInvoiceError() {
             HelperService.log('getInvoice Error');
             getInvoiceThis.getInvoiceSuccess = false;
+        }
+    }
+
+    keydown = (event: KeyboardEvent) => {
+        if (event.keyCode === 27) {
+            this.cancelInvoice();
         }
     }
 
@@ -198,6 +192,7 @@ export class InvoiceComponent {
 
     cancelInvoice = () => {
         this.invoiceVisible = false;
+        document.onkeydown = null;
     }
 
     okClicked = () => {
@@ -252,6 +247,7 @@ export class InvoiceComponent {
         };
         this.gridOptions.api.setRowData(this.invoice.transactionLineArray);
         this.calculateInvoiceTotal();
+        document.onkeydown = this.keydown;
     }
 
 

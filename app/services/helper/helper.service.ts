@@ -34,8 +34,8 @@ export class HelperService {
     }
 
     static getServiceBase(): string {
-        return 'https://solsofoz.azurewebsites.net/';
-        //return 'http://localhost:10614/';
+        //return 'https://solsofoz.azurewebsites.net/';
+        return 'http://localhost:10614/';
 
 
     }
@@ -411,6 +411,31 @@ export class HelperService {
 
     static log = (s: string) => {
         console.log(s);
+    }
+
+    static loadLedgerAccountTypes = (): IledgerAccountType[] => {
+        var ledgerAccountTypes: IledgerAccountType[] = [];
+        ledgerAccountTypes.push({
+            name: 'Asset',
+            ledgerAccountType: SolsofSpa.Helper.ledgerAccountType.Asset
+        })
+        ledgerAccountTypes.push({
+            name: 'Capital',
+            ledgerAccountType: SolsofSpa.Helper.ledgerAccountType.Capital
+        })
+        ledgerAccountTypes.push({
+            name: 'Expense',
+            ledgerAccountType: SolsofSpa.Helper.ledgerAccountType.Expense
+        })
+        ledgerAccountTypes.push({
+            name: 'Income',
+            ledgerAccountType: SolsofSpa.Helper.ledgerAccountType.Income
+        })
+        ledgerAccountTypes.push({
+            name: 'Liability',
+            ledgerAccountType: SolsofSpa.Helper.ledgerAccountType.Liability
+        })
+        return ledgerAccountTypes;
     }
 
     //static loadBankAccounts = (router: Router, bankAccountsService: BankAccountsService, onError: () => void, onSuccess: (structLoadTransactionForm: SolsofSpa.Helper.structLoadTransactionForm) => void) => {

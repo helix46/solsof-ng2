@@ -18,7 +18,8 @@ export class HttpHandlerService {
     //parameters: an array of name / value pairs
     getObject<T>(parameters: modSharedTypes.IHttpParameter[], url: string): Observable<T> {
         var options: RequestOptionsArgs = this.getOptions(parameters, true);
-        return this.http.get(this.serviceBase + url, options).map(res=> res.json());
+        //return this.http.get(this.serviceBase + url, options);
+        return this.http.get(this.serviceBase + url, options).map(res => res.json());
     }
 
     deleteObject(parameters: modSharedTypes.IHttpParameter[], url: string): Observable<Response> {

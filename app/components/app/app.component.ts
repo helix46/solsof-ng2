@@ -1,3 +1,5 @@
+/// <reference path="../../solsof.d.ts" />
+/// <reference path="../../../typings/es6-shim/es6-shim.d.ts" />
 import {Component} from '@angular/core';
 import {RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS} from '@angular/router-deprecated';
 import {LoginComponent} from '../login/login.component';

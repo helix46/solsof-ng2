@@ -1,7 +1,8 @@
 ﻿<h1>Timesheets</h1>
 <div class="col-md-2">
     <div class="buttonGroup" >
-        <button class="sidebar-menu-button" (click)="addTimesheet()">Add</button>
+        <button class="sidebar-menu-button" (click)="timesheetModalForm.newTimesheet()">Add</button>
+        <!--<button class="sidebar-menu-button" (click)="addTimesheet()">Add</button>-->
         <button class="sidebar-menu-button" >Create Invoice</button>
         <button class="sidebar-menu-button deleteButton"(click)="deleteTimesheet()">Delete</button>
     </div>
@@ -14,7 +15,7 @@
 <div [hidden]="getTimesheetsSuccess" class="alert alert-danger">Error getting Timesheets</div>
 <div [hidden]="getDebtorsSuccess" class="alert alert-danger">Error getting Debtors</div>
 
-<timesheetModal (ok)="loadTimesheets()" (okCreateInvoice)="createInvoice($event)"></timesheetModal>
+<timesheetModal #timesheetModalForm (ok)="loadTimesheets()" (okCreateInvoice)="createInvoice($event)"></timesheetModal>
 
 <invoiceModal (ok)="goToInvoices()"></invoiceModal>
 

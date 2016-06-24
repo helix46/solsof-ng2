@@ -26,7 +26,7 @@ export class TimesheetComponent {
     timesheetTotal: string;
     getTimesheetSuccess: boolean = true;
     @Output() ok: EventEmitter<string> = new EventEmitter<string>();
-    @Output() okCreateInvoice: EventEmitter<number> = new EventEmitter<number>();
+    //@Output() okCreateInvoice: EventEmitter<number> = new EventEmitter<number>();
     debtors: SolsofSpa.Api.DataContext.tblDebtor[];
     timesheet: SolsofSpa.Helper.structTimesheet = {
         comment: '',
@@ -37,7 +37,7 @@ export class TimesheetComponent {
         timesheetLineArray: []
     };
     timesheetVisible: boolean = false;
-    createInvoice: boolean = true;
+    //createInvoice: boolean = true;
 
     ngOnInit() {
 
@@ -45,7 +45,7 @@ export class TimesheetComponent {
             this.router.navigate(['Login']);
         }
     }
-        
+
     calculateTimesheetTotal = () => {
         var totalMinutes = 0, startTimeMinutes: number, finishTimeMinutes: number, timeoutMinutes: number, i: number;
         for (i = 0; i < this.timesheet.timesheetLineArray.length; i = i + 1) {
@@ -158,13 +158,12 @@ export class TimesheetComponent {
             HelperService.log('timesheet complete');
         }
         function updateTimesheetSuccess(response: Response) {
-            var timesheetID: number = <number>response.json()
             okClickedThis.timesheetVisible = false;
-            if (okClickedThis.createInvoice) {
-                okClickedThis.okCreateInvoice.emit(timesheetID);
-            } else {
-                okClickedThis.ok.emit('');
-            }
+            //if (okClickedThis.createInvoice) {
+            //  var timesheetID: number = <number>response.json()
+            //okClickedThis.okCreateInvoice.emit(timesheetID);
+            //} else {
+            okClickedThis.ok.emit('');
         }
     }
 

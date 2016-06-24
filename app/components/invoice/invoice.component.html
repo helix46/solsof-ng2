@@ -1,6 +1,6 @@
-﻿<div class="modalSolsof modalSolsof100" [class.modalSolsofVisible]="invoiceVisible" (keyup.esc)="cancelInvoice()">
+﻿<div class="modalSolsof modalSolsof100" [class.modalSolsofVisible]="invoiceVisible">
     <!-- Modal content -->
-    <div class="modal-contentSolsof modalSolsof-wide container-fluid" (keyup.esc)="cancelInvoice()">
+    <div class="modal-contentSolsof modalSolsof-wide container-fluid" >
         <!--contents-->
         <form (ngSubmit)="okClicked()" #invoiceForm="ngForm">
             <h1>{{titleInvoice}}</h1>

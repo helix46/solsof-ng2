@@ -1,8 +1,8 @@
-﻿<div class="modalSolsof modalSolsof200" [class.modalSolsofVisible]="invoiceLineVisible" (keyup.esc)="cancelInvoiceLine()">
+﻿<div class="modalSolsof modalSolsof200" [class.modalSolsofVisible]="invoiceLineVisible">
     <!-- Modal content -->
-    <div class="modal-contentSolsof modalSolsof-wide" (keyup.esc)="modalOnKeyup()">
+    <div class="modal-contentSolsof modalSolsof-wide">
         <!--contents-->
-        <form novalidate name="formInvoice" class="form-horizontal" (keyup.esc)="modalOnKeyup()">
+        <form novalidate name="formInvoice" class="form-horizontal">
             <h1> {{titleInvoiceLine}}</h1>
             <br />
             <!--master inputs-->

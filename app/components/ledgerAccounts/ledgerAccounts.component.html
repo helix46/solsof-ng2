@@ -1,9 +1,18 @@
 ﻿<h1> Ledger Accounts</h1>
-<label>
-    <input [ngModel]="excludeInactive" #chkExcludeInactive type="checkbox" (change)="chkExcludeInactiveClicked(chkExcludeInactive)"> <big>Exclude Inactive</big>
-</label>
+<div class="col-md-2">
+    <div class="buttonGroup">
+        <button class="sidebar-menu-button" (click)="ledgerAccountForm.newLedgerAccount()">Add</button>
+        <button class="sidebar-menu-button deleteButton" (click)="deleteTimesheet()">Delete</button>
+    </div>
+    <label>
+        <input [ngModel]="excludeInactive" #chkExcludeInactive type="checkbox" (change)="chkExcludeInactiveClicked(chkExcludeInactive)"> <big>Exclude Inactive</big>
+    </label>
+</div>
 {{getLedgerAccountsComplete}}
-<div>
+
+<div class="col-md-10">
     <ag-grid-ng2 class="ag-fresh clsGridLedgerAccounts" [gridOptions]="gridOptions"></ag-grid-ng2>
 </div>
 <div  [hidden]="getLedgerAccountsSuccess" class="alert alert-danger">Error getting Ledger Accounts</div>
+
+<ledgerAccountModal #ledgerAccountForm (ok)="loadLedgerAccounts()"></ledgerAccountModal>

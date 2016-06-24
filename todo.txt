@@ -1,7 +1,7 @@
 sources of bugs:
 	html does not match TS. To minimise, reduce variables in html and put them into TS
 
-forms:
+forms:... all changing with next rc
 	foundation: 
 		<form>, 
 		<label for, 
@@ -66,6 +66,6 @@ Later when tools have matured and I know a lot more
 
 
 
-
+change modal
 	
 

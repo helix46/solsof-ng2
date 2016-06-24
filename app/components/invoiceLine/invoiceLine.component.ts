@@ -25,6 +25,12 @@ export class InvoiceLineComponent {
         this.clearInvoiceLine();
     }
 
+    keydown = (event: KeyboardEvent) => {
+        if (event.keyCode === 27) {
+            this.cancelInvoiceLine();
+        }
+    }
+
     displayInvoiceline = (selectedInvoiceLine: SolsofSpa.Helper.structTransactionLine, ledgerAccounts: SolsofSpa.Api.DataContext.tblLedgerAccount[]) => {
         this.ledgerAccounts = ledgerAccounts;
         this.titleInvoiceLine = 'Edit Invoice Line';
@@ -32,6 +38,7 @@ export class InvoiceLineComponent {
         this.amount = selectedInvoiceLine.amount;
         this.comment = selectedInvoiceLine.comment;
         this.invoiceLineVisible = true;
+        document.onkeydown = this.keydown;
     }
 
     newInvoiceLine = (ledgerAccounts: SolsofSpa.Api.DataContext.tblLedgerAccount[]) => {
@@ -50,6 +57,7 @@ export class InvoiceLineComponent {
     cancelInvoiceLine = () => {
         this.clearInvoiceLine();
         this.invoiceLineVisible = false;
+        document.onkeydown = null;
     }
 
     saveInvoiceLine() {
