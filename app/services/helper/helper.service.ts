@@ -34,11 +34,9 @@ export class HelperService {
     }
 
     static getServiceBase(): string {
+		return 'https://solsof-spa-api.azurewebsites.net/';
         //return 'https://solsofoz.azurewebsites.net/';
-        return 'https://solsof-spa-api.azurewebsites.net/';
         //return 'http://localhost:10614/';
-
-
     }
 
     static getTokenName(): string {
