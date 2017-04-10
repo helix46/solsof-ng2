@@ -34,7 +34,8 @@ export class HelperService {
     }
 
     static getServiceBase(): string {
-        return 'https://solsofoz.azurewebsites.net/';
+        //return 'https://solsofoz.azurewebsites.net/';
+        return 'https://solsof-spa-api.azurewebsites.net/';
         //return 'http://localhost:10614/';
 
 
@@ -197,7 +198,8 @@ export class HelperService {
             allColumnIds.push(columnDef.field);
         });
         gridOptions.columnApi.autoSizeColumns(allColumnIds);
-    };
+    };
+
     static getGridOptions(columnDefs: any[], onRowClicked: (params: any) => void, onRowDoubleClicked: (params: any) => void) {
         var rowData: any[] = [];
         var gridOptions = {
@@ -206,7 +208,8 @@ export class HelperService {
             enableSorting: true,
             enableFilter: true,
             groupUseEntireRow: true,
-            enableColResize: true,            rowSelection: "single",
+            enableColResize: true,
+            rowSelection: "single",
             onRowClicked: onRowClicked,
             onRowDoubleClicked: onRowDoubleClicked,
             rowGroupPanelShow: 'always',
